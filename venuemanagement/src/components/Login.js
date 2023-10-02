@@ -7,21 +7,21 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const isValidEmail = (email) => {
-        const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    };
+//    const isValidEmail = (email) => {
+//        const email = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+//    };
 
     const handleSubmit = (e) => {
         console.log("handleSubmit called");
         e.preventDefault();
-        if (!isValidEmail(email)) {
-            alert("Invalid email");
-        }
-        else{
+//        if (!isValidEmail(email)) {
+//            alert("Invalid email");
+//        }
+//        else{
             console.log({ email, password });
             setPassword("");
             setEmail("");
-        }
+//        }
     };
 
     const gotoSignUpPage = () => navigate("/register");
