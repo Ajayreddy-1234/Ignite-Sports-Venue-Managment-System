@@ -58,7 +58,9 @@ const Register = () => {
                         name='tel'
                         id='tel'
                         value={tel}
-                        required
+                        required={true}
+                        minLength={10}
+                        maxLength={10}
                         onChange={(e) => setTel(e.target.value)}
                     />
                 </div>
