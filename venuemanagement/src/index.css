@@ -32,7 +32,6 @@ body{
   background-position: center;
 }
 
-.signupContainer,
 .verify,
 .dashboard {
   margin: 0;
@@ -52,8 +51,7 @@ body{
 }
 .loginContainer,
 .verifyForm,
-.signupForm {
-
+.signupContainer{
   background: transparent;
   border: 2px solid rgba(0,0,0, .3);
   backdrop-filter: blur(20px);
@@ -64,18 +62,21 @@ body{
   border-radius: 10px;
   padding: 30px 40px;
 }
+
 .logo{
   padding-bottom: 15px;
 }
 
-.loginContainer h2{
+.loginContainer h2,
+.signupContainer h2{
   font-size: 32px;
   font-weight: 200;
   width: 420px;
   text-align: center;
 }
 
-.loginForm{
+.loginForm,
+.signupForm{
   width: 100%;
   align-items: center;
   display: flex;
@@ -86,6 +87,13 @@ body{
   position: relative;
   height: 50px;
   margin: 20px;
+  width: 100%;
+  background: transparent;
+}
+.signupForm .inputBox{
+  position: relative;
+  height: 50px;
+  margin: 15px;
   width: 100%;
   background: transparent;
 }
@@ -103,6 +111,7 @@ body{
 
 .inputBox input::placeholder{
   color: black;
+  opacity: .7;
 }
 .inputBox i{
   position: absolute;
@@ -113,7 +122,6 @@ body{
 }
 
 .loginBtn,
-.signupBtn,
 .codeBtn {
   background-color: #8C1C13;
   color: #fff;
@@ -123,6 +131,18 @@ body{
   border: none;
   outline: none;
   margin-top: 25px;
+  border-radius: 15px;
+  margin-bottom: 25px;
+}
+.signupBtn{
+  background-color: #8C1C13;
+  color: #fff;
+  height: 45px;
+  width: 100%;
+  font-weight:lighter;
+  border: none;
+  outline: none;
+  margin-top: 15px;
   border-radius: 15px;
   margin-bottom: 25px;
 }

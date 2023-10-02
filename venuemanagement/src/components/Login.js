@@ -8,6 +8,7 @@ const Login = () => {
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
+        console.log("handleSubmit called");
         e.preventDefault();
         console.log({ email, password });
         setPassword("");
@@ -20,13 +21,13 @@ const Login = () => {
         
         
         <div className='loginContainer'>
-            <div class="logo">
-            <img src={logo }width={250} height={85} alt='Logo'></img>
+            <div className="logo">
+                <img src={logo }width={250} height={85} alt='Logo'></img>
             </div>
             <h2>Login </h2>
-            <form className='loginForm' onSubmit={handleSubmit}>
+            <form className='loginForm' data-testid='loginForm' onSubmit={handleSubmit}>
                 <div className="inputBox">
-                    <i class="bx bxs-user"></i>
+                    <i className='bx bxs-envelope'/>
                     <input
                         placeholder="Email"
                         type='text'
@@ -39,7 +40,7 @@ const Login = () => {
 
                 </div>
                 <div className="inputBox">
-                <i class="bx bxs-lock-alt"></i>
+                    <i className="bx bxs-lock-alt"></i>
                     <input
                         placeholder="Password"
                         type='password'
@@ -52,7 +53,7 @@ const Login = () => {
                     />
                 </div>
                 
-                <button className='loginBtn'>Login</button>
+                <button className='loginBtn' data-testid="loginButton">Login</button>
                 <div className="forgot">
                     Forgot password?{" "}
                     <span className="forgotPasswordLink">
@@ -61,7 +62,7 @@ const Login = () => {
                 </div>
                 <p>
                     Don't have an account?{" "}
-                    <span className='link' onClick={gotoSignUpPage}>
+                    <span className='link' data-testid="toSignin" onClick={gotoSignUpPage}>
                         Sign up
                     </span>
                 </p>
