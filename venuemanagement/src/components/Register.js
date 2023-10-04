@@ -3,21 +3,29 @@ import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png"
 
 const Register = () => {
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [tel, setTel] = useState("");
     const [password, setPassword] = useState("");
+    const [userType, setUserType] = useState("")
+
+    
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log({ email, username, tel, password });
+        console.log({ firstName, lastName, email, username, tel, password, userType });
+        setFirstName("");
+        setLastName("");
         setEmail("");
         setTel("");
         setUsername("");
         setPassword("");
+        setUserType("");
     };
-    const gotoLoginPage = () => navigate("/");
+    const gotoLoginPage = () => navigate("/login");
 
     return (
         <div className='signupContainer'>
@@ -26,6 +34,31 @@ const Register = () => {
             </div>
             <h2>Sign up</h2>
             <form className='signupForm' data-testid='registerForm' onSubmit={handleSubmit}>
+            <div className="inputBoxName">
+                <span className="firstSpan">
+                    <input className="first"
+                        placeholder="First Name"
+                        type='firstName'
+                        name='firstName'
+                        id='firstName'
+                        value={firstName}
+                        required
+                        onChange={(e) => setFirstName(e.target.value)}
+                    />
+                </span>
+                <span className="lastSpan">
+                    <input className="last"
+                        placeholder="Last Name"
+                        type='lastName'
+                        name='lastName'
+                        id='lastName'
+                        value={lastName}
+                        required
+                        onChange={(e) => setLastName(e.target.value)}
+                    />
+                </span>
+                </div>
+
                 <div className="inputBox">
                 <i className='bx bxs-envelope'/>
                     <input
@@ -76,6 +109,20 @@ const Register = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
+                </div>
+                <div className="inputBox">
+                    <select onChange={(e) => setUserType(e.target.value)}>
+                        <option disabled defaultValue={"role type"}>
+                            Role Type
+                        </option>
+                        <option value={"user"}>
+                            User
+                        </option>
+                        <option value={"owner"}>
+                            Venue Owner
+                        </option>
+                        
+                    </select>
                 </div>
                 <button className='signupBtn' data-testid='register'>Sign Up</button>
                 <p>

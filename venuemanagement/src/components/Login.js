@@ -24,7 +24,7 @@ const Login = () => {
 //        }
     };
 
-    const gotoSignUpPage = () => navigate("/register");
+    const gotoSignUpPage = () => navigate("/register"); 
 
     return (
         
