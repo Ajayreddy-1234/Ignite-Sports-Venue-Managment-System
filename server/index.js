@@ -3,7 +3,7 @@ var express = require("express");
 var app = express();
 const {registerUser, loginUser} = require('./functions/authFunctions')
 const authenticate = require('./middleware/authMiddleware');
-const {generatePasswordResetToken, sendPasswordResetEmail} = require('./functions/passwordReset')
+const {generatePasswordResetToken, sendPasswordResetEmail, resetPassword} = require('./functions/passwordReset')
 
 // change this according to the request you make for form parsing use: 
 // app.use(express.urlencoded({ extended: true }));
@@ -75,7 +75,7 @@ app.post('/api/forgot-password',async (req,res)=>{
         if (passwordResetToken == null){
             res.status(500).json({msg: "No user Exists with this email"});
         }else{
-            const passwordResetLink = req.protocol + '://' + req.get('host') + "/reset-password?token="+passwordResetToken;
+            const passwordResetLink = req.protocol + '://' + req.get('host') + "/api/reset-password?token="+passwordResetToken;
             sendPasswordResetEmail(email, passwordResetLink);
 
             res.status(200).json({ message: 'Password reset email sent' });
@@ -87,8 +87,21 @@ app.post('/api/forgot-password',async (req,res)=>{
 
 });
 
-app.post('/api/reset-password',(req,res)=>{
+app.post('/api/reset-password',async (req,res)=>{
     try{
+       const {token} = req.query;
+       const {password} = req.body;
+       if (!token) {
+        return res.status(400).json({ msg: 'Token is missing in query parameters' });
+       }
+       if(!password){
+        return res.status(400).json({msg : 'Password is empty'});
+       }
+       
+       if(!resetPassword({token, password})){
+        res.status(400).json({msg:'Password reset failed'});
+       }
+        res.status(200).json({msg:'Password reset successful'});
        
     }catch(error){
         res.status(500).json({msg:'internal server error'});
