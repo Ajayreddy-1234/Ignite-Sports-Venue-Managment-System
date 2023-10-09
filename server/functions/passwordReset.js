@@ -50,7 +50,24 @@ function sendPasswordResetEmail(userEmail, resetLink) {
     });
   }
 
+async function resetPassword({token,password}){
+    try{
+       const [rex] = await db.promise().query('SELECT * FROM ignite.password_reset_token where token = ?',[token]);
+       if(rex.length == 0){
+         throw new Error('Invalid Token') 
+       }
+       const hashedPassword = await bcrypt.hash(password, 10);
+       await db.promise().query('update ignite.User SET password_hash = ? where user_id = ?',[hashedPassword,rex[0].user_id]);
+       await db.promise().query('DELETE FROM ignite.password_reset_token where user_id = ?',[rex[0].user_id]);
+       
+       return hashedPassword
+       
+    }catch(error){
+        return null
+    }
+}
 module.exports = {
     generatePasswordResetToken,
     sendPasswordResetEmail,
+    resetPassword,
 };

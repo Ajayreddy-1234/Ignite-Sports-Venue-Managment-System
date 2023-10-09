@@ -34,7 +34,7 @@ async function registerUser({ username, email, password, role }) {
     
   } catch (error) {
 
-    throw error;
+    console.log(error)
 
   }
 }
@@ -72,7 +72,7 @@ async function loginUser({ username, password }) {
 
   } catch (error) {
 
-    throw error;
+    console.log(error)
 
   }
 }

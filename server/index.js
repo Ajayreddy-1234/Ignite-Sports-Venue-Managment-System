@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 8080;
 var app = express();
 const {registerUser, loginUser} = require('./functions/authFunctions')
 const authenticate = require('./middleware/authMiddleware');
-const {generatePasswordResetToken, sendPasswordResetEmail} = require('./functions/passwordReset')
+const {generatePasswordResetToken, sendPasswordResetEmail, resetPassword} = require('./functions/passwordReset')
 
 // change this according to the request you make for form parsing use: 
 // app.use(express.urlencoded({ extended: true }));

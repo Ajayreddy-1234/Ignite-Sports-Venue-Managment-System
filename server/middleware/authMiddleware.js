@@ -17,6 +17,7 @@ function authenticate(req, res, next) {
     }
 
     req.user = decoded;
+    res.header('Authorization', `Bearer ${token}`);
     next();
   });
 }
