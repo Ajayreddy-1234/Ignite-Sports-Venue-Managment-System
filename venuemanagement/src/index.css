@@ -6,8 +6,6 @@
   margin: 0;
   padding: 0;
   font-family: "Monsterrat", sans-serif;
-  
-
 }
 
 input {
@@ -15,7 +13,7 @@ input {
   padding: 10px 15px;
   margin-bottom: 15px;
 }
-button {
+.signupBtn, .loginBtn{
   width: 200px;
   outline: none;
   border: none;
@@ -23,14 +21,20 @@ button {
   cursor: pointer;
   font-size: 16px;
 }
-body{
+.signupBody,
+.loginBody{
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-image: url("./assets/login_background_image.jpg");
+  background-image: url("./assets/backgroundImage.jpg");
   background-size: cover;
   background-position: center;
+
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Monsterrat", sans-serif;
 }
 
 .verify,
@@ -40,8 +44,6 @@ body{
   background:#c21010;
   align-items: center;
   box-sizing: border-box;
-  
-
   width: 100%;
   min-height: 100vh;
   padding: 50px 70px;
@@ -77,6 +79,7 @@ body{
 .signupContainer h2{
   font-size: 32px;
   font-weight: 200;
+  width: 420px;
   text-align: center;
 }
 
