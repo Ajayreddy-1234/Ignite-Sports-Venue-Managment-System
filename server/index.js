@@ -3,6 +3,18 @@ const express = require('express');
 
 const PORT = process.env.PORT || 8080;
 var app = express();
+
+app.listen(PORT, () => {
+    console.log(`Server listening on ${PORT}`);
+});
+
+app.use(
+    express.static(path.resolve(__dirname, '../venuemanagement/build')));
+
+app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, '../venuemanagement/build', 'index.html'));
+    });
+
 const {registerUser, loginUser} = require('./functions/authFunctions')
 const authenticate = require('./middleware/authMiddleware');
 const {generatePasswordResetToken, sendPasswordResetEmail, resetPassword} = require('./functions/passwordReset')
