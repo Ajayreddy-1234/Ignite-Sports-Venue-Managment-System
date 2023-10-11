@@ -1,18 +1,10 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png"
+import '../index.css';
+import HomeBody from './HomeBody';
 
-const Home = () =>{
-    const navigate = useNavigate();
-    const gotoLoginPage = () => navigate("/login");
-
+function Home() {
     return(
-
-            <button className='toLoginBtn' onClick={gotoLoginPage}>
-                Login
-            </button>
- 
+        <HomeBody>
+        </HomeBody>
     )
-    
 }
 export default Home;

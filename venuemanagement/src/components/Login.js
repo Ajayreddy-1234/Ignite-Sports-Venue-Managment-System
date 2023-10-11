@@ -1,34 +1,37 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png"
+import { Button } from "./Button";
 
 const Login = () => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    //const [email, setEmail] = useState("");
+    //const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const [info, setInfo] = useState({});
 
-//    const isValidEmail = (email) => {
-//        const email = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-//    };
+    const handleChange = (event) => {
+        console.log("handleChange called");
+        event.preventDefault();
+        const name = event.target.name;
+        const value = event.target.value;
+        
+        setInfo(values => ({...values, [name]: value}))
+        console.log(value);
+    }
 
     const handleSubmit = (e) => {
         console.log("handleSubmit called");
         e.preventDefault();
-//        if (!isValidEmail(email)) {
-//            alert("Invalid email");
-//        }
-//        else{
-            console.log({ email, password });
-            setPassword("");
-            setEmail("");
-//        }
+            console.log({ info });
+        //    setPassword("");
+        //    setEmail("");
     };
 
     const gotoSignUpPage = () => navigate("/register"); 
 
     return (
         
-        
+        <div className="loginBody">
         <div className='loginContainer'>
             <div className="logo">
                 <img src={logo }width={250} height={85} alt='Logo'></img>
@@ -42,9 +45,10 @@ const Login = () => {
                         type='text'
                         id='email'
                         name='email'
-                        value={email}
+                        value={info.email}
                         required
-                        onChange={(e) => setEmail(e.target.value)}
+                        //onChange={(e) => setEmail(e.target.value)}
+                        onChange={handleChange}
                     />
 
                 </div>
@@ -57,12 +61,13 @@ const Login = () => {
                         id='password'
                         minLength={8}
                         required
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={info.password}
+                        onChange={handleChange}
+                        //onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
                 
-                <button className='loginBtn' data-testid="loginButton">Login</button>
+                <button className="loginBtn"> Login </button>
                 <div className="forgot">
                     Forgot password?{" "}
                     <span className="forgotPasswordLink">
@@ -76,6 +81,7 @@ const Login = () => {
                     </span>
                 </p>
             </form>
+        </div>
         </div>
     );
 };

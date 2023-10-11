@@ -3,61 +3,41 @@ import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png"
 
 const Register = () => {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [username, setUsername] = useState("");
-    const [tel, setTel] = useState("");
-    const [password, setPassword] = useState("");
-    const [userType, setUserType] = useState("")
+    //const [email, setEmail] = useState("");
+    //const [username, setUsername] = useState("");
+    //const [password, setPassword] = useState("");
+    //const [userType, setUserType] = useState("");
+    const [info, setInfo] = useState({});
 
     
     const navigate = useNavigate();
 
+    const handleChange = (event) => {
+        console.log("handleChange called");
+        event.preventDefault();
+        const name = event.target.name;
+        const value = event.target.value;
+        
+        setInfo(values => ({...values, [name]: value}))
+        console.log(value);
+    }
     const handleSubmit = (e) => {
+        console.log("handleSubmit called");
         e.preventDefault();
-        console.log({ firstName, lastName, email, username, tel, password, userType });
-        setFirstName("");
-        setLastName("");
-        setEmail("");
-        setTel("");
-        setUsername("");
-        setPassword("");
-        setUserType("");
+            console.log({ info });
     };
+
     const gotoLoginPage = () => navigate("/login");
 
     return (
+        <div className='signupBody'>
         <div className='signupContainer'>
-            <div classname="logo">
+            <div className="logo">
                 <img src={logo }width={250} height={85} alt='Logo'></img>
             </div>
             <h2>Sign up</h2>
             <form className='signupForm' data-testid='registerForm' onSubmit={handleSubmit}>
-            <div className="inputBoxName">
-                <span className="firstSpan">
-                    <input className="first"
-                        placeholder="First Name"
-                        type='firstName'
-                        name='firstName'
-                        id='firstName'
-                        value={firstName}
-                        required
-                        onChange={(e) => setFirstName(e.target.value)}
-                    />
-                </span>
-                <span className="lastSpan">
-                    <input className="last"
-                        placeholder="Last Name"
-                        type='lastName'
-                        name='lastName'
-                        id='lastName'
-                        value={lastName}
-                        required
-                        onChange={(e) => setLastName(e.target.value)}
-                    />
-                </span>
-                </div>
+            
 
                 <div className="inputBox">
                 <i className='bx bxs-envelope'/>
@@ -66,9 +46,10 @@ const Register = () => {
                         type='email'
                         name='email'
                         id='email'
-                        value={email}
+                        value={info.email}
                         required
-                        onChange={(e) => setEmail(e.target.value)}
+                        //onChange={(e) => setInfo(e.target.value)}
+                        onChange={handleChange}
                     />
                 </div>
                 <div className="inputBox">
@@ -78,23 +59,10 @@ const Register = () => {
                         type='text'
                         id='username'
                         name='username'
-                        value={username}
+                        value={info.username}
                         required
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                </div>
-                <div className="inputBox">
-                    <i className='bx bxs-phone'/>
-                    <input
-                        placeholder="Phone number"
-                        type='tel'
-                        name='tel'
-                        id='tel'
-                        value={tel}
-                        required={true}
-                        minLength={10}
-                        maxLength={10}
-                        onChange={(e) => setTel(e.target.value)}
+                        //onChange={(e) => setInfo(e.target.value)}
+                        onChange={handleChange}
                     />
                 </div>
                 <div className="inputBox">
@@ -106,25 +74,30 @@ const Register = () => {
                         id='password'
                         minLength={8}
                         required
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={info.password}
+                        //onChange={(e) => setInfo(e.target.value)}
+                        onChange={handleChange}
                     />
                 </div>
                 <div className="inputBox">
-                    <select onChange={(e) => setUserType(e.target.value)}>
-                        <option disabled defaultValue={"role type"}>
+                    <select value={info.role} onChange={handleChange}>
+                        <option>
                             Role Type
                         </option>
-                        <option value={"user"}>
-                            User
+                        <option value={"Attendee"}>
+                            Attendee
                         </option>
-                        <option value={"owner"}>
-                            Venue Owner
+                        <option value={"Admin"}>
+                            Admin
                         </option>
-                        
+                        <option value={"Organizer"}>
+                            Organizer
+                        </option>
                     </select>
                 </div>
-                <button className='signupBtn' data-testid='register'>Sign Up</button>
+                    <button className='signupBtn' data-testid='register'>
+                        Sign Up
+                    </button>
                 <p>
                     Already have an account?{" "}
                     <span className='link' onClick={gotoLoginPage}>
@@ -132,6 +105,7 @@ const Register = () => {
                     </span>
                 </p>
             </form>
+        </div>
         </div>
     );
 };

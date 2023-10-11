@@ -4,9 +4,10 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./components/Login.js";
 import Register from "./components/Register.js";
-import Home from "./components/Home.js";
+import HomeBody from "./components/HomeBody.js";
 //import "./index.css";
 import NavBar from "./components/navBar";
+import Home from './components/Home.js'
 
 
 function App() {
@@ -20,10 +21,10 @@ function App() {
 
   return (
     <BrowserRouter>
-
+      <NavBar />
       <Routes>
-          <Route path='/' element={<Home />}/>
-          <Route path='/nav' element={<NavBar />}/>
+          <Route path='/homeB' element={<HomeBody />}/>
+          <Route path='/' Component={Home}/>
           <Route path='/Login' element={<Login />}/>
           <Route path='/Register' element={<Register />} />
       </Routes>
