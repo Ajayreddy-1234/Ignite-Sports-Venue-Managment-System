@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prestart": "npm run build",
+    "prestart":"npm run build",
     "start": "node server/index.js",
     "build": "cd venuemanagement && npm install && npm run build"
   },
