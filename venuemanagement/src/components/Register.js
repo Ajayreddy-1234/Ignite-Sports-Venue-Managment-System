@@ -80,7 +80,7 @@ const Register = () => {
                     />
                 </div>
                 <div className="inputBox">
-                    <select value={info.role} onChange={handleChange}>
+                    <select name='role' id='role'value={info.role} onChange={handleChange}>
                         <option>
                             Role Type
                         </option>
