@@ -5,6 +5,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./components/Login.js";
 import Register from "./components/Register.js";
 import HomeBody from "./components/HomeBody.js";
+import VenueCreationForm from "./components/venuecreationform/venuecreationform.js";
+
 //import "./index.css";
 import NavBar from "./components/navBar";
 import Home from './components/Home.js'
@@ -33,6 +35,7 @@ function App() {
           <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route path='/user-page' element={<UserPage />} />
           <Route path='/reset-password' element={<ResetPassword />}/>
+          <Route path='/VenueCreationForm' element={<VenueCreationForm />} />
       </Routes>
     </BrowserRouter>
 /*
