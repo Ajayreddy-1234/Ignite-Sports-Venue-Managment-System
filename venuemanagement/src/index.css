@@ -22,6 +22,7 @@ input {
   font-size: 16px;
 }
 .signupBody,
+.forgotPasswordBody,
 .loginBody{
   display: flex;
   justify-content: center;
@@ -54,6 +55,7 @@ input {
 }
 .loginContainer,
 .verifyForm,
+.forgotPasswordContainer,
 .signupContainer{
   background: transparent;
   border: 2px solid rgba(0,0,0, .3);
@@ -69,7 +71,7 @@ input {
 .logo{
   padding-bottom: 15px;
 }
-
+.forgotPasswordContainer h2,
 .loginContainer h2{
   font-size: 32px;
   font-weight: 200;
@@ -84,6 +86,7 @@ input {
 }
 
 .loginForm,
+.forgotPasswordForm,
 .signupForm{
   width: 100%;
   align-items: center;
@@ -133,6 +136,16 @@ input {
 }
 .inputBoxName .lastSpan{
   padding-left: 2%;
+}
+
+.forgotPasswordForm .inputBox{
+  position: relative;
+  height: 40px;
+  margin: 10px;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  background: transparent;
 }
 
 .signupForm .inputBox{
@@ -234,6 +247,7 @@ input {
 @media screen and (max-width: 800px) {
   .loginContainer,
   .signupContainer,
+  .forgotPasswordContainer,
   .verify {
       padding: 30px;
   }

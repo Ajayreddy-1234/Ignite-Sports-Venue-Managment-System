@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import logo from "../assets/logo.png"
 import { Button } from "./Button";
+import ForgotPassword from "./ForgotPassword";
 
 const Login = () => {
     //const [email, setEmail] = useState("");
@@ -70,9 +71,9 @@ const Login = () => {
                 <button className="loginBtn"> Login </button>
                 <div className="forgot">
                     Forgot password?{" "}
-                    <span className="forgotPasswordLink">
+                    <Link to="/forgot-password" className="forgotPasswordLink">
                         Click here
-                    </span>
+                    </Link>
                 </div>
                 <p>
                     Don't have an account?{" "}
