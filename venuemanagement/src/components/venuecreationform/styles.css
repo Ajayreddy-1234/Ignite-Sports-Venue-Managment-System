@@ -1,0 +1,31 @@
+.progressContainer {
+    background-color: #8c1c13;
+    border: none;
+    border-radius: 15px;
+    color: #fff;
+    font-weight: lighter;
+    height: 30px;
+    margin-bottom: 25px;
+    outline: none;
+    width: 100%;
+}
+.progressBar {
+    height: 100%;
+    background-color: #fff;
+    border-radius: inherit;
+    font-weight:lighter;
+    color: black;
+}
+p {
+    padding: 7px;
+}
+.dateTimePickerChildLeft {
+    width: 45%;
+    float: left;
+    padding: 5px;
+}
+.dateTimePickerChildRight {
+    width: 45%;
+    float: right;
+    padding: 5px;
+}
