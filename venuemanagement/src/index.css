@@ -56,6 +56,7 @@ input {
 .loginContainer,
 .verifyForm,
 .forgotPasswordContainer,
+.signoutContainer,
 .signupContainer{
   background: transparent;
   border: 2px solid rgba(0,0,0, .3);

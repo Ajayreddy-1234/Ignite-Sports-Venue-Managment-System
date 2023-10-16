@@ -15,11 +15,29 @@ const ForgotPassword = () => {
     setInfo(values => ({...values, [name]: value}))
     console.log(value);
     }
-    const handleSubmit = (e) => {
-    console.log("handleSubmit called");
-    e.preventDefault();
-        console.log({ info });
-    };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+    
+        try {
+          const response = await fetch("/api/forgot-password", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(info),
+          });
+    
+          if (response.ok) {
+            const data = await response.json();
+            console.log("Password reset email sent:", data.message);
+          } else {
+            const errorData = await response.json();
+            console.error("Failed to send password reset email:", errorData.msg);
+          }
+        } catch (error) {
+          console.error("Password reset error:", error);
+        }
+      };
 
     return(
         <div className="forgotPasswordBody">

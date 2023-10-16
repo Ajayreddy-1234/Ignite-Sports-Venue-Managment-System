@@ -9,6 +9,7 @@ import HomeBody from "./components/HomeBody.js";
 import NavBar from "./components/navBar";
 import Home from './components/Home.js'
 import ForgotPassword from "./components/ForgotPassword.js";
+import UserPage from "./components/userPage.js";
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
           <Route path='/Login' element={<Login />}/>
           <Route path='/Register' element={<Register />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />
+          <Route path='/user-page' element={<UserPage />} />
       </Routes>
     </BrowserRouter>
 /*
