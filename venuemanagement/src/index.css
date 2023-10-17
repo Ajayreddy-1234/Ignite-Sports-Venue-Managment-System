@@ -23,6 +23,7 @@ input {
 }
 .signupBody,
 .forgotPasswordBody,
+.resetPasswordBody,
 .loginBody{
   display: flex;
   justify-content: center;
@@ -57,6 +58,7 @@ input {
 .verifyForm,
 .forgotPasswordContainer,
 .signoutContainer,
+.resetPasswordContainer,
 .signupContainer{
   background: transparent;
   border: 2px solid rgba(0,0,0, .3);
@@ -73,6 +75,7 @@ input {
   padding-bottom: 15px;
 }
 .forgotPasswordContainer h2,
+.resetPasswordContainer h2,
 .loginContainer h2{
   font-size: 32px;
   font-weight: 200;
@@ -88,6 +91,7 @@ input {
 
 .loginForm,
 .forgotPasswordForm,
+.resetPasswordForm,
 .signupForm{
   width: 100%;
   align-items: center;
@@ -140,6 +144,16 @@ input {
 }
 
 .forgotPasswordForm .inputBox{
+  position: relative;
+  height: 40px;
+  margin: 10px;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  background: transparent;
+}
+
+.resetPasswordContainer .inputBox{
   position: relative;
   height: 40px;
   margin: 10px;
