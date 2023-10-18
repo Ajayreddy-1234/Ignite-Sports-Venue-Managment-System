@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const db = require('../database');
 require('dotenv').config()
 
 
@@ -10,13 +11,16 @@ function authenticate(req, res, next) {
     return res.status(401).json({ message: 'Unauthorized' });
   }
 
-  jwt.verify(token, process.env.ENV_SECRET_KEY, (err, decoded) => {
+  jwt.verify(token, process.env.ENV_SECRET_KEY, async (err, decoded) => {
     if (err) {
       console.log(err.name);
       return res.status(401).json({ message: 'Unauthorized' });
     }
-
-    req.user = decoded;
+    const [rex] = await db.promise().query('SELECT * FROM ignite.User where username = ?',[decoded.username]);
+    if(rex[0].two_factor_enabled==1 && rex[0].two_factor_secret !='1'){
+      return res.status(400).json({message:'Unauthorized: complete Two factored authentication after login'})
+    }
+    req.user = rex[0];
     res.header('Authorization', `Bearer ${token}`);
     next();
   });
