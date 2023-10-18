@@ -18,6 +18,7 @@ app.get('*', (req, res) => {
 const {registerUser, loginUser} = require('./functions/authFunctions')
 const authenticate = require('./middleware/authMiddleware');
 const {generatePasswordResetToken, sendPasswordResetEmail, resetPassword} = require('./functions/passwordReset')
+const {twoFactoredMail, verifyTwoFactored} = require('./functions/twoFactoredAuth')
 
 // change this according to the request you make for form parsing use: 
 // app.use(express.urlencoded({ extended: true }));
@@ -69,9 +70,13 @@ app.post('/api/login', async (req, res) => {
       const {token, user} = await loginUser({ username, password });
   
       if (token) {
-        
+        if(user.two_factor_enabled==1){
+           email = user.email; 
+           await twoFactoredMail({email})
+        }
+        const [result] = await db.promise().query('SELECT * FROM ignite.User WHERE username = ? ',[user.username]);
         res.header('Authorization', `Bearer ${token}`);
-        res.status(200).json({user:user});
+        res.status(200).json({user:result[0]});
 
       } else {
         res.status(401).json({ error: 'Invalid credentials' });
@@ -120,6 +125,49 @@ app.post('/api/reset-password',async (req,res)=>{
     }catch(error){
         res.status(500).json({msg:'internal server error'});
     }
+});
+
+app.post('/api/2fa/setup',authenticate,async (req, res)=>{
+  try{
+    const [result] = await db.promise().query('SELECT * FROM ignite.User WHERE username = ? ',[req.user.username]);
+    if(result.length == 0){
+      res.status(400).json({message: 'No user Found with this email'});
+    } else if(result[0].two_factor_enabled==1){
+      res.status(200).json({message:'Two factored is already turned on'});
+    }else{
+      await db.promise().query('update ignite.User SET two_factor_enabled = ? where user_id = ?',[1,result[0].user_id]);
+
+      res.status(200).json({ message: 'Successfully turned on two factored authentication' });
+    }
+
+  }catch(error){
+      console.log(error)
+      res.status(500).json({msg:'internal server error'});
+  }
+
+});
+
+app.post('/api/2fa/verify',async (req, res)=>{
+  try{
+    const {Otp, email} = req.body;
+    const x = await verifyTwoFactored({Otp, email});
+    if(x==1){
+      const [rex] = await db.promise().query('SELECT * FROM ignite.User where email = ?',[email]);
+      const token = req.headers.authorization?.split(' ')[1];
+      if(!token){
+        return res.status(401).json({ message: 'Please send authorization header' });
+      }else{
+        res.header('Authorization', `Bearer ${token}`);
+        res.status(200).json(rex[0]);
+      }
+    }else{
+      res.status(400).json({message: 'Wrong OTP entered'});
+    }
+
+  }catch(error){
+    res.status(400).json({message:'internal server error'});
+  }
+
 });
 
 module.exports = app;
