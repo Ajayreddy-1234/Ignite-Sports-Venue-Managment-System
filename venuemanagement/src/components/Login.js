@@ -1,7 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import logo from "../assets/logo.png"
 import { Button } from "./Button";
+import ForgotPassword from "./ForgotPassword";
+import NavBar from "./navBar";
+
+var isLoggedIn = false;
 
 const Login = () => {
     //const [email, setEmail] = useState("");
@@ -19,13 +23,34 @@ const Login = () => {
         console.log(value);
     }
 
-    const handleSubmit = (e) => {
-        console.log("handleSubmit called");
+    const handleSubmit = async (e) => {
         e.preventDefault();
-            console.log({ info });
-        //    setPassword("");
-        //    setEmail("");
-    };
+    
+        try {
+          const response = await fetch("/api/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(info),
+          });
+    
+          if (response.ok) {
+            const data = await response.json();
+            console.log("Login successful:", data);
+            isLoggedIn = true;
+            console.log(isLoggedIn);
+            navigate("/");
+            window.location.reload();
+          } else {
+            const errorData = await response.json();
+            console.error("Login failed:", errorData);
+          }
+        } catch (error) {
+          console.error("Login error:", error);
+        }
+      };
+    
 
     const gotoSignUpPage = () => navigate("/register"); 
 
@@ -41,11 +66,11 @@ const Login = () => {
                 <div className="inputBox">
                     <i className='bx bxs-envelope'/>
                     <input
-                        placeholder="Email"
+                        placeholder="Username"
                         type='text'
-                        id='email'
-                        name='email'
-                        value={info.email}
+                        id='username'
+                        name='username'
+                        value={info.username}
                         required
                         //onChange={(e) => setEmail(e.target.value)}
                         onChange={handleChange}
@@ -70,9 +95,9 @@ const Login = () => {
                 <button className="loginBtn"> Login </button>
                 <div className="forgot">
                     Forgot password?{" "}
-                    <span className="forgotPasswordLink">
+                    <Link to="/forgot-password" className="forgotPasswordLink">
                         Click here
-                    </span>
+                    </Link>
                 </div>
                 <p>
                     Don't have an account?{" "}
@@ -85,5 +110,5 @@ const Login = () => {
         </div>
     );
 };
-
+export var isLoggedIn;
 export default Login;

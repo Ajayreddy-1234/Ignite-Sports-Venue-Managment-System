@@ -8,6 +8,9 @@ import HomeBody from "./components/HomeBody.js";
 //import "./index.css";
 import NavBar from "./components/navBar";
 import Home from './components/Home.js'
+import ForgotPassword from "./components/ForgotPassword.js";
+import UserPage from "./components/userPage.js";
+import ResetPassword from "./components/ResetPassword.js";
 
 
 function App() {
@@ -27,6 +30,9 @@ function App() {
           <Route path='/' Component={Home}/>
           <Route path='/Login' element={<Login />}/>
           <Route path='/Register' element={<Register />} />
+          <Route path='/forgot-password' element={<ForgotPassword />} />
+          <Route path='/user-page' element={<UserPage />} />
+          <Route path='/reset-password' element={<ResetPassword />}/>
       </Routes>
     </BrowserRouter>
 /*

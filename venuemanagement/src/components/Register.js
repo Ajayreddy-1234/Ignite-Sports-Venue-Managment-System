@@ -21,11 +21,30 @@ const Register = () => {
         setInfo(values => ({...values, [name]: value}))
         console.log(value);
     }
-    const handleSubmit = (e) => {
-        console.log("handleSubmit called");
+    const handleSubmit = async (e) => {
         e.preventDefault();
-            console.log({ info });
-    };
+    
+        try {
+          const response = await fetch("/api/register", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(info),
+          });
+    
+          if (response.ok) {
+            const data = await response.json();
+            console.log("Registration successful:", data);
+            navigate("/login");
+          } else {
+            const errorData = await response.json();
+            console.error("Registration failed:", errorData);
+          }
+        } catch (error) {
+          console.error("Registration error:", error);
+        }
+      };
 
     const gotoLoginPage = () => navigate("/login");
 

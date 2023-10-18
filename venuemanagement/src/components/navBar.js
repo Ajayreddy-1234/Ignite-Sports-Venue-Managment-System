@@ -3,11 +3,13 @@ import {Link, useNavigate} from 'react-router-dom';
 import logo from "../assets/IgniteLogo2.png";
 import { Button } from "./Button";
 import './navBar.css';
+import isLoggedIn from "./Login.js";
+
 
 function NavBar(){
     const navigate = useNavigate();
     var username = "set";
-    const isLoggedIn = false;
+    
 
     //const isLoggedIn = () => {
     //    true;
@@ -28,7 +30,7 @@ function NavBar(){
         }
     };
 
-    const showUser = () =>{
+    var showUser = () =>{
         if(isLoggedIn){
             username = 'changed';
         }
@@ -36,7 +38,7 @@ function NavBar(){
 
     useEffect(()=> {
         showButton();
-        //showUser();
+        showUser();
     }, []);
 
     window.addEventListener('resize', showButton);
@@ -63,7 +65,7 @@ function NavBar(){
                         </Link>
                     </li>
                     <li className="navItem">
-                        {isLoggedIn ? <Link to="/userPage" className="navLinksMobile" onClick={closeMobileMenu}>
+                        {isLoggedIn ? <Link to="/user-page" className="navLinksMobile" onClick={closeMobileMenu}>
                             {showUser()} {username}
                         </Link>
                         :
@@ -75,7 +77,7 @@ function NavBar(){
                 </ul>
                 <ul className="userPage">
                     {isLoggedIn ? 
-                        <Link to="/userPage">
+                        <Link to="/user-page">
                             {showUser()} {button && <Button buttonStyle='button'>{username}</Button>}
                         </Link>
                         :
