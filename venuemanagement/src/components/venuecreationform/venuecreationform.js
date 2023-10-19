@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import "./styles.css";
-import Datetime from 'react-datetime';
-import "react-datetime/css/react-datetime.css";
+import Calendar from 'react-calendar';
 
 function validateFormInputs(formInputs) {
     let missingTotal = 0;
@@ -32,10 +31,11 @@ const VenueCreationForm = () => {
     const [title, setTitle] = useState("Add Venue");
     const [page, setPage] = useState(0);
     const [completion, setCompletion] = useState(0);
-    const [dates, setDates] = useState([1]);
-    const [addDateTimeCount, setAddDateTimeCount] = useState(0);
+    const [dates, setDates] = useState(new Date());
+    const [dateCountList, setDateCountList] = useState([0]);
 
     const [formInputs, setFormInputs] = useState({
+        reservationtype: "",
         venuename: "",
         venueaddr: "",
         capacity: 0,
@@ -48,16 +48,20 @@ const VenueCreationForm = () => {
             setPage(1);
         }
     }
-    var dateTimes = []
+
+
     const addDateTime = (event) => {
-        let newDates = dates.slice();
-        newDates.push(1);
-        setDates(newDates);
+        let newDates = dateCountList.slice();
+        newDates.push(dateCountList.length + 1);
+        setDateCountList(newDates);
     }
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
         setFormInputs(values => ({...values, [name]: value}))
+    };
+    const handleDateChange = (event, index) => {
+        setDates(event.target.value);
     };
     useEffect(() => {
         if (page === 1) {
@@ -80,6 +84,8 @@ const VenueCreationForm = () => {
     const venueAddr = "venueaddr";
     const capacity = "capacity";
     const sportType = "sporttype";
+    const reservationType = "reservationtype";
+    const date = "date";
 
     return (
         <div className='venueCreationBody'>
@@ -93,6 +99,22 @@ const VenueCreationForm = () => {
                 <form className='venueCreationForm' onSubmit={handleSubmit}>
                     {page === 0 &&
                         <>
+                            <div className="inputBox">
+                                <select name={reservationType} id={reservationType} required onChange={handleChange}>
+                                    <option value={""} selected disabled>
+                                        -- Choose reservation type --
+                                    </option>
+                                    <option value={"Venue"}>
+                                        Venue
+                                    </option>
+                                    <option value={"Player"}>
+                                        Player
+                                    </option>
+                                    <option value={"Activity"}>
+                                        Activity
+                                    </option>
+                                </select>
+                            </div>
                             <div className="inputBox">
                                 <input
                                     placeholder="Venue Name"
@@ -145,35 +167,25 @@ const VenueCreationForm = () => {
                             <button className='chooseDateTimeBtn' onClick={chooseDateTimeButtonClick}>
                                 Choose availabilty &rarr;
                             </button>
-                            <div className='inputBox'>
-                                <div className='progressContainer'>
-                                    <div className='progressBar' style={{width: `${completion}%`}}>
-                                        { completion > 10 &&
-                                            <p>{completion}%</p>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                            
                         </>
                     }
-                    {page === 1 &&
+                    {/* {page === 1 && */}
                         <>
                             <button className='Add Date Time' onClick={addDateTime}>
                                 Choose availabilty &rarr;
                             </button>
-                            { dates.map(item => {
-                                return (<div className="dateTimePicker">
-                                            <div className="dateTimePickerChildLeft">
-                                                <Datetime />
-                                            </div>
-                                            <div className="dateTimePickerChildRight">
-                                                <Datetime />
-                                            </div>
-                                        </div>)
-                            })};
+                            <Calendar />
                         </>
-                    }
+                    {/* } */}
+                    <div className='inputBox'>
+                        <div className='progressContainer'>
+                            <div className='progressBar' style={{width: `${completion}%`}}>
+                                { completion > 10 &&
+                                    <p>{completion}%</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
