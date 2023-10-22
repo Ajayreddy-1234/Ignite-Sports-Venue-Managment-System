@@ -5,6 +5,7 @@
     color: #fff;
     font-weight: lighter;
     height: 30px;
+    margin-top: 25px;
     margin-bottom: 25px;
     outline: none;
     width: 100%;
@@ -19,13 +20,46 @@
 p {
     padding: 7px;
 }
-.dateTimePickerChildLeft {
+.childContainer {
+    width: 100%;
+}
+.childLeft {
+    background-color: #8C1C13;
+    color: #fff;
+    height: 45px;
+    width: 45%;
+    float: left;
+    padding: 5px;
+    font-weight:lighter;
+    border: none;
+    outline: none;
+    margin-top: 25px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+}
+.timeChildLeft {
+    height: 45px;
     width: 45%;
     float: left;
     padding: 5px;
 }
-.dateTimePickerChildRight {
+.timeChildRight {
+    height: 45px;
     width: 45%;
     float: right;
     padding: 5px;
+}
+.childRight {
+    background-color: #8C1C13;
+    color: #fff;
+    height: 45px;
+    width: 45%;
+    float: right;
+    padding: 5px;
+    font-weight:lighter;
+    border: none;
+    outline: none;
+    margin-top: 25px;
+    border-radius: 15px;
+    margin-bottom: 25px;
 }

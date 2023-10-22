@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import "./styles.css";
-import Calendar from 'react-calendar';
-
+import DatePicker from "react-multi-date-picker"
+import Calendar from 'react-calendar'
+import "react-datetime/css/react-datetime.css";
+import 'react-calendar/dist/Calendar.css';
 function validateFormInputs(formInputs) {
     let missingTotal = 0;
     if (!formInputs.venuename) {
@@ -31,8 +33,12 @@ const VenueCreationForm = () => {
     const [title, setTitle] = useState("Add Venue");
     const [page, setPage] = useState(0);
     const [completion, setCompletion] = useState(0);
-    const [dates, setDates] = useState(new Date());
-    const [dateCountList, setDateCountList] = useState([0]);
+    const [dates, setDates] = useState();
+    const [timeCount, setTimeCount] = useState(0);
+    const [times, setTimes] = useState([]);
+    const [dateSelected, setDateSelected] = useState();
+    const [dateNumSelected, setDateNumSelected] = useState(0);
+    const [finalTimeList, setFinalTimeList] = useState([]);
 
     const [formInputs, setFormInputs] = useState({
         reservationtype: "",
@@ -43,26 +49,30 @@ const VenueCreationForm = () => {
         date: [],
     });
 
-    const chooseDateTimeButtonClick = (event) => {
-        if (formInputs.venuename && formInputs.venueaddr && formInputs.capacity && formInputs.sporttype) {
-            setPage(1);
+    const pageButtonClick = (event) => {
+        const val = parseInt(event.target.value);
+        if (val === 1) {
+            if (formInputs.venuename && formInputs.venueaddr && formInputs.capacity && formInputs.sporttype) {
+                setPage(val);
+            }
+        }
+        else if (val === 2) {
+            formInputs.date = dates;
+            setDateNumSelected(0);
+            // setDateSelected(dates[0]);
+            setPage(val);
+        }
+         else {
+            setPage(val);
         }
     }
 
-
-    const addDateTime = (event) => {
-        let newDates = dateCountList.slice();
-        newDates.push(dateCountList.length + 1);
-        setDateCountList(newDates);
-    }
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
         setFormInputs(values => ({...values, [name]: value}))
     };
-    const handleDateChange = (event, index) => {
-        setDates(event.target.value);
-    };
+
     useEffect(() => {
         if (page === 1) {
             setTitle(formInputs.venuename);
@@ -79,7 +89,46 @@ const VenueCreationForm = () => {
         e.preventDefault();
         console.log(formInputs);
     };
-
+    const handleTimeChange = (e) => {
+        let time = e.target.value;
+        let id = e.target.id;
+        id = id.split(",");
+        let row = parseInt(id[0]);
+        let col = parseInt(id[1]);
+        if (col === 0) {
+            times[row][col] = time;
+        } else {
+            times[row][col] = time;
+        }
+        let new_times = [];
+        for (let i = 0; i < times.length; i++) {
+            new_times.push(times[i]);
+        }
+        setTimes(new_times);
+    }
+    const addTimeForDate = (e) => {
+        if (dateNumSelected === 0) {
+            setDateSelected(dates[0].year + " " + dates[0].month.name + " " + dates[0].date);
+        }
+        times.push(["16:30", "16:30"]);
+        setTimes(times);
+        setTimeCount(timeCount + 1);
+    }
+    const submitTimeForDate = (e) => {
+        setDateNumSelected(dateNumSelected + 1)
+        finalTimeList.push(times);
+        const new_times = ["16:30", "16:30"];
+        setTimes([new_times]);
+        setTimeCount(1);
+        setDateSelected(dates[dateNumSelected].year + " " + dates[dateNumSelected].month.name + " " + dates[dateNumSelected].date);
+    }
+    const items = Array.from({ length: timeCount }).map((_, i) => (
+        <div className="childContainer">
+            <input className="timeChildLeft" type="time" id={[i,0]} value={times[i][0]} onChange={handleTimeChange}/>
+            <input className="timeChildRight" type="time" id={[i,1]} value={times[i][1]} onChange={handleTimeChange}/>
+        </div>
+    ));
+    
     const veneuName = "venuename";
     const venueAddr = "venueaddr";
     const capacity = "capacity";
@@ -163,20 +212,52 @@ const VenueCreationForm = () => {
                                     </option>
                                 </select>
                             </div>
-
-                            <button className='chooseDateTimeBtn' onClick={chooseDateTimeButtonClick}>
+                            <button className='chooseDateTimeBtn' value={1} onClick={pageButtonClick}>
                                 Choose availabilty &rarr;
                             </button>
                         </>
                     }
-                    {/* {page === 1 && */}
+                    { page === 1 &&
                         <>
-                            <button className='Add Date Time' onClick={addDateTime}>
-                                Choose availabilty &rarr;
-                            </button>
-                            <Calendar />
+                            <h3>Choose Dates available</h3>                            
+                            <div className="inputBox">
+                                <DatePicker
+                                    value={dates}
+                                    onChange={setDates}
+                                    multiple
+                                    required
+                                />
+                            </div>
+                            <div className="childContainer">
+                                <button className='childLeft' value={0} onClick={pageButtonClick}>
+                                    &larr; Back
+                                </button>
+                                <button className='childRight' value={2} onClick={pageButtonClick}>
+                                    Choose Dates &rarr;
+                                </button>
+                            </div>
                         </>
-                    {/* } */}
+                    }
+                    {
+                        page === 2 &&
+                            <>
+                                <h3>{dateSelected}</h3>
+                                <button className="addTimeForDateBtn" onClick={addTimeForDate}>
+                                    Add another time
+                                </button>
+                                {dates.length > 0 && items}
+                                {dates.length > 0 && 
+                                    <>
+                                        <h4>{dates[0].year}</h4>
+                                        <p>{dates[0].month.name}</p>  
+                                        <p>{dates[0].day}</p>
+                                    </>
+                                }
+                                <button className="submitTimeForDateBtn" onClick={submitTimeForDate}>
+                                    Submit time for date
+                                </button>
+                            </>
+                    }
                     <div className='inputBox'>
                         <div className='progressContainer'>
                             <div className='progressBar' style={{width: `${completion}%`}}>
