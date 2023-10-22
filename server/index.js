@@ -94,7 +94,7 @@ app.post('/api/forgot-password',async (req,res)=>{
         if (passwordResetToken == null){
             res.status(500).json({msg: "No user Exists with this email"});
         }else{
-            const passwordResetLink = req.protocol + '://' + req.get('host') + "/api/reset-password?token="+passwordResetToken;
+            const passwordResetLink = req.protocol + '://' + req.get('host') + "/reset-password?token="+passwordResetToken;
             sendPasswordResetEmail(email, passwordResetLink);
 
             res.status(200).json({ message: 'Password reset email sent' });
