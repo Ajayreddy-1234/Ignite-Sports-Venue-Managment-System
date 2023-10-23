@@ -63,3 +63,19 @@ p {
     border-radius: 15px;
     margin-bottom: 25px;
 }
+.addTimeForDateBtn,
+.submitTimeForDateBtn {
+  background-color: #8C1C13;
+  color: #fff;
+  height: 45px;
+  width: 60%;
+  font-weight:lighter;
+  border: none;
+  outline: none;
+  margin-top: 15px;
+}
+
+.summaryContainer {
+    height: 100%;
+    text-align: left;
+}

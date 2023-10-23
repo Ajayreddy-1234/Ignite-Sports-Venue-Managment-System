@@ -3,16 +3,19 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import "./styles.css";
 import DatePicker from "react-multi-date-picker"
-import Calendar from 'react-calendar'
 import "react-datetime/css/react-datetime.css";
-import 'react-calendar/dist/Calendar.css';
+
 function validateFormInputs(formInputs) {
     let missingTotal = 0;
-    if (!formInputs.venuename) {
+    if (!formInputs.reservationtype) {
+        console.log("Missing Reservation type.");
+        missingTotal += 1
+    }
+    if (!formInputs.name) {
         console.log("Missing Venue Name.");
         missingTotal += 1
     }
-    if (!formInputs.venueaddr) {
+    if (!formInputs.addr) {
         console.log("Missing Address.");
         missingTotal += 1
     }
@@ -24,7 +27,15 @@ function validateFormInputs(formInputs) {
         console.log("Must choose Sport Type.");
         missingTotal += 1
     }
-    return parseInt(((4.001 - missingTotal) / 7) * 100);
+    if (formInputs.dates.length < 1) {
+        console.log("Must choose dates.");
+        missingTotal += 1
+    }
+    if (formInputs.time.length < 1) {
+        console.log("Must choose times.");
+        missingTotal += 1
+    }
+    return parseInt(((7.001 - missingTotal) / 7) * 100);
 }
 const VenueCreationForm = () => {
 
@@ -39,27 +50,37 @@ const VenueCreationForm = () => {
     const [dateSelected, setDateSelected] = useState();
     const [dateNumSelected, setDateNumSelected] = useState(0);
     const [finalTimeList, setFinalTimeList] = useState([]);
+    const [submitDateTime, setSubmitDateTime] = useState(false);
 
     const [formInputs, setFormInputs] = useState({
         reservationtype: "",
-        venuename: "",
-        venueaddr: "",
+        name: "",
+        addr: "",
         capacity: 0,
         sporttype: "",
-        date: [],
+        dates: [],
+        time: [],
     });
 
     const pageButtonClick = (event) => {
         const val = parseInt(event.target.value);
         if (val === 1) {
-            if (formInputs.venuename && formInputs.venueaddr && formInputs.capacity && formInputs.sporttype) {
+            if (formInputs.name && formInputs.addr && formInputs.capacity && formInputs.sporttype) {
                 setPage(val);
             }
         }
         else if (val === 2) {
-            formInputs.date = dates;
+            formInputs.dates = dates;
+            setFormInputs(formInputs);
             setDateNumSelected(0);
-            // setDateSelected(dates[0]);
+            if (!dateSelected) {
+                setDateSelected(dates[0].year + " " + dates[0].month.name + " " + dates[0].day);
+            }
+            setPage(val);
+        }
+        else if (val === 3) {
+            formInputs.time = finalTimeList;
+            setFormInputs(formInputs);
             setPage(val);
         }
          else {
@@ -75,7 +96,7 @@ const VenueCreationForm = () => {
 
     useEffect(() => {
         if (page === 1) {
-            setTitle(formInputs.venuename);
+            setTitle(formInputs.name);
         } else {
             setTitle("Add Venue");
         }
@@ -107,20 +128,22 @@ const VenueCreationForm = () => {
         setTimes(new_times);
     }
     const addTimeForDate = (e) => {
-        if (dateNumSelected === 0) {
-            setDateSelected(dates[0].year + " " + dates[0].month.name + " " + dates[0].date);
-        }
         times.push(["16:30", "16:30"]);
         setTimes(times);
         setTimeCount(timeCount + 1);
     }
     const submitTimeForDate = (e) => {
+        if (dateNumSelected + 1 === dates.length) {
+            setSubmitDateTime(true);
+        }
         setDateNumSelected(dateNumSelected + 1)
         finalTimeList.push(times);
+        setFinalTimeList(finalTimeList);
         const new_times = ["16:30", "16:30"];
         setTimes([new_times]);
         setTimeCount(1);
-        setDateSelected(dates[dateNumSelected].year + " " + dates[dateNumSelected].month.name + " " + dates[dateNumSelected].date);
+        const new_date = dates[dateNumSelected+1].year + " " + dates[dateNumSelected+1].month.name + " " + dates[dateNumSelected+1].day;
+        setDateSelected(new_date);
     }
     const items = Array.from({ length: timeCount }).map((_, i) => (
         <div className="childContainer">
@@ -128,13 +151,13 @@ const VenueCreationForm = () => {
             <input className="timeChildRight" type="time" id={[i,1]} value={times[i][1]} onChange={handleTimeChange}/>
         </div>
     ));
-    
-    const veneuName = "venuename";
-    const venueAddr = "venueaddr";
+
+    const veneuName = "name";
+    const venueAddr = "addr";
     const capacity = "capacity";
     const sportType = "sporttype";
     const reservationType = "reservationtype";
-    const date = "date";
+    const curentDates = "dates";
 
     return (
         <div className='venueCreationBody'>
@@ -169,7 +192,7 @@ const VenueCreationForm = () => {
                                     placeholder="Venue Name"
                                     name={veneuName}
                                     id={veneuName}
-                                    value={formInputs.venuename}
+                                    value={formInputs.name}
                                     required
                                     onChange={handleChange}
                                 />
@@ -179,7 +202,7 @@ const VenueCreationForm = () => {
                                     placeholder="Venue Address"
                                     name={venueAddr}
                                     id={venueAddr}
-                                    value={formInputs.venueaddr}
+                                    value={formInputs.addr}
                                     required
                                     onChange={handleChange}
                                 />
@@ -241,21 +264,49 @@ const VenueCreationForm = () => {
                     {
                         page === 2 &&
                             <>
-                                <h3>{dateSelected}</h3>
-                                <button className="addTimeForDateBtn" onClick={addTimeForDate}>
-                                    Add another time
-                                </button>
+                                <div className="inputBox">
+                                    <h1>{dateSelected}</h1>
+                                </div>
                                 {dates.length > 0 && items}
-                                {dates.length > 0 && 
+                                <button className="addTimeForDateBtn" onClick={addTimeForDate}>
+                                    Add time
+                                </button>
+                                <button className="submitTimeForDateBtn" onClick={submitTimeForDate}>
+                                    Submit times
+                                </button>
+                                <div className="childContainer">
+                                    <button className='childLeft' value={1} onClick={pageButtonClick}>
+                                        &larr; Back
+                                    </button>
+                                    <button className='childRight' disabled={!submitDateTime} value={3} onClick={pageButtonClick}>
+                                        Review &rarr;
+                                    </button>
+                                </div>
+                            </>
+                    }
+                    {
+                        page === 3 &&
+                            <>
+                                {validateFormInputs(formInputs) > 90 && 
                                     <>
-                                        <h4>{dates[0].year}</h4>
-                                        <p>{dates[0].month.name}</p>  
-                                        <p>{dates[0].day}</p>
+                                        <div className="summaryContainer">
+                                            <p>Name: {formInputs.name}</p>
+                                            <p>Address: {formInputs.addr}</p>
+                                            <p>Capacity: {formInputs.capacity}</p>
+                                            <p>Sport: {formInputs.sporttype}</p>
+                                            <p>Dates Available: {formInputs.dates.toString().split(",").join(", ")}</p>
+                                            <p>Times Available: {formInputs.time.join(", ")}</p>
+                                        </div>
                                     </>
                                 }
-                                <button className="submitTimeForDateBtn" onClick={submitTimeForDate}>
-                                    Submit time for date
-                                </button>
+                                <div className='childContainer'>
+                                    <button className='childLeft' value={2} onClick={pageButtonClick}>
+                                            &larr; Back
+                                    </button>
+                                    <button className='childRight' disabled={!submitDateTime} value={3} onClick={pageButtonClick}>
+                                        Submit
+                                    </button>
+                                </div>
                             </>
                     }
                     <div className='inputBox'>
