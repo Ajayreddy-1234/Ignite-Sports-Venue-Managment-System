@@ -24,7 +24,6 @@ input {
 .signupBody,
 .forgotPasswordBody,
 .resetPasswordBody,
-.loginBody{
 .loginBody,
 .venueCreationBody {
   display: flex;
@@ -61,7 +60,6 @@ input {
 .forgotPasswordContainer,
 .signoutContainer,
 .resetPasswordContainer,
-.signupContainer{
 .signupContainer,
 .venueCreationContainer {
   background: transparent;
@@ -80,8 +78,6 @@ input {
 }
 .forgotPasswordContainer h2,
 .resetPasswordContainer h2,
-.loginContainer h2{
-
 .loginContainer h2,
 .venueCreationContainer h2 {
   font-size: 32px;
@@ -99,7 +95,6 @@ input {
 .loginForm,
 .forgotPasswordForm,
 .resetPasswordForm,
-.signupForm{
 .signupForm,
 .venueCreationForm {
   width: 100%;
@@ -173,7 +168,6 @@ input {
   background: transparent;
 }
 
-.signupForm .inputBox{
 .signupForm .inputBox {
   position: relative;
   height: 40px;

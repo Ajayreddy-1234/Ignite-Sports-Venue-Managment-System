@@ -38,6 +38,10 @@ const Login = () => {
           if (response.ok) {
             const data = await response.json();
             console.log("Login successful:", data);
+            window.localStorage.setItem("userId", data.user.user_id);
+            window.localStorage.setItem("role", data.user.role);
+            window.localStorage.setItem("userEmail", data.user.email);
+            window.localStorage.setItem("username", data.user.username);
             isLoggedIn = true;
             console.log(isLoggedIn);
             navigate("/");
