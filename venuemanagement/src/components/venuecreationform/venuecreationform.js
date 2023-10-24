@@ -52,6 +52,9 @@ const VenueCreationForm = () => {
     const [finalTimeList, setFinalTimeList] = useState([]);
     const [submitDateTime, setSubmitDateTime] = useState(false);
 
+    // const [searchParams, setSearchParams] = useSearchParams();
+    // searchParams.get("venue_id");
+
     const [formInputs, setFormInputs] = useState({
         reservationtype: "",
         name: "",
@@ -108,6 +111,21 @@ const VenueCreationForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (validateFormInputs(formInputs) < 90) {
+            return;
+        }
+        let datetimes = []
+        for (let i = 0; i < formInputs.dates.length; i++) {
+            let dateString = formInputs.dates[i].year + "-" + formInputs.dates[i].month.number 
+                            + "-" + formInputs.dates[i].day;
+            let datetime = []
+            for (let y = 0; y < formInputs.time[i].length; y++) {
+                datetime.push([dateString +  "T" + formInputs.time[i][y][0], dateString + "T" + formInputs.time[i][y][1]])
+            }
+            datetimes.push(datetime);
+        }
+        console.log(datetimes);
+        formInputs.datetimes = datetimes;
         console.log(formInputs);
     };
     const handleTimeChange = (e) => {
@@ -133,6 +151,7 @@ const VenueCreationForm = () => {
         setTimeCount(timeCount + 1);
     }
     const submitTimeForDate = (e) => {
+        
         if (dateNumSelected + 1 === dates.length) {
             setSubmitDateTime(true);
         }
@@ -164,7 +183,7 @@ const VenueCreationForm = () => {
             <div className='venueCreationContainer'>
 
                 <div className="logo">
-                    <img src={logo }width={250} height={85} alt='Logo'></img>
+                    <img src={logo} width={250} height={85} alt='Logo'></img>
                 </div>
 
                 <h2><i>{`${title}`}</i> availabilty:</h2>
@@ -256,7 +275,7 @@ const VenueCreationForm = () => {
                                     &larr; Back
                                 </button>
                                 <button className='childRight' value={2} onClick={pageButtonClick}>
-                                    Choose Dates &rarr;
+                                    Choose Times &rarr;
                                 </button>
                             </div>
                         </>
@@ -303,7 +322,7 @@ const VenueCreationForm = () => {
                                     <button className='childLeft' value={2} onClick={pageButtonClick}>
                                             &larr; Back
                                     </button>
-                                    <button className='childRight' disabled={!submitDateTime} value={3} onClick={pageButtonClick}>
+                                    <button className='childRight' disabled={!submitDateTime} value={3} onClick={handleSubmit}>
                                         Submit
                                     </button>
                                 </div>
