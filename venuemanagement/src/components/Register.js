@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
 import logo from "../assets/logo.png"
 
 const Register = () => {
@@ -114,6 +115,10 @@ const Register = () => {
                         </option>
                     </select>
                 </div>
+                <ReCAPTCHA 
+                    sitekey="default"
+                    required
+                />
                     <button className='signupBtn' data-testid='register'>
                         Sign Up
                     </button>

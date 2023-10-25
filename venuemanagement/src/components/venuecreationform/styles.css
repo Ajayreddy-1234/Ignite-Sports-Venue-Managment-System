@@ -37,15 +37,33 @@ p {
     border-radius: 15px;
     margin-bottom: 25px;
 }
+h1 {
+    font-weight: bolder;
+}
+.leftTime, .rightTime {
+    height: 20px;
+    width: 40%;
+    float: left;
+    padding: 5px;
+    margin-bottom: 8px;
+    text-align: center;
+}
 .timeChildLeft {
     height: 45px;
-    width: 45%;
+    width: 40%;
     float: left;
     padding: 5px;
 }
 .timeChildRight {
     height: 45px;
-    width: 45%;
+    margin-left: 10px;
+    width: 40%;
+    float: left;
+    padding: 5px;
+}
+.timeChildDelete {
+    height: 45px;
+    width: 15%;
     float: right;
     padding: 5px;
 }
@@ -63,6 +81,9 @@ p {
     border-radius: 15px;
     margin-bottom: 25px;
 }
+.childRight:disabled {
+    background-color: #666;
+}
 .addTimeForDateBtn,
 .submitTimeForDateBtn {
   background-color: #8C1C13;
@@ -73,6 +94,9 @@ p {
   border: none;
   outline: none;
   margin-top: 15px;
+}
+.submitTimeForDateBtn:disabled {
+    background-color: #666;
 }
 
 .summaryContainer {

@@ -4,7 +4,21 @@ import logo from "../../assets/logo.png";
 import "./styles.css";
 import DatePicker from "react-multi-date-picker"
 import "react-datetime/css/react-datetime.css";
+import createVenueSendRequest from "./createVenueSendRequest";
 
+function deleteOldTimeElements(dates) {
+    for (let i = 0; i < dates.length; i++) {
+        const elLeft = document.getElementById([i, 0]);
+        const elRight = document.getElementById([i, 1]);
+        const deleteButton = document.getElementById(i);
+        const container = document.getElementById("container" + i);
+
+        // elLeft.remove();
+        // elRight.remove();
+        // deleteButton.remove();
+        container.remove();
+    }
+}
 function validateFormInputs(formInputs) {
     let missingTotal = 0;
     if (!formInputs.reservationtype) {
@@ -52,10 +66,8 @@ const VenueCreationForm = () => {
     const [finalTimeList, setFinalTimeList] = useState([]);
     const [submitDateTime, setSubmitDateTime] = useState(false);
 
-    // const [searchParams, setSearchParams] = useSearchParams();
-    // searchParams.get("venue_id");
-
     const [formInputs, setFormInputs] = useState({
+        userid: window.localStorage.getItem('userId'),
         reservationtype: "",
         name: "",
         addr: "",
@@ -63,6 +75,7 @@ const VenueCreationForm = () => {
         sporttype: "",
         dates: [],
         time: [],
+        datetimes: [],
     });
 
     const pageButtonClick = (event) => {
@@ -73,8 +86,9 @@ const VenueCreationForm = () => {
             }
         }
         else if (val === 2) {
-            formInputs.dates = dates;
-            setFormInputs(formInputs);
+            // formInputs.dates = dates;
+            setFormInputs(values => ({...values, ["dates"]: dates}));
+            // setFormInputs(formInputs);
             setDateNumSelected(0);
             if (!dateSelected) {
                 setDateSelected(dates[0].year + " " + dates[0].month.name + " " + dates[0].day);
@@ -82,8 +96,9 @@ const VenueCreationForm = () => {
             setPage(val);
         }
         else if (val === 3) {
-            formInputs.time = finalTimeList;
-            setFormInputs(formInputs);
+            // formInputs.time = finalTimeList;
+            setFormInputs(values => ({...values, ["time"]: finalTimeList}));
+            formInputs.time = times;
             setPage(val);
         }
          else {
@@ -127,6 +142,7 @@ const VenueCreationForm = () => {
         console.log(datetimes);
         formInputs.datetimes = datetimes;
         console.log(formInputs);
+        createVenueSendRequest(formInputs);
     };
     const handleTimeChange = (e) => {
         let time = e.target.value;
@@ -147,27 +163,67 @@ const VenueCreationForm = () => {
     }
     const addTimeForDate = (e) => {
         times.push(["16:30", "16:30"]);
-        setTimes(times);
-        setTimeCount(timeCount + 1);
+        let new_times = []
+        for (let i = 0; i < times.length; i++) {
+            new_times.push(times[i]);
+        }
+        setTimes(new_times);
     }
     const submitTimeForDate = (e) => {
         
-        if (dateNumSelected + 1 === dates.length) {
+        const dateNum = dateNumSelected + 1;
+        if (dateNum === dates.length) {
             setSubmitDateTime(true);
         }
-        setDateNumSelected(dateNumSelected + 1)
-        finalTimeList.push(times);
-        setFinalTimeList(finalTimeList);
-        const new_times = ["16:30", "16:30"];
-        setTimes([new_times]);
-        setTimeCount(1);
-        const new_date = dates[dateNumSelected+1].year + " " + dates[dateNumSelected+1].month.name + " " + dates[dateNumSelected+1].day;
+        setDateNumSelected(dateNum)
+        let new_times = []
+        for (let i = 0; i < times.length; i++) {
+            if (times && times[i]) {
+                new_times.push(times[i]);
+            }
+        }
+        finalTimeList.push(new_times);
+        const initial_times = ["16:30", "16:30"];
+        setTimes([initial_times]);
+
+        // deleteOldTimeElements(dates);
+        // setTimes([initial_times]);
+        // setTimeCount(1);
+        let new_date = "";
+        if (dateNum < dates.length) {
+            new_date = dates[dateNum].year + " " + dates[dateNum].month.name + " " + dates[dateNum].day;
+        }
         setDateSelected(new_date);
     }
-    const items = Array.from({ length: timeCount }).map((_, i) => (
-        <div className="childContainer">
+    const deleteTimePair = (e) => {
+        const id = parseInt(e.target.id);
+        // const element = document.getElementById("container" + id);
+        // element.remove();
+
+        // for (let i = id; i < times.length-1; i++) {
+        //     const elLeft = document.getElementById([i+1, 0]);
+        //     const elRight = document.getElementById([i+1, 1]);
+        //     const deleteButton = document.getElementById(i+1);
+        //     const container = document.getElementById("container" + i+1);
+        //     elLeft.id = [i, 0];
+        //     elRight.id = [i, 1];
+        //     elLeft.value = times[i][0];
+        //     elRight.value = times[i][1];
+        //     deleteButton.id = i;
+        //     container.id = "container" + i;
+        // }
+        const element = document.getElementById("container" + id);
+        element.style.visibility = "hidden";
+        times[id] = [];
+        setTimes(times);
+    }
+    const items = Array.from({ length: times.length }).map((_, i) => (
+        <div className="childContainer" id={"container" + i}>
             <input className="timeChildLeft" type="time" id={[i,0]} value={times[i][0]} onChange={handleTimeChange}/>
             <input className="timeChildRight" type="time" id={[i,1]} value={times[i][1]} onChange={handleTimeChange}/>
+            <button className="timeChildDelete" id={i} onClick={deleteTimePair}>
+                X
+            </button>
         </div>
     ));
 
@@ -186,12 +242,12 @@ const VenueCreationForm = () => {
                     <img src={logo} width={250} height={85} alt='Logo'></img>
                 </div>
 
-                <h2><i>{`${title}`}</i> availabilty:</h2>
+                <h2><i>{`${title}`}</i></h2>
                 <form className='venueCreationForm' onSubmit={handleSubmit}>
                     {page === 0 &&
                         <>
                             <div className="inputBox">
-                                <select name={reservationType} id={reservationType} required onChange={handleChange}>
+                                <select name={reservationType} id={reservationType} value={formInputs.reservationtype} required onChange={handleChange}>
                                     <option value={""} selected disabled>
                                         -- Choose reservation type --
                                     </option>
@@ -239,7 +295,7 @@ const VenueCreationForm = () => {
                                 />
                             </div>
                             <div className="inputBox">
-                                <select name={sportType} id={sportType} required onChange={handleChange}>
+                                <select name={sportType} id={sportType} value={formInputs.sporttype} required onChange={handleChange}>
                                     <option value={""} selected disabled>
                                         -- Choose a sport --
                                     </option>
@@ -284,13 +340,17 @@ const VenueCreationForm = () => {
                         page === 2 &&
                             <>
                                 <div className="inputBox">
-                                    <h1>{dateSelected}</h1>
+                                    <h1 className="dateSelected">{dateSelected}</h1>
+                                </div>
+                                <div className="childContainer">
+                                    <h4 className="leftTime">Start Time</h4>
+                                    <h4 className="rightTime">End Time</h4>
                                 </div>
                                 {dates.length > 0 && items}
                                 <button className="addTimeForDateBtn" onClick={addTimeForDate}>
                                     Add time
                                 </button>
-                                <button className="submitTimeForDateBtn" onClick={submitTimeForDate}>
+                                <button className="submitTimeForDateBtn" disabled={submitDateTime} onClick={submitTimeForDate}>
                                     Submit times
                                 </button>
                                 <div className="childContainer">
