@@ -40,6 +40,13 @@ p {
 h1 {
     font-weight: bolder;
 }
+.sendMessage {
+    height: 40px;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-weight: bolder;
+}
 .leftTime, .rightTime {
     height: 20px;
     width: 40%;

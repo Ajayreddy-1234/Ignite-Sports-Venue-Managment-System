@@ -1,8 +1,8 @@
 import React from "react";
 
-async function createVenueSendRequest(formInputs) {
+function createVenueSendRequest(formInputs) {
     try {
-        const response = await fetch("/api/venues", {
+        const response = fetch("/api/venues", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -11,15 +11,18 @@ async function createVenueSendRequest(formInputs) {
         });
   
         if (response.ok) {
-          const data = await response.json();
+          const data = response.json();
           console.log("Venue Creation Successful:", data);
           window.location.reload();
+          return "success";
         } else {
-          const errorData = await response.json();
+          const errorData = response.json();
           console.error("Venue Creation failed:", errorData);
+          return "error";
         }
     } catch (error) {
-    console.error("Venue Creation error:", error);
+      console.error("Venue Creation error:", error);
+      return "error";
     }
 }
 export default createVenueSendRequest;
