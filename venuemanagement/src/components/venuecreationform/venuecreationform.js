@@ -239,9 +239,6 @@ const VenueCreationForm = () => {
                                     <option value={"Venue"}>
                                         Venue
                                     </option>
-                                    <option value={"Player"}>
-                                        Player
-                                    </option>
                                     <option value={"Activity"}>
                                         Activity
                                     </option>
