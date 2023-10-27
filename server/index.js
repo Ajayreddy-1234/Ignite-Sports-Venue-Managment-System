@@ -1,8 +1,12 @@
 const path = require('path');
 const express = require("express");
-
-const PORT = process.env.PORT || 8080;
+const router = express.Router();
+const cors = require("cors");
+const axios = require("axios");
+require("dotenv").config();
+const PORT = process.env.PORT || 3000;
 var app = express();
+app.use(cors());
 
 app.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`);
@@ -170,4 +174,26 @@ app.post('/api/2fa/verify',async (req, res)=>{
 
 });
 
+app.post('/api/captcha',async (req, res)=>{
+  const { token } = req.body;
+
+  try {
+    // Sending secret key and response token to Google Recaptcha API for authentication.
+    const response = await axios.post(
+      `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.SECRET_KEY}&response=${token}`
+    );
+
+    // Check response status and send back to the client-side
+    if (response.data.success) {
+      res.send("Human 👨 👩");
+    } else {
+      res.send("Robot 🤖");
+    }
+  } catch (error) {
+    // Handle any errors that occur during the reCAPTCHA verification process
+    console.error(error);
+    res.status(500).send("Error verifying reCAPTCHA");
+   }
+
+});
 module.exports = app;
