@@ -17,7 +17,9 @@ app.get('*', (req, res) => {
 
 const {registerUser, loginUser} = require('./functions/authFunctions')
 const authenticate = require('./middleware/authMiddleware');
-const {generatePasswordResetToken, sendPasswordResetEmail, resetPassword} = require('./functions/passwordReset')
+const {generatePasswordResetToken, sendPasswordResetEmail, resetPassword} = require('./functions/passwordReset');
+const createVenue = require('./functions/createVenue');
+const openCloseVenue = require('./functions/openCloseVenue');
 
 // change this according to the request you make for form parsing use: 
 // app.use(express.urlencoded({ extended: true }));
@@ -120,6 +122,34 @@ app.post('/api/reset-password',async (req,res)=>{
     }catch(error){
         res.status(500).json({msg:'internal server error'});
     }
+});
+
+
+
+app.post('/api/venues', async (req, res) => {
+  const venueData = req.body;
+
+  try {
+    await createVenue(venueData);
+    console.log('Venue added successfully.');
+    return res.status(200).json({ message: 'Venue added successfully' });
+  } catch (error) {
+    console.error('Error adding venue:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.put('/api/venues/:venue_id/status', async (req, res) => {
+  const venueId = req.params.venue_id;
+  const newStatus = req.body.status;
+
+  try {
+    await openCloseVenue(venueId, newStatus);
+    res.status(200).json({ message: 'Venue status updated successfully' });
+  } catch (error) {
+    console.error('Error updating venue status:', error);
+    res.status(500).json({ error: 'Failed to update venue status' });
+  }
 });
 
 module.exports = app;
