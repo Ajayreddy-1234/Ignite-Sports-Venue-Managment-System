@@ -28,11 +28,9 @@ const Register = () => {
         const recaptchaValue = recaptchaRef.current.getValue();
 
         const message = captchaSendRequest(recaptchaValue);
-        recaptchaValue.current.reset();
 
         if (!message === "success") {
             console.log("failed", message);
-            return "";
         }
         try {
           const response = await fetch("/api/register", {
