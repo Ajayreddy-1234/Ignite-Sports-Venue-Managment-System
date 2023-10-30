@@ -107,7 +107,7 @@ const Register = () => {
                     />
                 </div>
                 <div className="inputBox">
-                    <select name='role' id='role'value={info.role} onChange={handleChange}>
+                    <select name='role' id='role'value={info.role} onChange={handleChange} required>
                         <option>
                             Role Type
                         </option>
@@ -125,6 +125,7 @@ const Register = () => {
                 <ReCAPTCHA 
                     ref={recaptchaRef}
                     sitekey={"6LdAz9EoAAAAADcjpAdNdL8WLScq5oeB2u6-5xVB"}
+                    required
                 />
                     <button className='signupBtn' data-testid='register'>
                         Sign Up
