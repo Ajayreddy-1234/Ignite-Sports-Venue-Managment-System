@@ -191,9 +191,9 @@ app.put('/api/venues', async (req, res)=>{
    try{
     const updatedVenue = req.body;
     await db.promise().query(
-      'UPDATE ignite.venues SET sport_name = ?, venue_name = ?, location = ?, reservation_type = ?, address = ?, status = ?, dates = ?, times = ? WHERE venue_id = ?',
-      [updatedVenue.sport_name, updatedVenue.venue_name, updatedVenue.location, updatedVenue.reservation_type, 
-        updatedVenue.address, updatedVenue.status, updatedVenue.dates, updatedVenue.times, updatedVenue.venue_id]);
+      'UPDATE ignite.venues SET reservation_type = ?, vname = ?, address = ?, total_cost = ?, total_capacity = ?, sport = ?, user_id = ? WHERE venue_id = ?',
+      [updatedVenue.reservation_type, updatedVenue.vname, updatedVenue.address, updatedVenue.total_cost, 
+        updatedVenue.total_capacity, updatedVenue.sport, updatedVenue.user_id, updatedVenue.venue_id]);
 
     res.status(200).json(updatedVenue);
    }catch(error){
@@ -203,7 +203,7 @@ app.put('/api/venues', async (req, res)=>{
 
 app.post('/api/reservations', async (req, res)=>{
   try{
-    var {sorting, venue, date} = req.body;
+    var {sorting, venue, dateTime} = req.body;
 
     const defaultSorting = 0;
     const defaultVenue = 'ALL';
@@ -211,33 +211,43 @@ app.post('/api/reservations', async (req, res)=>{
     const usedSorting = sorting === undefined ? defaultSorting : sorting;
     const usedVenue = venue === undefined ? defaultVenue : venue;
 
-    if(date === undefined){
+    if(dateTime === undefined){
       const currentDate = new Date();
       const year = currentDate.getFullYear();
       const month = currentDate.getMonth() + 1; 
       const day = currentDate.getDate();
 
       // Format the date as "YYYY-MM-DD" to match the SQL DATE data type
-      date = `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}`;
+      dateTime = `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}T00:00`;
     }
-    const reservationsQuery = `SELECT * FROM ignite.reservations WHERE reservation_date >= ?${
+    const reservationsQuery = `SELECT * FROM ignite.reservation WHERE start_datetime >= ?${
       usedVenue === 'ALL' ? '' : ' AND venue LIKE ?'
-    }`;
+    } ORDER BY venue_id ASC`;
     
     const venuePattern = usedVenue === 'ALL' ? '%' : `%${usedVenue}%`;
 
-    const queryParams = usedVenue === 'ALL' ? [date] : [date, venuePattern];
+    const queryParams = usedVenue === 'ALL' ? [dateTime] : [dateTime, venuePattern];
     const [reservations] = await db.promise().query(reservationsQuery, queryParams);
-    console.log(reservations)
 
     const venueIds = [];
+    const sqlQueries = [];
     for(var i=0;i<reservations.length;i++){
-      venueIds.push(reservations[i].venue_id);
+      const venueId = reservations[i].venue_id;
+      const query = `SELECT * FROM ignite.venue WHERE venue_id = ${venueId}`;
+      sqlQueries.push(query);
+      venueIds.push(venueId);
     }
-    const venuesQuery = `SELECT * FROM ignite.venues WHERE venue_id IN (?) AND status = ? ORDER BY dates ${usedSorting < 1 ? 'ASC' : 'DESC'}`;
-    const [venuesList] = await db.promise().query(venuesQuery,[venueIds,'Open']);
-    
-    res.status(200).json(venuesList);
+    const venuesQuery = sqlQueries.join(' UNION ALL ');
+    const [venuesList] = await db.promise().query(venuesQuery);
+
+    var finalData = venuesList.map((item,index)=>({...item, ...reservations[index]}));
+    if(usedSorting == 1){
+      finalData.sort((a,b)=> new Date(b.start_datetime) - new Date(a.start_datetime))
+    }else{
+      finalData.sort((a,b)=> new Date(a.start_datetime) - new Date(b.start_datetime))
+    }   
+    console.log(finalData);
+    res.status(200).json(finalData);
   }catch(error){
     console.log(error);
     res.status(500).json({message:'internal server error'});
