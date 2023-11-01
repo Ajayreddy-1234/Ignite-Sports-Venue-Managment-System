@@ -25,13 +25,7 @@ const Register = () => {
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const recaptchaValue = recaptchaRef.current.getValue();
-
-        const message = captchaSendRequest(recaptchaValue);
-
-        if (!message === "success") {
-            console.log("failed", message);
-        }
+        
         try {
           const response = await fetch("/api/register", {
             method: "POST",
