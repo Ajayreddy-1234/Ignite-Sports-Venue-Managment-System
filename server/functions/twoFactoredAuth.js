@@ -52,7 +52,7 @@ async function verifyTwoFactored({Otp, email}){
        if(rex.length == 0){
          throw new Error('No User Found') 
        }
-       if(rex[0].two_factor_secret == Otp){
+       if(rex[0].two_factor_secret === Otp){
         await db.promise().query('update ignite.User SET two_factor_secret = ? where email = ?',['1',email]);
         return 1
        }else{

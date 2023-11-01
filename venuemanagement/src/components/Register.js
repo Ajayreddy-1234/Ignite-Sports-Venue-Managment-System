@@ -38,7 +38,6 @@ const Register = () => {
           if (response.ok) {
             const data = await response.json();
             console.log("Registration successful:", data);
-            navigate("/login");
           } else {
             const errorData = await response.json();
             console.error("Registration failed:", errorData);
@@ -46,7 +45,55 @@ const Register = () => {
         } catch (error) {
           console.error("Registration error:", error);
         }
-      };
+        try {
+            const response = await fetch("/api/login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(info),
+            });
+            console.log(response);
+            console.log(response['Authorization']);
+            console.log(response.authorization);
+            if (response.ok) {
+                const data = await response.json();
+                window.localStorage.setItem("userId", data.user.user_id);
+                window.localStorage.setItem("role", data.user.role);
+                window.localStorage.setItem("userEmail", data.user.email);
+                window.localStorage.setItem("username", data.user.username);
+                window.localStorage.setItem("token", "Bearer " + data.authorization);
+                console.log("Login successful:", data);
+            } else {
+              const errorData = await response.json();
+              console.error("Login failed:", errorData);
+            }
+         } catch (error) {
+            console.error("Login error:", error);
+        }
+        
+        try {
+            const response = await fetch("/api/2fa/setup", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": window.localStorage.getItem("token"),
+              },
+              body: JSON.stringify(info),
+            });
+      
+            if (response.ok) {
+              const data = await response.json();
+              console.log("2fa setup successful:", data);
+              navigate("/login");
+            } else {
+              const errorData = await response.json();
+              console.error("2fa setup failed:", errorData);
+            }
+        } catch (error) {
+            console.error("2fa setup error:", error);
+        }
+    };
 
     const gotoLoginPage = () => navigate("/login");
 
