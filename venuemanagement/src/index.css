@@ -13,7 +13,7 @@ input {
   padding: 10px 15px;
   margin-bottom: 15px;
 }
-.signupBtn, .loginBtn{
+.signupBtn, .loginBtn, .chooseDateTimeBtn {
   width: 200px;
   outline: none;
   border: none;
@@ -22,7 +22,10 @@ input {
   font-size: 16px;
 }
 .signupBody,
-.loginBody{
+.forgotPasswordBody,
+.resetPasswordBody,
+.loginBody,
+.venueCreationBody {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -54,7 +57,11 @@ input {
 }
 .loginContainer,
 .verifyForm,
-.signupContainer{
+.forgotPasswordContainer,
+.signoutContainer,
+.resetPasswordContainer,
+.signupContainer,
+.venueCreationContainer {
   background: transparent;
   border: 2px solid rgba(0,0,0, .3);
   backdrop-filter: blur(20px);
@@ -69,8 +76,10 @@ input {
 .logo{
   padding-bottom: 15px;
 }
-
-.loginContainer h2{
+.forgotPasswordContainer h2,
+.resetPasswordContainer h2,
+.loginContainer h2,
+.venueCreationContainer h2 {
   font-size: 32px;
   font-weight: 200;
   width: 420px;
@@ -84,21 +93,25 @@ input {
 }
 
 .loginForm,
-.signupForm{
+.forgotPasswordForm,
+.resetPasswordForm,
+.signupForm,
+.venueCreationForm {
   width: 100%;
   align-items: center;
   display: flex;
   flex-direction: column;
   background-color: transparent;
 }
-.loginForm .inputBox{
+.loginForm .inputBox {
   position: relative;
   height: 50px;
   margin: 20px;
   width: 100%;
   background: transparent;
 }
-.signupForm .inputBoxName{
+.signupForm .inputBoxName,
+.venueCreationForm .inputBox {
   position: relative;
   height: 40px;
   margin: 10px;
@@ -135,7 +148,27 @@ input {
   padding-left: 2%;
 }
 
-.signupForm .inputBox{
+.forgotPasswordForm .inputBox{
+  position: relative;
+  height: 40px;
+  margin: 10px;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  background: transparent;
+}
+
+.resetPasswordContainer .inputBox{
+  position: relative;
+  height: 40px;
+  margin: 10px;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  background: transparent;
+}
+
+.signupForm .inputBox {
   position: relative;
   height: 40px;
   margin: 10px;
@@ -178,7 +211,8 @@ input {
 }
 .toLoginBtn,
 .loginBtn,
-.codeBtn {
+.codeBtn,
+.chooseDateTimeBtn {
   background-color: #8C1C13;
   color: #fff;
   height: 45px;
@@ -190,7 +224,7 @@ input {
   border-radius: 15px;
   margin-bottom: 25px;
 }
-.signupBtn{
+.signupBtn {
   background-color: #8C1C13;
   color: #fff;
   height: 45px;
@@ -234,6 +268,8 @@ input {
 @media screen and (max-width: 800px) {
   .loginContainer,
   .signupContainer,
+  .forgotPasswordContainer,
+  .venueCreationContainer,
   .verify {
       padding: 30px;
   }

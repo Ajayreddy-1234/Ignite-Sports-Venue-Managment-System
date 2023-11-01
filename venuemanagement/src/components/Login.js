@@ -1,11 +1,16 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import logo from "../assets/logo.png"
 import { Button } from "./Button";
+import ForgotPassword from "./ForgotPassword";
+import NavBar from "./navBar";
+
+var isLoggedIn = false;
 
 const Login = () => {
     //const [email, setEmail] = useState("");
     //const [password, setPassword] = useState("");
+    const [loginInfo, setLoginInfo] = useState(false);
     const navigate = useNavigate();
     const [info, setInfo] = useState({});
 
@@ -18,14 +23,63 @@ const Login = () => {
         setInfo(values => ({...values, [name]: value}))
         console.log(value);
     }
+    const fetchLogin = async(e) => {
+    
+        try {
+            const response = await fetch("/api/login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(info),
+            });
 
-    const handleSubmit = (e) => {
-        console.log("handleSubmit called");
+            if (response.ok) {
+                const data = await response.json();
+                window.localStorage.setItem("userId", data.user.user_id);
+                window.localStorage.setItem("role", data.user.role);
+                window.localStorage.setItem("userEmail", data.user.email);
+                info.email = data.user.email;
+                window.localStorage.setItem("username", data.user.username);
+                window.localStorage.setItem("token", "Bearer " + data.authorization);
+                console.log("Login successful:", data);
+            } else {
+              const errorData = await response.json();
+              console.error("Login failed:", errorData);
+            }
+         } catch (error) {
+            console.error("Login error:", error);
+        }
+
+        setLoginInfo(true);
+    }
+    const handleSubmit = async(e) => {
         e.preventDefault();
-            console.log({ info });
-        //    setPassword("");
-        //    setEmail("");
+
+        try {
+            const response = await fetch("/api/2fa/verify", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": window.localStorage.getItem("token"),
+              },
+              body: JSON.stringify(info),
+            });
+      
+            if (response.ok) {
+              const data = await response.json();
+              console.log("2fa verify successful:", data);
+              window.localStorage.setItem("token", "Bearer " + data.authorization);
+              navigate("/");
+            } else {
+              const errorData = await response.json();
+              console.error("2fa verify failed:", errorData);
+            }
+          } catch (error) {
+            console.error("2fa verify error:", error);
+          }
     };
+    
 
     const gotoSignUpPage = () => navigate("/register"); 
 
@@ -41,11 +95,11 @@ const Login = () => {
                 <div className="inputBox">
                     <i className='bx bxs-envelope'/>
                     <input
-                        placeholder="Email"
+                        placeholder="Username"
                         type='text'
-                        id='email'
-                        name='email'
-                        value={info.email}
+                        id='username'
+                        name='username'
+                        value={info.username}
                         required
                         //onChange={(e) => setEmail(e.target.value)}
                         onChange={handleChange}
@@ -67,12 +121,31 @@ const Login = () => {
                     />
                 </div>
                 
-                <button className="loginBtn"> Login </button>
+                <button className="loginBtn" onClick={fetchLogin}> Login </button>
+
+                { loginInfo &&
+                    <>
+                        <div className="inputBox">
+                            <i className="bx bxs-lock-alt"></i>
+                            <input
+                                placeholder="Enter Emailed Code"
+                                type='text'
+                                name='Otp'
+                                id='Otp'
+                                minLength={2}
+                                required
+                                value={info.Otp}
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <button className="loginBtn" onClick={handleSubmit}> Submit </button>
+                    </>
+                }
                 <div className="forgot">
                     Forgot password?{" "}
-                    <span className="forgotPasswordLink">
+                    <Link to="/forgot-password" className="forgotPasswordLink">
                         Click here
-                    </span>
+                    </Link>
                 </div>
                 <p>
                     Don't have an account?{" "}
@@ -85,5 +158,5 @@ const Login = () => {
         </div>
     );
 };
-
+export var isLoggedIn;
 export default Login;

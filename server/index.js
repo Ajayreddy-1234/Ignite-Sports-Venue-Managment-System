@@ -2,8 +2,13 @@ const path = require('path');
 const express = require("express");
 const session = require('express-session');
 var passport = require('passport');
+const router = express.Router();
+const cors = require("cors");
+const axios = require("axios");
+require("dotenv").config();
 const PORT = process.env.PORT || 8080;
 var app = express();
+app.use(cors());
 
 require('dotenv').config()
 app.listen(PORT, () => {
@@ -87,13 +92,14 @@ app.post('/api/login', async (req, res) => {
       const {token, user} = await loginUser({ username, password });
   
       if (token) {
-        if(user.two_factor_enabled==1){
+        if(user.two_factor_enabled===1){
            email = user.email; 
+           console.log(email);
            await twoFactoredMail({email})
         }
         const [result] = await db.promise().query('SELECT * FROM ignite.User WHERE username = ? ',[user.username]);
-        res.header('Authorization', `Bearer ${token}`);
-        res.status(200).json({user:result[0]});
+        res.set('Authorization', `Bearer ${token}`);
+        res.status(200).json({user:result[0], authorization:token});
 
       } else {
         res.status(401).json({ error: 'Invalid credentials' });
@@ -168,14 +174,13 @@ app.post('/api/2fa/verify',async (req, res)=>{
   try{
     const {Otp, email} = req.body;
     const x = await verifyTwoFactored({Otp, email});
-    if(x==1){
+    if(x===1){
       const [rex] = await db.promise().query('SELECT * FROM ignite.User where email = ?',[email]);
       const token = req.headers.authorization?.split(' ')[1];
       if(!token){
         return res.status(401).json({ message: 'Please send authorization header' });
       }else{
-        res.header('Authorization', `Bearer ${token}`);
-        res.status(200).json(rex[0]);
+        res.status(200).json({user:rex[0], authorization:token});
       }
     }else{
       res.status(400).json({message: 'Wrong OTP entered'});
@@ -252,5 +257,26 @@ app.post('/api/reservations', async (req, res)=>{
     console.log(error);
     res.status(500).json({message:'internal server error'});
   }
+app.post('/api/captcha',async (req, res)=>{
+  const { token } = req.body;
+
+  try {
+    // Sending secret key and response token to Google Recaptcha API for authentication.
+    const response = await axios.post(
+      `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.SECRET_KEY}&response=${token}`
+    );
+
+    // Check response status and send back to the client-side
+    if (response.data.success) {
+      res.send("Human 👨 👩");
+    } else {
+      res.send("Robot 🤖");
+    }
+  } catch (error) {
+    // Handle any errors that occur during the reCAPTCHA verification process
+    console.error(error);
+    res.status(500).send("Error verifying reCAPTCHA");
+   }
+
 });
 module.exports = app;

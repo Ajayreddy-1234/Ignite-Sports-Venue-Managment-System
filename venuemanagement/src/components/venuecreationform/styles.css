@@ -1,0 +1,112 @@
+.progressContainer {
+    background-color: #8c1c13;
+    border: none;
+    border-radius: 15px;
+    color: #fff;
+    font-weight: lighter;
+    height: 30px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    outline: none;
+    width: 100%;
+}
+.progressBar {
+    height: 100%;
+    background-color: #fff;
+    border-radius: inherit;
+    font-weight:lighter;
+    color: black;
+}
+p {
+    padding: 7px;
+}
+.childContainer {
+    width: 100%;
+}
+.childLeft {
+    background-color: #8C1C13;
+    color: #fff;
+    height: 45px;
+    width: 45%;
+    float: left;
+    padding: 5px;
+    font-weight:lighter;
+    border: none;
+    outline: none;
+    margin-top: 25px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+}
+h1 {
+    font-weight: bolder;
+}
+.sendMessage {
+    height: 40px;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-weight: bolder;
+}
+.leftTime, .rightTime {
+    height: 20px;
+    width: 40%;
+    float: left;
+    padding: 5px;
+    margin-bottom: 8px;
+    text-align: center;
+}
+.timeChildLeft {
+    height: 45px;
+    width: 40%;
+    float: left;
+    padding: 5px;
+}
+.timeChildRight {
+    height: 45px;
+    margin-left: 10px;
+    width: 40%;
+    float: left;
+    padding: 5px;
+}
+.timeChildDelete {
+    height: 45px;
+    width: 15%;
+    float: right;
+    padding: 5px;
+}
+.childRight {
+    background-color: #8C1C13;
+    color: #fff;
+    height: 45px;
+    width: 45%;
+    float: right;
+    padding: 5px;
+    font-weight:lighter;
+    border: none;
+    outline: none;
+    margin-top: 25px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+}
+.childRight:disabled {
+    background-color: #666;
+}
+.addTimeForDateBtn,
+.submitTimeForDateBtn {
+  background-color: #8C1C13;
+  color: #fff;
+  height: 45px;
+  width: 60%;
+  font-weight:lighter;
+  border: none;
+  outline: none;
+  margin-top: 15px;
+}
+.submitTimeForDateBtn:disabled {
+    background-color: #666;
+}
+
+.summaryContainer {
+    height: 100%;
+    text-align: left;
+}
