@@ -1,13 +1,9 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png"
-import captchaSendRequest from "./captchaSendRequest";
 import ReCAPTCHA from "react-google-recaptcha";
 const Register = () => {
-    //const [email, setEmail] = useState("");
-    //const [username, setUsername] = useState("");
-    //const [password, setPassword] = useState("");
-    //const [userType, setUserType] = useState("");
+
     const [info, setInfo] = useState({});
 
     const recaptchaRef = React.createRef();
@@ -25,7 +21,7 @@ const Register = () => {
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         try {
           const response = await fetch("/api/register", {
             method: "POST",

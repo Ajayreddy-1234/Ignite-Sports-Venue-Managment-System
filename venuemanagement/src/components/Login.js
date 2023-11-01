@@ -33,9 +33,7 @@ const Login = () => {
               },
               body: JSON.stringify(info),
             });
-            console.log(response);
-            console.log(response['Authorization']);
-            console.log(response.authorization);
+
             if (response.ok) {
                 const data = await response.json();
                 window.localStorage.setItem("userId", data.user.user_id);
