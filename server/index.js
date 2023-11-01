@@ -6,7 +6,7 @@ const router = express.Router();
 const cors = require("cors");
 const axios = require("axios");
 require("dotenv").config();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 var app = express();
 app.use(cors());
 
@@ -257,6 +257,7 @@ app.post('/api/reservations', async (req, res)=>{
     console.log(error);
     res.status(500).json({message:'internal server error'});
   }
+});
 app.post('/api/captcha',async (req, res)=>{
   const { token } = req.body;
 
