@@ -66,6 +66,8 @@ async function loginUser({ username, password }) {
 
     if (res.length == 0){
         await db.promise().query('INSERT INTO ignite.Tokens (userId, tokenId) VALUES ( ?, ?)',[user.user_id,token]);
+    }else{
+        await db.promise().query('UPDATE ignite.Tokens SET tokenId = ? WHERE userId = ?',[token, user.user_id]);
     }
 
     return {token, user};

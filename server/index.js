@@ -1,16 +1,25 @@
 const path = require('path');
 const express = require("express");
+const session = require('express-session');
+var passport = require('passport');
 const router = express.Router();
 const cors = require("cors");
 const axios = require("axios");
 require("dotenv").config();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 var app = express();
 app.use(cors());
 
+require('dotenv').config()
 app.listen(PORT, () => {
     console.log(`Server listening on ${PORT}`);
 });
+
+app.use(session({
+  secret: process.env.ENV_SESSION_KEY, 
+  resave: false,
+  saveUninitialized: true
+}));
 
 app.use(
     express.static(path.resolve(__dirname, '../venuemanagement/build')));
@@ -27,8 +36,17 @@ const {twoFactoredMail, verifyTwoFactored} = require('./functions/twoFactoredAut
 // change this according to the request you make for form parsing use: 
 // app.use(express.urlencoded({ extended: true }));
 
+const {oauthTokenize} = require('./functions/authenticateOauth');
 app.use(express.json()); 
-
+app.use(passport.initialize())
+app.use(passport.session());
+app.get('/google', passport.authenticate('google',{scope:['profile', 'email']}));
+app.get('/oauth/google',passport.authenticate('google', { failureRedirect: '/login' }), async (req,res)=>{
+  email = req.user._json.email;
+  const {token,user} = await oauthTokenize({email});
+  res.header('Authorization', `Bearer ${token}`);
+  res.status(200).json({user:user, token: token});
+})
 const db = require('./database')
 
 db.connect((err) => {
@@ -43,7 +61,7 @@ db.connect((err) => {
 const usersRoutes = require('./routes/userRoutes');
 
 app.get('/', (req,res) => {
-    res.json({message:"You are at home page!"})
+    res.json({message:"You are at home page!"});
 });
 
 app.use('/api/user', authenticate, usersRoutes);
@@ -174,6 +192,71 @@ app.post('/api/2fa/verify',async (req, res)=>{
 
 });
 
+app.put('/api/venues', async (req, res)=>{
+   try{
+    const updatedVenue = req.body;
+    await db.promise().query(
+      'UPDATE ignite.venues SET reservation_type = ?, vname = ?, address = ?, total_cost = ?, total_capacity = ?, sport = ?, user_id = ? WHERE venue_id = ?',
+      [updatedVenue.reservation_type, updatedVenue.vname, updatedVenue.address, updatedVenue.total_cost, 
+        updatedVenue.total_capacity, updatedVenue.sport, updatedVenue.user_id, updatedVenue.venue_id]);
+
+    res.status(200).json(updatedVenue);
+   }catch(error){
+     res.status(400).json({message:'internal server error'});
+   }
+});
+
+app.post('/api/reservations', async (req, res)=>{
+  try{
+    var {sorting, venue, dateTime} = req.body;
+
+    const defaultSorting = 0;
+    const defaultVenue = 'ALL';
+
+    const usedSorting = sorting === undefined ? defaultSorting : sorting;
+    const usedVenue = venue === undefined ? defaultVenue : venue;
+
+    if(dateTime === undefined){
+      const currentDate = new Date();
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth() + 1; 
+      const day = currentDate.getDate();
+
+      // Format the date as "YYYY-MM-DD" to match the SQL DATE data type
+      dateTime = `${year}-${month < 10 ? '0' : ''}${month}-${day < 10 ? '0' : ''}${day}T00:00`;
+    }
+    const reservationsQuery = `SELECT * FROM ignite.reservation WHERE start_datetime >= ?${
+      usedVenue === 'ALL' ? '' : ' AND venue LIKE ?'
+    } ORDER BY venue_id ASC`;
+    
+    const venuePattern = usedVenue === 'ALL' ? '%' : `%${usedVenue}%`;
+
+    const queryParams = usedVenue === 'ALL' ? [dateTime] : [dateTime, venuePattern];
+    const [reservations] = await db.promise().query(reservationsQuery, queryParams);
+
+    const venueIds = [];
+    const sqlQueries = [];
+    for(var i=0;i<reservations.length;i++){
+      const venueId = reservations[i].venue_id;
+      const query = `SELECT * FROM ignite.venue WHERE venue_id = ${venueId}`;
+      sqlQueries.push(query);
+      venueIds.push(venueId);
+    }
+    const venuesQuery = sqlQueries.join(' UNION ALL ');
+    const [venuesList] = await db.promise().query(venuesQuery);
+
+    var finalData = venuesList.map((item,index)=>({...item, ...reservations[index]}));
+    if(usedSorting == 1){
+      finalData.sort((a,b)=> new Date(b.start_datetime) - new Date(a.start_datetime))
+    }else{
+      finalData.sort((a,b)=> new Date(a.start_datetime) - new Date(b.start_datetime))
+    }   
+    console.log(finalData);
+    res.status(200).json(finalData);
+  }catch(error){
+    console.log(error);
+    res.status(500).json({message:'internal server error'});
+  }
 app.post('/api/captcha',async (req, res)=>{
   const { token } = req.body;
 
