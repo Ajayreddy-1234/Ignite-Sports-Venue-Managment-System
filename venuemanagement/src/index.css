@@ -13,7 +13,7 @@ input {
   padding: 10px 15px;
   margin-bottom: 15px;
 }
-.signupBtn, .loginBtn{
+.signupBtn, .loginBtn, .chooseDateTimeBtn {
   width: 200px;
   outline: none;
   border: none;
@@ -24,7 +24,8 @@ input {
 .signupBody,
 .forgotPasswordBody,
 .resetPasswordBody,
-.loginBody{
+.loginBody,
+.venueCreationBody {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -59,7 +60,8 @@ input {
 .forgotPasswordContainer,
 .signoutContainer,
 .resetPasswordContainer,
-.signupContainer{
+.signupContainer,
+.venueCreationContainer {
   background: transparent;
   border: 2px solid rgba(0,0,0, .3);
   backdrop-filter: blur(20px);
@@ -76,7 +78,8 @@ input {
 }
 .forgotPasswordContainer h2,
 .resetPasswordContainer h2,
-.loginContainer h2{
+.loginContainer h2,
+.venueCreationContainer h2 {
   font-size: 32px;
   font-weight: 200;
   width: 420px;
@@ -92,21 +95,23 @@ input {
 .loginForm,
 .forgotPasswordForm,
 .resetPasswordForm,
-.signupForm{
+.signupForm,
+.venueCreationForm {
   width: 100%;
   align-items: center;
   display: flex;
   flex-direction: column;
   background-color: transparent;
 }
-.loginForm .inputBox{
+.loginForm .inputBox {
   position: relative;
   height: 50px;
   margin: 20px;
   width: 100%;
   background: transparent;
 }
-.signupForm .inputBoxName{
+.signupForm .inputBoxName,
+.venueCreationForm .inputBox {
   position: relative;
   height: 40px;
   margin: 10px;
@@ -163,7 +168,7 @@ input {
   background: transparent;
 }
 
-.signupForm .inputBox{
+.signupForm .inputBox {
   position: relative;
   height: 40px;
   margin: 10px;
@@ -206,7 +211,8 @@ input {
 }
 .toLoginBtn,
 .loginBtn,
-.codeBtn {
+.codeBtn,
+.chooseDateTimeBtn {
   background-color: #8C1C13;
   color: #fff;
   height: 45px;
@@ -218,7 +224,7 @@ input {
   border-radius: 15px;
   margin-bottom: 25px;
 }
-.signupBtn{
+.signupBtn {
   background-color: #8C1C13;
   color: #fff;
   height: 45px;
@@ -263,6 +269,7 @@ input {
   .loginContainer,
   .signupContainer,
   .forgotPasswordContainer,
+  .venueCreationContainer,
   .verify {
       padding: 30px;
   }

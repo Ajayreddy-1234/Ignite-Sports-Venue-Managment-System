@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png"
-
+import captchaSendRequest from "./captchaSendRequest";
+import ReCAPTCHA from "react-google-recaptcha";
 const Register = () => {
     //const [email, setEmail] = useState("");
     //const [username, setUsername] = useState("");
@@ -9,7 +10,8 @@ const Register = () => {
     //const [userType, setUserType] = useState("");
     const [info, setInfo] = useState({});
 
-    
+    const recaptchaRef = React.createRef();
+
     const navigate = useNavigate();
 
     const handleChange = (event) => {
@@ -23,7 +25,13 @@ const Register = () => {
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+        const recaptchaValue = recaptchaRef.current.getValue();
+
+        const message = captchaSendRequest(recaptchaValue);
+
+        if (!message === "success") {
+            console.log("failed", message);
+        }
         try {
           const response = await fetch("/api/register", {
             method: "POST",
@@ -99,7 +107,7 @@ const Register = () => {
                     />
                 </div>
                 <div className="inputBox">
-                    <select name='role' id='role'value={info.role} onChange={handleChange}>
+                    <select name='role' id='role'value={info.role} onChange={handleChange} required>
                         <option>
                             Role Type
                         </option>
@@ -114,6 +122,11 @@ const Register = () => {
                         </option>
                     </select>
                 </div>
+                <ReCAPTCHA 
+                    ref={recaptchaRef}
+                    sitekey={"6LdAz9EoAAAAADcjpAdNdL8WLScq5oeB2u6-5xVB"}
+                    required
+                />
                     <button className='signupBtn' data-testid='register'>
                         Sign Up
                     </button>
