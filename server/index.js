@@ -21,12 +21,12 @@ app.use(session({
   saveUninitialized: true
 }));
 
-// app.use(
-//     express.static(path.resolve(__dirname, '../venuemanagement/build')));
+app.use(
+    express.static(path.resolve(__dirname, '../venuemanagement/build')));
 
-// app.get('*', (req, res) => {
-//         res.sendFile(path.resolve(__dirname, '../venuemanagement/build', 'index.html'));
-//     });
+app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, '../venuemanagement/build', 'index.html'));
+    });
 
 const {registerUser, loginUser} = require('./functions/authFunctions')
 const authenticate = require('./middleware/authMiddleware');
