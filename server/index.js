@@ -6,7 +6,7 @@ const router = express.Router();
 const cors = require("cors");
 const axios = require("axios");
 require("dotenv").config();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 var app = express();
 app.use(cors());
 
@@ -21,12 +21,12 @@ app.use(session({
   saveUninitialized: true
 }));
 
-app.use(
-    express.static(path.resolve(__dirname, '../venuemanagement/build')));
+// app.use(
+//     express.static(path.resolve(__dirname, '../venuemanagement/build')));
 
-app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, '../venuemanagement/build', 'index.html'));
-    });
+// app.get('*', (req, res) => {
+//         res.sendFile(path.resolve(__dirname, '../venuemanagement/build', 'index.html'));
+//     });
 
 const {registerUser, loginUser} = require('./functions/authFunctions')
 const authenticate = require('./middleware/authMiddleware');
