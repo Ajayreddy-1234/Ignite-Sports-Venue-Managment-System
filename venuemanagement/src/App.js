@@ -13,6 +13,7 @@ import Home from './components/Home.js'
 import ForgotPassword from "./components/ForgotPassword.js";
 import UserPage from "./components/userPage.js";
 import ResetPassword from "./components/ResetPassword.js";
+import GoogleOauth from "./components/GoogleOauth.js";
 
 
 function App() {
@@ -36,6 +37,8 @@ function App() {
           <Route path='/user-page' element={<UserPage />} />
           <Route path='/reset-password' element={<ResetPassword />}/>
           <Route path='/VenueCreationForm' element={<VenueCreationForm />} />
+          <Route path='/oauth/google' element={<GoogleOauth />} />
+
       </Routes>
     </BrowserRouter>
 /*

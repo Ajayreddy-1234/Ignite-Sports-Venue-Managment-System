@@ -6,7 +6,7 @@ const router = express.Router();
 const cors = require("cors");
 const axios = require("axios");
 require("dotenv").config();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 var app = express();
 app.use(cors());
 
@@ -24,9 +24,9 @@ app.use(session({
 app.use(
     express.static(path.resolve(__dirname, '../venuemanagement/build')));
 
-app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, '../venuemanagement/build', 'index.html'));
-    });
+// app.get('*', (req, res) => {
+//         res.sendFile(path.resolve(__dirname, '../venuemanagement/build', 'index.html'));
+//     });
 
 const {registerUser, loginUser} = require('./functions/authFunctions')
 const authenticate = require('./middleware/authMiddleware');
@@ -40,13 +40,27 @@ const {oauthTokenize} = require('./functions/authenticateOauth');
 app.use(express.json()); 
 app.use(passport.initialize())
 app.use(passport.session());
-app.get('/google', passport.authenticate('google',{scope:['profile', 'email']}));
-app.get('/oauth/google',passport.authenticate('google', { failureRedirect: '/login' }), async (req,res)=>{
+app.get('/google', passport.authenticate('google',{scope:['profile', 'email'], successRedirect: '/'}));
+app.get('/oauth/google',passport.authenticate('google', { failureRedirect: '/login', successRedirect: '/'}), async (req,res)=>{
   email = req.user._json.email;
   const {token,user} = await oauthTokenize({email});
   res.header('Authorization', `Bearer ${token}`);
   res.status(200).json({user:user, token: token});
-})
+});
+// (req, res) => {
+//     email = req.user._json.email;
+//     const {token,user} = oauthTokenize({email});
+//     res.header('Authorization', `Bearer ${token}`);
+//     res.status(200).json({user:user, token: token});
+//     return res.redirect('/');
+  // })
+// }
+// app.get('/oauth/google',passport.authenticate('google', { failureRedirect: '/login'}), async (req,res)=>{
+//   email = req.user._json.email;
+//   const {token,user} = await oauthTokenize({email});
+//   res.header('Authorization', `Bearer ${token}`);
+//   res.status(200).json({user:user, token: token});
+// });
 const db = require('./database')
 
 db.connect((err) => {

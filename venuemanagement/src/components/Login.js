@@ -4,6 +4,8 @@ import logo from "../assets/logo.png"
 import { Button } from "./Button";
 import ForgotPassword from "./ForgotPassword";
 import NavBar from "./navBar";
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
 
 var isLoggedIn = false;
 
@@ -36,11 +38,7 @@ const Login = () => {
 
             if (response.ok) {
                 const data = await response.json();
-                window.localStorage.setItem("userId", data.user.user_id);
-                window.localStorage.setItem("role", data.user.role);
-                window.localStorage.setItem("userEmail", data.user.email);
                 info.email = data.user.email;
-                window.localStorage.setItem("username", data.user.username);
                 window.localStorage.setItem("token", "Bearer " + data.authorization);
                 console.log("Login successful:", data);
             } else {
@@ -69,6 +67,10 @@ const Login = () => {
             if (response.ok) {
               const data = await response.json();
               console.log("2fa verify successful:", data);
+              window.localStorage.setItem("userId", data.user.user_id);
+              window.localStorage.setItem("role", data.user.role);
+              window.localStorage.setItem("userEmail", data.user.email);
+              window.localStorage.setItem("username", data.user.username);
               window.localStorage.setItem("token", "Bearer " + data.authorization);
               navigate("/");
             } else {
@@ -91,6 +93,15 @@ const Login = () => {
                 <img src={logo }width={250} height={85} alt='Logo'></img>
             </div>
             <h2>Login </h2>
+            <GoogleLogin
+            onSuccess={credentialResponse => {
+                console.log(jwtDecode(credentialResponse.credential));
+            }}
+            onError={() => {
+                console.log('Login Failed');
+            }}
+            />
+
             <form className='loginForm' data-testid='loginForm' onSubmit={handleSubmit}>
                 <div className="inputBox">
                     <i className='bx bxs-envelope'/>
