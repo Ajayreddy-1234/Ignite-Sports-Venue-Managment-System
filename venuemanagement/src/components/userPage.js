@@ -1,20 +1,19 @@
 import React from "react";
 import { Button } from "./Button";
-import { Link } from "react-router-dom";
-import isLoggedin from "./Login";
+import {useNavigate} from 'react-router-dom';
 
 function UserPage (){
+    const navigate = useNavigate();
 
     var handleSignout = () => {
-        isLoggedin = false;
+        window.localStorage.clear();
+        navigate("/");
+        window.location.reload();
     };
 
     return(
     <div className="signoutContainer">
-        <Link to="/">
-            <Button className="signoutBtn" buttonStyle='button' onClick={handleSignout}> SIGN OUT </Button>
-        </Link>
+        <Button className="signoutBtn" buttonStyle='button' onClick={handleSignout}> SIGN OUT </Button>
     </div>)
 };
-
 export default UserPage;

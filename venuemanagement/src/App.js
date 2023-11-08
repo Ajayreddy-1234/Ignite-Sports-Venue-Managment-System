@@ -14,15 +14,14 @@ import ForgotPassword from "./components/ForgotPassword.js";
 import UserPage from "./components/userPage.js";
 import ResetPassword from "./components/ResetPassword.js";
 
-
 function App() {
   const [data, setData] = React.useState(null);
 
-  React.useEffect(() => {
-    fetch("/api")
-      .then((res) => res.json())
-      .then((data) => setData(data.message));
-  }, []);
+  // React.useEffect(() => {
+  //   fetch("/api")
+  //     .then((res) => res.json())
+  //     .then((data) => setData(data.message));
+  // }, []);
 
   return (
     <BrowserRouter>

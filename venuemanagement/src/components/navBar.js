@@ -3,13 +3,11 @@ import {Link, useNavigate} from 'react-router-dom';
 import logo from "../assets/IgniteLogo2.png";
 import { Button } from "./Button";
 import './navBar.css';
-import isLoggedIn from "./Login.js";
-
 
 function NavBar(){
     const navigate = useNavigate();
-    var username = "set";
-    
+    const [username, setUsername] = useState();
+    const [loggedIn, setLoggedIn] = useState();
 
     //const isLoggedIn = () => {
     //    true;
@@ -30,15 +28,14 @@ function NavBar(){
         }
     };
 
-    var showUser = () =>{
-        if(isLoggedIn){
-            username = 'changed';
-        }
-    }
-
     useEffect(()=> {
         showButton();
-        showUser();
+        if (window.localStorage && window.localStorage.getItem('username')) {
+            setLoggedIn(true);
+            setUsername(window.localStorage.username);
+        } else {
+            setLoggedIn(false);
+        }
     }, []);
 
     window.addEventListener('resize', showButton);
@@ -65,8 +62,8 @@ function NavBar(){
                         </Link>
                     </li>
                     <li className="navItem">
-                        {isLoggedIn ? <Link to="/user-page" className="navLinksMobile" onClick={closeMobileMenu}>
-                            {showUser()} {username}
+                        {loggedIn ? <Link to="/user-page" className="navLinksMobile" onClick={closeMobileMenu}>
+                            {username}
                         </Link>
                         :
                         <Link to="/login" className="navLinksMobile" onClick={closeMobileMenu}>
@@ -76,9 +73,9 @@ function NavBar(){
                     </li>
                 </ul>
                 <ul className="userPage">
-                    {isLoggedIn ? 
+                    {loggedIn ? 
                         <Link to="/user-page">
-                            {showUser()} {button && <Button buttonStyle='button'>{username}</Button>}
+                            {button && <Button buttonStyle='button'>{username}</Button>}
                         </Link>
                         :
                         <Link to="/login">
