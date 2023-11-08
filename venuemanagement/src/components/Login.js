@@ -72,6 +72,7 @@ const Login = () => {
                 window.localStorage.setItem("username", data.user.username);
                 window.localStorage.setItem("token", "Bearer " + data.authorization);
                 navigate("/");
+                window.location.reload();
             } else {
               const errorData = await response.json();
               console.error("Login failed:", errorData);
@@ -104,6 +105,7 @@ const Login = () => {
               window.localStorage.setItem("username", data.user.username);
               window.localStorage.setItem("token", "Bearer " + data.authorization);
               navigate("/");
+              window.location.reload();
             } else {
               const errorData = await response.json();
               console.error("2fa verify failed:", errorData);

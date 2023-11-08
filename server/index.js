@@ -6,7 +6,7 @@ const router = express.Router();
 const cors = require("cors");
 const axios = require("axios");
 require("dotenv").config();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 var app = express();
 app.use(cors());
 
