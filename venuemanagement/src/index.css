@@ -7,7 +7,10 @@
   padding: 0;
   font-family: "Monsterrat", sans-serif;
 }
-
+.oauthContainer {
+  align-self: center;
+  padding: 12px;
+}
 input {
   height: 45px;
   padding: 10px 15px;

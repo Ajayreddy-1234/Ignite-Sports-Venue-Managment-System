@@ -51,6 +51,37 @@ const Login = () => {
 
         setLoginInfo(true);
     }
+    const oauthLogin = async(e) => {
+        info.email = e.email;
+        try {
+            const response = await fetch("/api/oauth", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(info),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                window.localStorage.setItem("token", "Bearer " + data.authorization);
+                console.log("Login successful:", data);
+                window.localStorage.setItem("userId", data.user.user_id);
+                window.localStorage.setItem("role", data.user.role);
+                window.localStorage.setItem("userEmail", data.user.email);
+                window.localStorage.setItem("username", data.user.username);
+                window.localStorage.setItem("token", "Bearer " + data.authorization);
+                navigate("/");
+            } else {
+              const errorData = await response.json();
+              console.error("Login failed:", errorData);
+            }
+         } catch (error) {
+            console.error("Login error:", error);
+        }
+
+        setLoginInfo(true);
+    }
     const handleSubmit = async(e) => {
         e.preventDefault();
 
@@ -93,14 +124,16 @@ const Login = () => {
                 <img src={logo }width={250} height={85} alt='Logo'></img>
             </div>
             <h2>Login </h2>
-            <GoogleLogin
-            onSuccess={credentialResponse => {
-                console.log(jwtDecode(credentialResponse.credential));
-            }}
-            onError={() => {
-                console.log('Login Failed');
-            }}
-            />
+            <div className="oauthContainer">
+                <GoogleLogin
+                    onSuccess={credentialResponse => {
+                        oauthLogin(jwtDecode(credentialResponse.credential));
+                    }}
+                    onError={() => {
+                        console.log('Login Failed');
+                    }}
+                />
+            </div>
 
             <form className='loginForm' data-testid='loginForm' onSubmit={handleSubmit}>
                 <div className="inputBox">

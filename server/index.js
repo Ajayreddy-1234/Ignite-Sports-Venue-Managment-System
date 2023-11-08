@@ -38,14 +38,25 @@ const {twoFactoredMail, verifyTwoFactored} = require('./functions/twoFactoredAut
 
 const {oauthTokenize} = require('./functions/authenticateOauth');
 app.use(express.json()); 
-app.use(passport.initialize())
-app.use(passport.session());
-app.get('/google', passport.authenticate('google',{scope:['profile', 'email'], successRedirect: '/'}));
-app.get('/oauth/google',passport.authenticate('google', { failureRedirect: '/login', successRedirect: '/'}), async (req,res)=>{
-  email = req.user._json.email;
-  const {token,user} = await oauthTokenize({email});
-  res.header('Authorization', `Bearer ${token}`);
-  res.status(200).json({user:user, token: token});
+// app.use(passport.initialize())
+// app.use(passport.session());
+// app.get('/google', passport.authenticate('google',{scope:['profile', 'email'], successRedirect: '/'}));
+// app.get('/oauth/google',passport.authenticate('google', { failureRedirect: '/login', successRedirect: '/'}), async (req,res)=>{
+//   email = req.user._json.email;
+//   const {token,user} = await oauthTokenize({email});
+//   res.header('Authorization', `Bearer ${token}`);
+//   res.status(200).json({user:user, token: token});
+// });
+app.post('/api/oauth', async (req, res) => {
+  try {
+    const email = req.body.email;
+    const {token,user} = await oauthTokenize({email});
+    res.header('Authorization', `Bearer ${token}`);
+    res.status(200).json({user:user, authorization: token});
+  } catch (error) {
+    console.error('Oauth error:', error);
+    res.status(500).json({ error: 'Oauth failed' });
+  }
 });
 // (req, res) => {
 //     email = req.user._json.email;
