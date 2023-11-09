@@ -32,6 +32,7 @@ const {registerUser, loginUser} = require('./functions/authFunctions')
 const authenticate = require('./middleware/authMiddleware');
 const {generatePasswordResetToken, sendPasswordResetEmail, resetPassword} = require('./functions/passwordReset')
 const {twoFactoredMail, verifyTwoFactored} = require('./functions/twoFactoredAuth')
+const {inviteFriend} = require('./functions/inviteFriends')
 
 // change this according to the request you make for form parsing use: 
 // app.use(express.urlencoded({ extended: true }));
@@ -280,4 +281,25 @@ app.post('/api/captcha',async (req, res)=>{
    }
 
 });
+
+app.post('/api/venueList', async (req, res)=>{
+  try{
+   const [results] = await db.promise().query('SELECT * FROM ignite.venue');
+   res.status(200).json(results);
+  }catch(error){
+    res.status(400).json({message:'internal server error'});
+  }
+});
+
+app.post('/api/inviteFriend', authenticate, async (req, res) => {
+  try{
+   const {friendEmail} = req.body;
+   const name = req.user.username;
+   await inviteFriend(name, friendEmail);
+   res.status(200).json({message: 'Successfully invited your friend!'});
+  }catch(error){
+    res.status(400).json({message:'internal server error'});
+  }
+
+})
 module.exports = app;

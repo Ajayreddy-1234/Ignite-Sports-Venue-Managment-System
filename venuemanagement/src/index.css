@@ -25,7 +25,8 @@ input {
 .forgotPasswordBody,
 .resetPasswordBody,
 .loginBody,
-.venueCreationBody {
+.venueCreationBody,
+.inviteFriendBody {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -61,7 +62,8 @@ input {
 .signoutContainer,
 .resetPasswordContainer,
 .signupContainer,
-.venueCreationContainer {
+.venueCreationContainer,
+.inviteFriendContainer {
   background: transparent;
   border: 2px solid rgba(0,0,0, .3);
   backdrop-filter: blur(20px);
@@ -79,7 +81,8 @@ input {
 .forgotPasswordContainer h2,
 .resetPasswordContainer h2,
 .loginContainer h2,
-.venueCreationContainer h2 {
+.venueCreationContainer h2,
+.inviteFriendContainer h2 {
   font-size: 32px;
   font-weight: 200;
   width: 420px;
@@ -96,7 +99,8 @@ input {
 .forgotPasswordForm,
 .resetPasswordForm,
 .signupForm,
-.venueCreationForm {
+.venueCreationForm,
+.inviteFriendForm {
   width: 100%;
   align-items: center;
   display: flex;
@@ -168,6 +172,15 @@ input {
   background: transparent;
 }
 
+.inviteFriendContainer .inputBox{
+  position: relative;
+  height: 40px;
+  margin: 10px;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  background: transparent;
+}
 .signupForm .inputBox {
   position: relative;
   height: 40px;
@@ -270,7 +283,16 @@ input {
   .signupContainer,
   .forgotPasswordContainer,
   .venueCreationContainer,
+  .inviteFriendContainer,
   .verify {
       padding: 30px;
   }
+}
+
+.inviteFriendMessage{
+  color:green;
+}
+
+.inviteFriendMessageContainer{
+  padding-top: 10px;
 }
