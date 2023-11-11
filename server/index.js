@@ -327,4 +327,19 @@ app.post('/api/inviteFriend', authenticate, async (req, res) => {
   }
 
 })
+
+app.post('/api/bookVenue', authenticate, async (req, res) =>{
+  try{
+    const { reservation_id, paid } = req.body;
+    const user_id = req.user.user_id;
+    await db.promise().query('UPDATE ignite.reservation SET closed = 1 where reservation_id = ?',[reservation_id]);
+    await db.promise().query('INSERT INTO ignite.reservation_user_rel (user_id, reservation_id, value_paid) VALUES (?, ?, ?)',[user_id, reservation_id, paid]);
+    const [reservation_res] = await db.promise().query('SELECT * FROM ignite.reservation where reservation_id = ?',[reservation_id]);
+    res.status(200).json({message: 'successfully booked the venue', reservation: reservation_res[0]})
+  }catch(error){
+    console.log(error);
+    res.status(400).json({message:'internal server error', err: error});
+  }
+
+});
 module.exports = app;
