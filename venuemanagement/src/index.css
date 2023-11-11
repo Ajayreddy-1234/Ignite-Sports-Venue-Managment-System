@@ -140,8 +140,6 @@ input {
 }
 .signupForm .inputBoxName,
 .venueCreationForm .inputBox {
-.signupForm .inputBoxName,
-.venueCreationForm .inputBox {
   position: relative;
   height: 40px;
   margin: 10px;
@@ -264,7 +262,7 @@ input {
   border-radius: 15px;
   margin-bottom: 25px;
 }
-.signupBtn {
+
 .signupBtn {
   background-color: #8C1C13;
   color: #fff;

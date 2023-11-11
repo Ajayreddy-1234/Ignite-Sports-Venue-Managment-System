@@ -181,11 +181,11 @@ app.post('/api/reset-password',async (req,res)=>{
 
 app.post('/api/venues', async (req, res) => {
   const venueData = req.body;
-  console.log(venueData);
+  // console.log(venueData);
   try {
     await createVenue(venueData);
-    console.log('Venue added successfully.');
-    console.log(JSON.stringify(venueData));
+    // console.log('Venue added successfully.');
+    // console.log(JSON.stringify(venueData));
     return res.status(200).json({ message: 'Venue added successfully' });
   } catch (error) {
     console.error('Error adding venue:', error);
@@ -201,82 +201,6 @@ app.put('/api/venues/:venue_id/status', async (req, res) => {
   } catch (error) {
     console.error('Error updating venue status:', error);
     res.status(500).json({ error: 'Failed to update venue status' });
-  }
-});
-
-app.post('/api/2fa/setup',authenticate,async (req, res)=>{
-  try{
-    const [result] = await db.promise().query('SELECT * FROM ignite.User WHERE username = ? ',[req.user.username]);
-    if(result.length == 0){
-      res.status(400).json({message: 'No user Found with this email'});
-    } else if(result[0].two_factor_enabled==1){
-      res.status(200).json({message:'Two factored is already turned on'});
-    }else{
-      await db.promise().query('update ignite.User SET two_factor_enabled = ? where user_id = ?',[1,result[0].user_id]);
-
-      res.status(200).json({ message: 'Successfully turned on two factored authentication' });
-    }
-
-  }catch(error){
-      console.log(error)
-      res.status(500).json({msg:'internal server error'});
-  }
-
-});
-
-app.post('/api/2fa/verify',async (req, res)=>{
-  try{
-    const {Otp, email} = req.body;
-    const x = await verifyTwoFactored({Otp, email});
-    if(x==1){
-      const [rex] = await db.promise().query('SELECT * FROM ignite.User where email = ?',[email]);
-      const token = req.headers.authorization?.split(' ')[1];
-      if(!token){
-        return res.status(401).json({ message: 'Please send authorization header' });
-      }else{
-        res.header('Authorization', `Bearer ${token}`);
-        res.status(200).json(rex[0]);
-      }
-    }else{
-      res.status(400).json({message: 'Wrong OTP entered'});
-    }
-
-  }catch(error){
-    res.status(400).json({message:'internal server error'});
-  }
-
-});
-
-app.post('/api/captcha',async (req, res)=>{
-  const { token } = req.body;
-
-  try {
-    // Sending secret key and response token to Google Recaptcha API for authentication.
-    const response = await axios.post(
-      `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.SECRET_KEY}&response=${token}`
-    );
-
-    // Check response status and send back to the client-side
-    if (response.data.success) {
-      res.send("Human 👨 👩");
-    } else {
-      res.send("Robot 🤖");
-    }
-  } catch (error) {
-    // Handle any errors that occur during the reCAPTCHA verification process
-    console.error(error);
-    res.status(500).send("Error verifying reCAPTCHA");
-   }
-
-});
-
-app.post('/api/venueList', async (req, res)=>{
-  try{
-   const [results] = await db.promise().query('SELECT * FROM ignite.venue');
-   res.status(200).json(results);
-  }
-  catch(error){
-    res.status(400).json({message:'internal server error'});
   }
 });
 

@@ -72,7 +72,7 @@ async function createReservation(venueData) {
       console.log(theIDRow);
       const venueId = theIDRow[0].venue_id;
       console.log(venueId);
-      const sql = 'INSERT INTO ignite.reservation (reservation_type, vname, total_capacity, capacity_available, cost_paid, start_datetime, end_datetime, user_id, venue_id) VALUES (?, ?, ?, ?, FALSE, ?, ?, ?, ?)';
+      const sql = 'INSERT INTO ignite.reservation (reservation_type, vname, total_capacity, capacity_available, cost_paid, start_datetime, end_datetime, user_id, venue_id, closed) VALUES (?, ?, ?, ?, FALSE, ?, ?, ?, ?, FALSE)';
       const values = [
         venueData.reservationtype,
         venueData.name,

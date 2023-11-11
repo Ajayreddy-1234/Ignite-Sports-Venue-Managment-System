@@ -22,10 +22,11 @@
   
 .VenueCard{
     position: relative;
-    background-color: white;
+    background: transparent;
+    backdrop-filter: blur(20px);
     outline: 3px;
     outline-style: solid;
-    outline-color: lightgray;
+    outline-color: rgb(109, 109, 109);
     margin: 1rem;
     flex: 1 0 25rem;
     max-width: 30rem;
