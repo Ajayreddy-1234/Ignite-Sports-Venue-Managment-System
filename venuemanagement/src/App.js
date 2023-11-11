@@ -6,7 +6,7 @@ import Login from "./components/Login.js";
 import Register from "./components/Register.js";
 import HomeBody from "./components/HomeBody.js";
 import VenueCreationForm from "./components/venuecreationform/venuecreationform.js";
-
+import InviteFriend from "./components/inviteFriend.js";
 //import "./index.css";
 import NavBar from "./components/navBar";
 import Home from './components/Home.js'
@@ -16,15 +16,14 @@ import ResetPassword from "./components/ResetPassword.js";
 import ReviewBooking from "./components/reviewBooking.js";
 import VenuesTable from "./components/ViewPage.js";
 
-
 function App() {
   const [data, setData] = React.useState(null);
 
-  React.useEffect(() => {
-    fetch("/api")
-      .then((res) => res.json())
-      .then((data) => setData(data.message));
-  }, []);
+  // React.useEffect(() => {
+  //   fetch("/api")
+  //     .then((res) => res.json())
+  //     .then((data) => setData(data.message));
+  // }, []);
 
   return (
     <BrowserRouter>
@@ -38,6 +37,7 @@ function App() {
           <Route path='/user-page' element={<UserPage />} />
           <Route path='/reset-password' element={<ResetPassword />}/>
           <Route path='/VenueCreationForm' element={<VenueCreationForm />} />
+          <Route path='/invite-friend' element={<InviteFriend />} />
           <Route path='/review-booking' element={<ReviewBooking />}/>
           <Route path='/venues' element={<VenuesTable />}/>
       </Routes>
