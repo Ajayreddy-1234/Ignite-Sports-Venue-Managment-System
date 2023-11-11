@@ -25,7 +25,9 @@ input {
 .forgotPasswordBody,
 .resetPasswordBody,
 .loginBody,
-.venueCreationBody {
+.venueCreationBody,
+.reviewBookingBody,
+.ViewPageBody {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,6 +35,7 @@ input {
   background-image: url("./assets/backgroundImage.jpg");
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
 
   box-sizing: border-box;
   margin: 0;
@@ -61,7 +64,8 @@ input {
 .signoutContainer,
 .resetPasswordContainer,
 .signupContainer,
-.venueCreationContainer {
+.venueCreationContainer,
+.reviewBookingContainer {
   background: transparent;
   border: 2px solid rgba(0,0,0, .3);
   backdrop-filter: blur(20px);
@@ -79,7 +83,8 @@ input {
 .forgotPasswordContainer h2,
 .resetPasswordContainer h2,
 .loginContainer h2,
-.venueCreationContainer h2 {
+.venueCreationContainer h2,
+.reviewBookingContainer h2 {
   font-size: 32px;
   font-weight: 200;
   width: 420px;
@@ -92,17 +97,33 @@ input {
   text-align: center;
 }
 
+.reviewBookingContainer h3{
+  font-size: 24px;
+  font-weight: 200;
+  padding: 20px;
+}
+
 .loginForm,
 .forgotPasswordForm,
 .resetPasswordForm,
 .signupForm,
-.venueCreationForm {
+.venueCreationForm{
   width: 100%;
   align-items: center;
   display: flex;
   flex-direction: column;
   background-color: transparent;
 }
+
+.reviewBookingForm {
+  width: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  padding-top: 30px;
+}
+
 .loginForm .inputBox {
   position: relative;
   height: 50px;
@@ -212,7 +233,8 @@ input {
 .toLoginBtn,
 .loginBtn,
 .codeBtn,
-.chooseDateTimeBtn {
+.chooseDateTimeBtn,
+.bookRevervationBtn {
   background-color: #8C1C13;
   color: #fff;
   height: 45px;
@@ -270,6 +292,7 @@ input {
   .signupContainer,
   .forgotPasswordContainer,
   .venueCreationContainer,
+  .reviewBookingContainer,
   .verify {
       padding: 30px;
   }

@@ -13,6 +13,8 @@ import Home from './components/Home.js'
 import ForgotPassword from "./components/ForgotPassword.js";
 import UserPage from "./components/userPage.js";
 import ResetPassword from "./components/ResetPassword.js";
+import ReviewBooking from "./components/reviewBooking.js";
+import VenuesTable from "./components/ViewPage.js";
 
 
 function App() {
@@ -36,6 +38,8 @@ function App() {
           <Route path='/user-page' element={<UserPage />} />
           <Route path='/reset-password' element={<ResetPassword />}/>
           <Route path='/VenueCreationForm' element={<VenueCreationForm />} />
+          <Route path='/review-booking' element={<ReviewBooking />}/>
+          <Route path='/venues' element={<VenuesTable />}/>
       </Routes>
     </BrowserRouter>
 /*

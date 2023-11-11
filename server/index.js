@@ -23,7 +23,7 @@ const {registerUser, loginUser} = require('./functions/authFunctions')
 const authenticate = require('./middleware/authMiddleware');
 const {generatePasswordResetToken, sendPasswordResetEmail, resetPassword} = require('./functions/passwordReset');
 const createVenue = require('./functions/createVenue');
-const openCloseVenue = require('./functions/openCloseVenue');
+const changeCapacity = require('./functions/openCloseVenue');
 const {twoFactoredMail, verifyTwoFactored} = require('./functions/twoFactoredAuth')
 
 // change this according to the request you make for form parsing use: 
@@ -43,6 +43,7 @@ db.connect((err) => {
 
 
 const usersRoutes = require('./routes/userRoutes');
+
 
 app.get('/', (req,res) => {
     res.json({message:"You are at home page!"})
@@ -135,10 +136,11 @@ app.post('/api/reset-password',async (req,res)=>{
 
 app.post('/api/venues', async (req, res) => {
   const venueData = req.body;
-
+  console.log(venueData);
   try {
     await createVenue(venueData);
     console.log('Venue added successfully.');
+    console.log(JSON.stringify(venueData));
     return res.status(200).json({ message: 'Venue added successfully' });
   } catch (error) {
     console.error('Error adding venue:', error);
@@ -147,11 +149,9 @@ app.post('/api/venues', async (req, res) => {
 });
 
 app.put('/api/venues/:venue_id/status', async (req, res) => {
-  const venueId = req.params.venue_id;
-  const newStatus = req.body.status;
-
+  const newStatus = req.body;
   try {
-    await openCloseVenue(venueId, newStatus);
+    await changeCapacity(newStatus);
     res.status(200).json({ message: 'Venue status updated successfully' });
   } catch (error) {
     console.error('Error updating venue status:', error);
@@ -224,4 +224,15 @@ app.post('/api/captcha',async (req, res)=>{
    }
 
 });
+
+app.post('/api/venueList', async (req, res)=>{
+  try{
+   const [results] = await db.promise().query('SELECT * FROM ignite.venue');
+   res.status(200).json(results);
+  }
+  catch(error){
+    res.status(400).json({message:'internal server error'});
+  }
+});
+
 module.exports = app;
