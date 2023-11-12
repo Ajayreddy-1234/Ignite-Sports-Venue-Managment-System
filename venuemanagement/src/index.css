@@ -30,7 +30,6 @@ input {
 .loginBody,
 .venueCreationBody,
 .reviewBookingBody,
-.ViewPageBody ,
 .inviteFriendBody {
   display: flex;
   justify-content: center;
@@ -45,6 +44,50 @@ input {
   margin: 0;
   padding: 0;
   font-family: "Monsterrat", sans-serif;
+}
+
+.ViewPageBody {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  background-image: url("./assets/backgroundImage.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Monsterrat", sans-serif;
+}
+
+.searchForm {
+  align-items: center;
+  background-color: rgba(231, 215, 193,0.5);
+  display: flex;
+  justify-content: center;
+  padding-left: 5rem;
+  padding-right: 5rem;
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  backdrop-filter: blur(1px);
+}
+.searchForm .searchInput {
+  background: white;
+  border: 2px solid #000;
+  border-radius: 10px;
+  height: 40px;
+  margin: 15px;
+  position: relative;
+  transition: .3s;
+  width: 80%;
+  backdrop-filter: blur(20px);
+}
+
+.searchForm .searchInput:focus {
+  border-color: #8C1C13;
+  outline-color: #8C1C13;
+  transition: 0.3s;
 }
 
 .verify,
