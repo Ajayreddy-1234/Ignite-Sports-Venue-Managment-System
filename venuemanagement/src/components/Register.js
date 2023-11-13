@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png"
+import captchaSendRequest from "./captchaSendRequest";
 import ReCAPTCHA from "react-google-recaptcha";
 const Register = () => {
 

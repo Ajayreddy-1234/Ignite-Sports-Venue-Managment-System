@@ -1,0 +1,53 @@
+
+
+.Card{
+    display: grid;
+    grid-template-columns: 350px 350px 350px;
+    justify-content: center;
+}
+.List{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 5rem;
+}
+
+.VenueCard i{
+    position: absolute;
+    right: 1rem;
+    margin: 1rem;
+    font-size: 2rem;
+    transition: 0.2s;
+    cursor: pointer;
+  }
+  
+.VenueCard{
+    position: relative;
+    background: transparent;
+    backdrop-filter: blur(20px);
+    outline: 3px;
+    outline-style: solid;
+    outline-color: rgb(109, 109, 109);
+    margin: 1rem;
+    flex: 1 0 25rem;
+    max-width: 30rem;
+    max-height: 50rem;
+    transition: 0.2s;
+    border-radius: 10px;
+}
+  
+.VenueCard:hover{
+    transform: translateY(-0.5rem);
+    box-shadow: 0.5rem 0.75rem 1.5rem #8C1C13;
+}
+
+.displayStack__1{
+  margin: 2rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.CardContent {
+    margin: 2rem;
+}
+

@@ -29,6 +29,7 @@ input {
 .resetPasswordBody,
 .loginBody,
 .venueCreationBody,
+.reviewBookingBody,
 .inviteFriendBody {
   display: flex;
   justify-content: center;
@@ -37,11 +38,56 @@ input {
   background-image: url("./assets/backgroundImage.jpg");
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
 
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-family: "Monsterrat", sans-serif;
+}
+
+.ViewPageBody {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  background-image: url("./assets/backgroundImage.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Monsterrat", sans-serif;
+}
+
+.searchForm {
+  align-items: center;
+  background-color: rgba(231, 215, 193,0.5);
+  display: flex;
+  justify-content: center;
+  padding-left: 5rem;
+  padding-right: 5rem;
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  backdrop-filter: blur(1px);
+}
+.searchForm .searchInput {
+  background: white;
+  border: 2px solid #000;
+  border-radius: 10px;
+  height: 40px;
+  margin: 15px;
+  position: relative;
+  transition: .3s;
+  width: 80%;
+  backdrop-filter: blur(20px);
+}
+
+.searchForm .searchInput:focus {
+  border-color: #8C1C13;
+  outline-color: #8C1C13;
+  transition: 0.3s;
 }
 
 .verify,
@@ -66,7 +112,8 @@ input {
 .resetPasswordContainer,
 .signupContainer,
 .venueCreationContainer,
-.inviteFriendContainer {
+.inviteFriendContainer ,
+.reviewBookingContainer {
   background: transparent;
   border: 2px solid rgba(0,0,0, .3);
   backdrop-filter: blur(20px);
@@ -84,8 +131,9 @@ input {
 .forgotPasswordContainer h2,
 .resetPasswordContainer h2,
 .loginContainer h2,
+.inviteFriendContainer h2 ,
 .venueCreationContainer h2,
-.inviteFriendContainer h2 {
+.reviewBookingContainer h2 {
   font-size: 32px;
   font-weight: 200;
   width: 420px;
@@ -98,18 +146,34 @@ input {
   text-align: center;
 }
 
+.reviewBookingContainer h3{
+  font-size: 24px;
+  font-weight: 200;
+  padding: 20px;
+}
+
 .loginForm,
 .forgotPasswordForm,
 .resetPasswordForm,
 .signupForm,
-.venueCreationForm,
-.inviteFriendForm {
+.inviteFriendForm ,
+.venueCreationForm{
   width: 100%;
   align-items: center;
   display: flex;
   flex-direction: column;
   background-color: transparent;
 }
+
+.reviewBookingForm {
+  width: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  padding-top: 30px;
+}
+
 .loginForm .inputBox {
   position: relative;
   height: 50px;
@@ -228,7 +292,8 @@ input {
 .toLoginBtn,
 .loginBtn,
 .codeBtn,
-.chooseDateTimeBtn {
+.chooseDateTimeBtn,
+.bookRevervationBtn {
   background-color: #8C1C13;
   color: #fff;
   height: 45px;
@@ -240,6 +305,7 @@ input {
   border-radius: 15px;
   margin-bottom: 25px;
 }
+
 .signupBtn {
   background-color: #8C1C13;
   color: #fff;
@@ -287,6 +353,7 @@ input {
   .forgotPasswordContainer,
   .venueCreationContainer,
   .inviteFriendContainer,
+  .reviewBookingContainer,
   .verify {
       padding: 30px;
   }
