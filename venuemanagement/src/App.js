@@ -47,6 +47,7 @@ function App() {
       </Routes>
     </BrowserRouter>
 /*
+<Route path='/payment?' element={<Payment />}/>
     <BrowserRouter>
       <NavBar/>
       <Routes>

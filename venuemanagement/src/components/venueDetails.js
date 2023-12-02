@@ -15,6 +15,7 @@ const VenueDetails = () => {
   const [venueAddress, setVenueAddress] = useState("");
   const [venueSport, setVenueSport] = useState("");
   const [venueReservationTimes, setVenueReservationTimes] = useState([]);
+  const [venueReservationId, setVenueReservationId] = useState([]);
   const [selectedReservation, setSelectedReservation] = useState(null);
 
   const fetchData = async () => {
@@ -61,7 +62,7 @@ const VenueDetails = () => {
     if(selectedReservation === null || selectedReservation.start_datetime === null){
       alert("Please select a reservation time")
     }else{
-      navigate(`/review-booking?venueid=${id}&reservation=${selectedReservation ? selectedReservation.start_datetime : ''}`)
+      navigate(`/review-booking?venueid=${id}&reservation=${selectedReservation ? selectedReservation.start_datetime : ''}&reservationid=${selectedReservation.reservation_id}`)
     }
   }
 
