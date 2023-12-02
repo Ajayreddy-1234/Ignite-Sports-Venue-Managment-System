@@ -63,14 +63,14 @@ router.put('/profile', async (req, res) => {
     try {
       const updatedUser = req.body;
       
-      if (!updatedUser || !updatedUser.username || !updatedUser.email || !updatedUser.password || !updatedUser.role) {
+      if (!updatedUser || !updatedUser.username || !updatedUser.email || !updatedUser.role) {
         res.status(400).json({ error: 'Invalid data' });
         return;
       }
     
       await db.promise().query(
-        'UPDATE ignite.User SET username = ?, email = ?, password_hash = ?, role = ? WHERE username = ?',
-        [updatedUser.username, updatedUser.email, updatedUser.password, updatedUser.role, req.user.username]
+        'UPDATE ignite.User SET username = ?, email = ?,  role = ? WHERE user_id = ?',
+        [updatedUser.username, updatedUser.email, updatedUser.role, req.user.userid]
       );
   
       res.status(200).json(updatedUser);

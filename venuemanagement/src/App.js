@@ -7,6 +7,7 @@ import Register from "./components/Register.js";
 import HomeBody from "./components/HomeBody.js";
 import VenueCreationForm from "./components/venuecreationform/venuecreationform.js";
 import InviteFriend from "./components/inviteFriend.js";
+import EditProfileDetails from "./components/editprofiledetails/editProfileDetails.js";
 //import "./index.css";
 import NavBar from "./components/navBar";
 import Home from './components/Home.js'
@@ -42,6 +43,7 @@ function App() {
           <Route path='/review-booking?' element={<ReviewBooking />}/>
           <Route path='/venues' element={<VenuesTable />}/>
           <Route path='/venue/venue-details?' element={<VenueDetails />}/>
+          <Route path='/edit-profile-details' element={<EditProfileDetails />} />
       </Routes>
     </BrowserRouter>
 /*
