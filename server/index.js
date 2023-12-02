@@ -61,6 +61,27 @@ app.post('/api/oauth', async (req, res) => {
     res.status(500).json({ error: 'Oauth failed' });
   }
 });
+
+app.post('/api/profile', async (req, res) => {
+  try {
+    const updatedUser = req.body;
+    
+    if (!updatedUser || !updatedUser.username || !updatedUser.email || !updatedUser.role) {
+      res.status(400).json({ error: 'Invalid data' });
+      return;
+    }
+  
+    await db.promise().query(
+      'UPDATE ignite.User SET username = ?, email = ?,  role = ? WHERE user_id = ?',
+      [updatedUser.username, updatedUser.email, updatedUser.role, updatedUser.userid]
+    );
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error('Error updating User:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 // (req, res) => {
 //     email = req.user._json.email;
 //     const {token,user} = oauthTokenize({email});

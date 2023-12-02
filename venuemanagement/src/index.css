@@ -321,6 +321,8 @@ input {
 .signOutBtn {
   background-color: #c21010;
   color: #fff;
+  width: 40%;
+  padding: 10px;
 }
 .link {
   cursor: pointer;
