@@ -366,3 +366,48 @@ input {
 .inviteFriendMessageContainer{
   padding-top: 10px;
 }
+
+.venueDetailsBody{
+  min-height: 100vh;
+  background-image: url("./assets/backgroundImage.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+h2.venueDetailsTitle{
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.venueDetailsImage{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.venueDetails{
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 2px solid rgba(0,0,0, .3);
+  backdrop-filter: blur(20px);
+  text-align: center;
+  border-radius: 10px;
+}
+
+.venueDetailsContainer{
+  padding: 10vh;
+}
+
+.detail{
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}

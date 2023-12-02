@@ -15,6 +15,7 @@ import UserPage from "./components/userPage.js";
 import ResetPassword from "./components/ResetPassword.js";
 import ReviewBooking from "./components/reviewBooking.js";
 import VenuesTable from "./components/ViewPage.js";
+import VenueDetails from "./components/venueDetails.js";
 
 function App() {
   const [data, setData] = React.useState(null);
@@ -38,8 +39,9 @@ function App() {
           <Route path='/reset-password' element={<ResetPassword />}/>
           <Route path='/VenueCreationForm' element={<VenueCreationForm />} />
           <Route path='/invite-friend' element={<InviteFriend />} />
-          <Route path='/review-booking' element={<ReviewBooking />}/>
+          <Route path='/review-booking?' element={<ReviewBooking />}/>
           <Route path='/venues' element={<VenuesTable />}/>
+          <Route path='/venue/venue-details?' element={<VenueDetails />}/>
       </Routes>
     </BrowserRouter>
 /*
