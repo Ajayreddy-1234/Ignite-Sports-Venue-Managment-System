@@ -54,7 +54,10 @@ const VenueCreationForm = () => {
     const [submitDateTime, setSubmitDateTime] = useState(false);
     const [sendRequestMessage, setSendRequestMessage] = useState("");
     const [submitPressed, setSubmitPressed] = useState(false);
-
+    var role = "Attendee";
+    if (window.localStorage && window.localStorage.length > 0) {
+        role = window.localStorage.getItem('role'); 
+    }
     const [formInputs, setFormInputs] = useState({
         userid: window.localStorage.getItem('userId'),
         reservationtype: "",
@@ -226,77 +229,83 @@ const VenueCreationForm = () => {
                 <div className="logo">
                     <img src={logo} width={250} height={85} alt='Logo'></img>
                 </div>
-
-                <h2><i>{`${title}`}</i></h2>
-                <form className='venueCreationForm' onSubmit={handleSubmit}>
-                    {page === 0 &&
-                        <>
-                            <div className="inputBox">
-                                <select name={reservationType} id={reservationType} value={formInputs.reservationtype} required onChange={handleChange}>
-                                    <option value={""} selected disabled>
-                                        -- Choose reservation type --
-                                    </option>
-                                    <option value={"Venue"}>
-                                        Venue
-                                    </option>
-                                    <option value={"Activity"}>
-                                        Activity
-                                    </option>
-                                </select>
-                            </div>
-                            <div className="inputBox">
-                                <input
-                                    placeholder="Venue/Activity Name"
-                                    name={veneuName}
-                                    id={veneuName}
-                                    value={formInputs.name}
-                                    required
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div className="inputBox">
-                                <input
-                                    placeholder="Venue/Activity Address"
-                                    name={venueAddr}
-                                    id={venueAddr}
-                                    value={formInputs.addr}
-                                    required
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div className="inputBox">
-                                <input
-                                    placeholder="Capacity"
-                                    type="number"
-                                    min="1"
-                                    name={capacity}
-                                    id={capacity}
-                                    value={formInputs.capacity}
-                                    required
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div className="inputBox">
-                                <select name={sportType} id={sportType} value={formInputs.sporttype} required onChange={handleChange}>
-                                    <option value={""} selected disabled>
-                                        -- Choose a sport --
-                                    </option>
-                                    <option value={"Soccer"}>
-                                        Soccer
-                                    </option>
-                                    <option value={"Football"}>
-                                        Football
-                                    </option>
-                                    <option value={"Basketball"}>
-                                        Basketball
-                                    </option>
-                                </select>
-                            </div>
-                            <button className='chooseDateTimeBtn' value={1} onClick={pageButtonClick}>
-                                Choose availabilty &rarr;
-                            </button>
-                        </>
-                    }
+                {role === "Attendee" && 
+                    <>
+                        <h3 className='error'>Attendees cannot create Venues or Activities.</h3>
+                    </>
+                }
+                {(role === "Organizer" || role === "Admin") && 
+                    <>
+                    <h2><i>{`${title}`}</i></h2>
+                    <form className='venueCreationForm' onSubmit={handleSubmit}>
+                        {page === 0 &&
+                            <>
+                                <div className="inputBox">
+                                    <select name={reservationType} id={reservationType} value={formInputs.reservationtype} required onChange={handleChange}>
+                                        <option value={""} selected disabled>
+                                            -- Choose reservation type --
+                                        </option>
+                                        <option value={"Venue"}>
+                                            Venue
+                                        </option>
+                                        <option value={"Activity"}>
+                                            Activity
+                                        </option>
+                                    </select>
+                                </div>
+                                <div className="inputBox">
+                                    <input
+                                        placeholder="Venue/Activity Name"
+                                        name={veneuName}
+                                        id={veneuName}
+                                        value={formInputs.name}
+                                        required
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                                <div className="inputBox">
+                                    <input
+                                        placeholder="Venue/Activity Address"
+                                        name={venueAddr}
+                                        id={venueAddr}
+                                        value={formInputs.addr}
+                                        required
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                                <div className="inputBox">
+                                    <input
+                                        placeholder="Capacity"
+                                        type="number"
+                                        min="1"
+                                        name={capacity}
+                                        id={capacity}
+                                        value={formInputs.capacity}
+                                        required
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                                <div className="inputBox">
+                                    <select name={sportType} id={sportType} value={formInputs.sporttype} required onChange={handleChange}>
+                                        <option value={""} selected disabled>
+                                            -- Choose a sport --
+                                        </option>
+                                        <option value={"Soccer"}>
+                                            Soccer
+                                        </option>
+                                        <option value={"Football"}>
+                                            Football
+                                        </option>
+                                        <option value={"Basketball"}>
+                                            Basketball
+                                        </option>
+                                    </select>
+                                </div>
+                                <button className='chooseDateTimeBtn' value={1} onClick={pageButtonClick}>
+                                    Choose availabilty &rarr;
+                                </button>
+                            </>
+                        }
                     { page === 1 &&
                         <>
                             <h3>Choose Dates available</h3>                            
@@ -385,6 +394,8 @@ const VenueCreationForm = () => {
                         </div>
                     </div>
                 </form>
+            </>
+            }
             </div>
         </div>
     );

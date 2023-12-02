@@ -9,7 +9,7 @@ function captchaSendRequest(inputVal, token) {
           },
           body: JSON.stringify({inputVal, token}),
         });
-  
+        
         if (response.ok) {
           const data = response.json();
           console.log("Captcha Success:", data);
