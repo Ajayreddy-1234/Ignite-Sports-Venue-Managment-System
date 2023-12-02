@@ -1,7 +1,7 @@
 // VenuesTable.js
 import React, { useEffect, useState } from 'react';
 import Card from './Card';
-import { useNavigate } from 'react-router-dom';
+import { Link, Route, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from './Button';
 
@@ -60,6 +60,10 @@ function VenuesTable() {
       </div>
     </div>
   );
+}
+
+function VenueDetails(){
+
 }
 
 export default VenuesTable;
