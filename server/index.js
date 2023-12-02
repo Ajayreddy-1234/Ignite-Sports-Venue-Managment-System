@@ -293,9 +293,25 @@ app.post('/api/owner-activities', async (req, res)=>{
   }
 });
 
+app.post('/api/reservations', async (req, res)=>{
+  try {
+   const venue_id = req.body.venue_id;
+   const [reservations] = await db.promise().query(
+      'SELECT * FROM ignite.reservation r '
+      + 'JOIN reservation_user_rel ru ON r.reservation_id = ru.reservation_id '
+      + 'JOIN User u ON u.user_id = ru.user_id '
+      + 'WHERE r.venue_id = ?',
+      [venue_id]);
+
+   res.status(200).json(reservations);
+  }catch(error){
+    res.status(400).json({message:'internal server error'});
+  }
+});
+
 app.post('/api/close-event', async (req, res)=>{
   try{
-   const eventid = req.body.venueid;
+   const eventid = req.body.venue_id;
    const [venue] = await db.promise().query(
       'UPDATE ignite.venue SET closed = 1 WHERE venue_id = ?',
       [eventid]);
@@ -308,7 +324,7 @@ app.post('/api/close-event', async (req, res)=>{
 
 app.post('/api/open-event', async (req, res)=>{
   try{
-   const eventid = req.body.venueid;
+   const eventid = req.body.venue_id;
    const [venue] = await db.promise().query(
       'UPDATE ignite.venue SET closed = 0 WHERE venue_id = ?',
       [eventid]);

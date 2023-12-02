@@ -4,6 +4,7 @@ import { Button } from './Button';
 import TimePicker from 'react-multi-date-picker/plugins/time_picker';
 import { useNavigate } from 'react-router-dom';
 import SplitLayout from './SplitLayout';
+import ReservationsCard from './ReservationsCard';
 
 const VenueDetails = () => {
   const venueParams = new URLSearchParams(window.location.search);
@@ -16,7 +17,10 @@ const VenueDetails = () => {
   const [venueSport, setVenueSport] = useState("");
   const [venueReservationTimes, setVenueReservationTimes] = useState([]);
   const [venueReservationId, setVenueReservationId] = useState([]);
+  const [reservations, setReservations] = useState([]);
   const [selectedReservation, setSelectedReservation] = useState(null);
+  const [search, setSearch] = useState('');
+  const [closed, setClosed] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -36,6 +40,7 @@ const VenueDetails = () => {
       setVenueName(venueData[0].vname);
       setVenueSport(venueData[0].sport);
       setVenueAddress(venueData[0].address);
+      setClosed(parseInt(venueData[0].closed) === 1)
     }
   }, [venueData]);
 
@@ -48,8 +53,33 @@ const VenueDetails = () => {
     }
   };
 
+  const fetchReservations = async () => {
+    try {
+      const response = await axios.post('/api/reservations', { venue_id: id });
+      setReservations(response.data);
+    } catch (error) {
+      console.error('Error fetching reservations:', error.message);
+    }
+  };
+  const handleVenueStatusChange = async () => {
+    let api_path
+    if (closed) {
+      api_path = 'open-event';
+      setClosed(false);
+    } else {
+      api_path = 'close-event';
+      setClosed(true);
+    }
+    try {
+      const response = await axios.post('/api/' + api_path, { venue_id: id });
+    } catch (error) {
+      console.error('Error updating venue:', error.message);
+    }
+  };
+
   useEffect(() => {
     fetchTimes();
+    fetchReservations();
   }, [id]);
 
   const handleReservationButtonClick = (reservation) => {
@@ -74,7 +104,17 @@ const VenueDetails = () => {
         </div>
         
           <div className='venueDetails'>
-          <h2 className='venueDetailsTitle'>{venueName}</h2>
+            { !closed &&
+            <button className="loginBtn" onClick={handleVenueStatusChange}> 
+              Close
+            </button>
+            }
+            { closed &&
+            <button className="loginBtn" onClick={handleVenueStatusChange}> 
+              Open
+            </button>
+            }
+            <h2 className='venueDetailsTitle'>{venueName}</h2>
             <div className='detail'>Sport: {venueSport}</div>
             <div className='detail'>Address: {venueAddress}</div>
             <div className='detail'>
@@ -98,6 +138,32 @@ const VenueDetails = () => {
                 <Button onClick={() => handleBookButtonClick()}> Book It! </Button>
             </div>
           </div>
+
+          <div className="ChildLeft">
+                <h3>Reservations:</h3>
+                <div className='Search'>
+                  <input className="searchInput" placeholder="Search Reservations" onChange={(e) => setSearch(e.target.value)}/>
+                </div>
+                {reservations.filter((item) => {
+                return search.toLowerCase() === '' ? item 
+                    : 
+                    (item.username.toLowerCase().includes(search)
+                    ||
+                    item.start_datetime.toLowerCase().includes(search)
+                    ||
+                    item.end_datetime.toLowerCase().includes(search));
+                })
+                .map((reservation) => (
+                    <ReservationsCard
+                      key={reservation.venue_id}
+                      id={reservation.venue_id}
+                      username={reservation.username}
+                      start_datetime={reservation.start_datetime}
+                      end_datetime={reservation.end_datetime}
+                      value_paid={reservation.value_paid === 1 ? 'Paid' : 'Not Paid'}
+                    />
+                ))}
+            </div>
         
       </SplitLayout>
     </div>
