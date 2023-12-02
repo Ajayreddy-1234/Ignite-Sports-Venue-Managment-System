@@ -42,9 +42,11 @@ function App() {
           <Route path='/review-booking?' element={<ReviewBooking />}/>
           <Route path='/venues' element={<VenuesTable />}/>
           <Route path='/venue/venue-details?' element={<VenueDetails />}/>
+          
       </Routes>
     </BrowserRouter>
 /*
+<Route path='/payment?' element={<Payment />}/>
     <BrowserRouter>
       <NavBar/>
       <Routes>

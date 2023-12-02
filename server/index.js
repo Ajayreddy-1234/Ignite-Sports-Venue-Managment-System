@@ -385,12 +385,22 @@ app.post('/api/venue-details', async (req, res)=>{
 app.post('/api/venue-reservation-times', async (req, res) =>{
   try{
     const {venue_id} = req.body;
-    const [results] = await db.promise().query('SELECT start_datetime FROM ignite.reservation WHERE venue_id = ?', [venue_id]);
+    const [results] = await db.promise().query('SELECT start_datetime, reservation_id FROM ignite.reservation WHERE venue_id = ?', [venue_id]);
     res.status(200).json(results);
   }
   catch(error){
     res.status(500).json({message:'internal server errror'});
   }
 });
+
+/*app.post('/api/user-email', authenticate, async (req, res) =>{
+  try{
+    const [result] = await db.promise().query('SELECT * FROM ignite.User WHERE username = ? ',[req.user.username]);
+    res.status(200).json(result);
+  }
+  catch(error){
+    res.status(400).json({message:'no user'});
+  }
+});*/
 
 module.exports = app;
