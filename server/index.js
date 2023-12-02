@@ -381,9 +381,12 @@ app.post('/api/bookVenue', authenticate, async (req, res) =>{
   try{
     const { reservation_id, paid } = req.body;
     const user_id = req.user.user_id;
+    const [customerDetails] = await db.promise().query('SELECT * FROM ignite.User WHERE user_id = ? ',[user_id]);
     await db.promise().query('UPDATE ignite.reservation SET closed = 1 where reservation_id = ?',[reservation_id]);
     await db.promise().query('INSERT INTO ignite.reservation_user_rel (user_id, reservation_id, value_paid) VALUES (?, ?, ?)',[user_id, reservation_id, paid]);
     const [reservation_res] = await db.promise().query('SELECT * FROM ignite.reservation where reservation_id = ?',[reservation_id]);
+    const [owner] = await db.promise().query('SELECT * FROM ignite.User WHERE user_id = ? ',[reservation_res[0].user_id])
+    await mailToCustomer(reservation_res[0], owner[0],customerDetails[0].email);
     res.status(200).json({message: 'successfully booked the venue', reservation: reservation_res[0]})
   }catch(error){
     console.log(error);
