@@ -6,7 +6,7 @@ const router = express.Router();
 const cors = require("cors");
 const axios = require("axios");
 require("dotenv").config();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 var app = express();
 app.use(cors());
 
@@ -205,8 +205,8 @@ app.post('/api/venues', async (req, res) => {
   // console.log(venueData);
   try {
     await createVenue(venueData);
-    // console.log('Venue added successfully.');
-    // console.log(JSON.stringify(venueData));
+    console.log('Venue added successfully.');
+    console.log(JSON.stringify(venueData));
     return res.status(200).json({ message: 'Venue added successfully' });
   } catch (error) {
     console.error('Error adding venue:', error);
@@ -265,6 +265,71 @@ app.post('/api/2fa/verify',async (req, res)=>{
     res.status(400).json({message:'internal server error'});
   }
 
+});
+
+app.post('/api/owner-venues', async (req, res)=>{
+  try{
+   const owner = req.body;
+   const [venue] = await db.promise().query(
+      'SELECT * FROM ignite.venue WHERE user_id = ? AND reservation_type = ?',
+      [owner.userid, 'Venue']);
+
+   res.status(200).json(venue);
+  }catch(error){
+    res.status(400).json({message:'internal server error'});
+  }
+});
+
+app.post('/api/owner-activities', async (req, res)=>{
+  try{
+   const owner = req.body;
+   const [venue] = await db.promise().query(
+      'SELECT * FROM ignite.venue WHERE user_id = ? AND reservation_type = ?',
+      [owner.userid, 'Activity']);
+
+   res.status(200).json(venue);
+  }catch(error){
+    res.status(400).json({message:'internal server error'});
+  }
+});
+
+app.post('/api/close-event', async (req, res)=>{
+  try{
+   const eventid = req.body.venueid;
+   const [venue] = await db.promise().query(
+      'UPDATE ignite.venue SET closed = 1 WHERE venue_id = ?',
+      [eventid]);
+
+   res.status(200).json(venue);
+  }catch(error){
+    res.status(400).json({message:'internal server error'});
+  }
+});
+
+app.post('/api/open-event', async (req, res)=>{
+  try{
+   const eventid = req.body.venueid;
+   const [venue] = await db.promise().query(
+      'UPDATE ignite.venue SET closed = 0 WHERE venue_id = ?',
+      [eventid]);
+
+   res.status(200).json(venue);
+  }catch(error){
+    res.status(400).json({message:'internal server error'});
+  }
+});
+
+app.post('/api/owner-activities', async (req, res)=>{
+  try{
+   const owner = req.body;
+   const [venue] = await db.promise().query(
+      'SELECT * FROM ignite.venue WHERE user_id = ?',
+      [owner.userid]);
+
+   res.status(200).json(venue);
+  }catch(error){
+    res.status(400).json({message:'internal server error'});
+  }
 });
 
 app.put('/api/venues', async (req, res)=>{
