@@ -45,7 +45,10 @@ input {
   padding: 0;
   font-family: "Monsterrat", sans-serif;
 }
-
+.Search {
+  display: block;
+  height: 100px;
+}
 .ViewPageBody {
   display: flex;
   justify-content: center;
@@ -81,7 +84,7 @@ input {
   padding-left: 5rem;
   padding-right: 5rem;
   position: fixed;
-  width: 100%;
+  width: 80%;
   z-index: 1000;
   backdrop-filter: blur(1px);
 }
@@ -102,7 +105,60 @@ input {
   outline-color: #8C1C13;
   transition: 0.3s;
 }
-
+.ChildContainer {
+  width: 100%;
+  height: 90%;
+  margin-right: 10px;
+  text-align: center;
+  align-items: center;
+  padding: 15px;
+}
+.OpenBtn {
+  text-align: center;
+  float: center;
+  background-color: green;
+  height: 40px;
+  width: 70px;
+  font-family: "Monsterrat", sans-serif;
+  font-size: medium;
+  color: white;
+}
+.mapImg {
+  height: 40%;
+}
+.updateBtn {
+  text-align: center;
+  float: center;
+  background-color: grey;
+  height: 40px;
+  width: 70px;
+  font-family: "Monsterrat", sans-serif;
+  font-size: medium;
+  color: white;
+}
+.CloseBtn {
+  text-align: center;
+  float: center;
+  background-color: red;
+  height: 40px;
+  width: 70px;
+  font-family: "Monsterrat", sans-serif;
+  font-size: medium;
+  color: white;
+}
+.ChildLeft {
+  text-align: center;
+  float: left;
+  width: 30%;
+}
+.ChildRight {
+  float: left;
+  width: 30%;
+}
+.ChildRight2 {
+  float: right;
+  width: 20%;
+}
 .verify,
 .dashboard {
   margin: 0;
