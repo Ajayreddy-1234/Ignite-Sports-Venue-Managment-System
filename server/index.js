@@ -311,6 +311,8 @@ app.post('/api/reservations', async (req, res)=>{
 
     const queryParams = usedVenue === 'ALL' ? [dateTime] : [dateTime, venuePattern];
     const [reservations] = await db.promise().query(reservationsQuery, queryParams);
+    console.log(reservationsQuery);
+    console.log(queryParams);
 
     const venueIds = [];
     const sqlQueries = [];
@@ -320,6 +322,7 @@ app.post('/api/reservations', async (req, res)=>{
       sqlQueries.push(query);
       venueIds.push(venueId);
     }
+    console.log(sqlQueries);
     const venuesQuery = sqlQueries.join(' UNION ALL ');
     const [venuesList] = await db.promise().query(venuesQuery);
 
