@@ -21,6 +21,10 @@ const VenueDetails = () => {
   const [selectedReservation, setSelectedReservation] = useState(null);
   const [search, setSearch] = useState('');
   const [closed, setClosed] = useState(false);
+  const isAdmin = window.localStorage.getItem('role') === 'Admin';
+  const isOrganizer = window.localStorage.getItem('role') === 'Organizer';
+  const isUser = window.localStorage.getItem('role') === 'User';
+  const [disabled, setDisabled] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -66,15 +70,18 @@ const VenueDetails = () => {
     if (closed) {
       api_path = 'open-event';
       setClosed(false);
+      setDisabled(false);
     } else {
       api_path = 'close-event';
       setClosed(true);
+      setDisabled(true);
     }
     try {
-      const response = await axios.post('/api/' + api_path, { venue_id: id });
+      const response = await axios.post('/api/' + api_path, { venue_id: id, vname: venueName });
     } catch (error) {
       console.error('Error updating venue:', error.message);
     }
+    
   };
 
   useEffect(() => {
@@ -104,32 +111,38 @@ const VenueDetails = () => {
         </div>
         
           <div className='venueDetails'>
-            { !closed &&
-            <button className="loginBtn" onClick={handleVenueStatusChange}> 
-              Close
-            </button>
-            }
-            { closed &&
-            <button className="loginBtn" onClick={handleVenueStatusChange}> 
-              Open
-            </button>
+            { (isAdmin || isOrganizer) &&
+              ((!closed &&
+                <button className="CloseBtn" onClick={handleVenueStatusChange}> 
+                  Close Event
+                </button>
+              )
+              ||
+              (closed &&
+                <button className="OpenBtn" onClick={handleVenueStatusChange}> 
+                  Open Event
+                </button>
+              ))
             }
             <h2 className='venueDetailsTitle'>{venueName}</h2>
             <div className='detail'>Sport: {venueSport}</div>
             <div className='detail'>Address: {venueAddress}</div>
             <div className='detail'>
               Time Slots - 
+              { !closed && 
               <div>
                 {venueReservationTimes.map((reservation) => (
                   <Button
                     key={reservation.start_datetime}
                     buttonStyle={selectedReservation === reservation ? 'buttonPrimary' : 'buttonOutline'}
                     onClick={() => handleReservationButtonClick(reservation)}
+                    disabled={disabled}
                   >
-                    {reservation.start_datetime}
+                    {reservation.start_datetime} - {reservation.end_datetime}
                   </Button>
                 ))}
               </div>
+              }
             </div>
             <div className='detail'>
               <Button> Bookmark </Button>
@@ -138,8 +151,9 @@ const VenueDetails = () => {
                 <Button onClick={() => handleBookButtonClick()}> Book It! </Button>
             </div>
           </div>
-
-          <div className="ChildLeft">
+          {
+            !isUser &&
+              <div className="ChildLeft">
                 <h3>Reservations:</h3>
                 <div className='Search'>
                   <input className="searchInput" placeholder="Search Reservations" onChange={(e) => setSearch(e.target.value)}/>
@@ -163,7 +177,9 @@ const VenueDetails = () => {
                       value_paid={reservation.value_paid === 1 ? 'Paid' : 'Not Paid'}
                     />
                 ))}
-            </div>
+              </div>
+          }
+          
         
       </SplitLayout>
     </div>
