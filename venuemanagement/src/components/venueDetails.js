@@ -5,6 +5,10 @@ import TimePicker from 'react-multi-date-picker/plugins/time_picker';
 import { useNavigate } from 'react-router-dom';
 import SplitLayout from './SplitLayout';
 import ReservationsCard from './ReservationsCard';
+import basketball from "../assets/basketball.png";
+import soccer from "../assets/soccer.png";
+import football from "../assets/football.png";
+
 
 const VenueDetails = () => {
   const venueParams = new URLSearchParams(window.location.search);
@@ -25,7 +29,8 @@ const VenueDetails = () => {
   const isOrganizer = window.localStorage.getItem('role') === 'Organizer';
   const isUser = window.localStorage.getItem('role') === 'User';
   const [disabled, setDisabled] = useState(false);
-
+  const [image, setImage] = useState("");
+  const [mapURL, setMapURL] = useState("");
   const fetchData = async () => {
     try {
       const response = await axios.post('/api/venue-details', { venue_id: id });
@@ -45,6 +50,14 @@ const VenueDetails = () => {
       setVenueSport(venueData[0].sport);
       setVenueAddress(venueData[0].address);
       setClosed(parseInt(venueData[0].closed) === 1)
+      const sportType = venueData[0].sport.toLowerCase();
+      if (sportType === "basketball") {
+        setImage(basketball);
+      } else if (sportType === "soccer") {
+        setImage(soccer);
+      } else {
+        setImage(football);
+      }
     }
   }, [venueData]);
 
@@ -61,6 +74,14 @@ const VenueDetails = () => {
     try {
       const response = await axios.post('/api/reservations', { venue_id: id });
       setReservations(response.data);
+    } catch (error) {
+      console.error('Error fetching reservations:', error.message);
+    }
+  };
+  const fetchMapURL = async () => {
+    try {
+      const response = await axios.post('/api/img-url', { venue_id: id });
+      setMapURL(response.data.img_url);
     } catch (error) {
       console.error('Error fetching reservations:', error.message);
     }
@@ -83,10 +104,18 @@ const VenueDetails = () => {
     }
     
   };
+  const handleMapURL = async () => {
+    try {
+      const response = await axios.post('/api/update-img-url', { venue_id: id, img_url: mapURL });
+    } catch (error) {
+      console.error('Error updating venue:', error.message);
+    }
+  };
 
   useEffect(() => {
     fetchTimes();
     fetchReservations();
+    fetchMapURL();
   }, [id]);
 
   const handleReservationButtonClick = (reservation) => {
@@ -106,8 +135,8 @@ const VenueDetails = () => {
   return (
     <div className='venueDetailsBody'>
       <SplitLayout>
-        <div className='venueDetailsImage'>
-          <div className='theImage'>image</div>
+        <div className='venueDetailsImage' id='theImage'>
+          { image && <img src={image} alt="image"></img> }
         </div>
         
           <div className='venueDetails'>
@@ -124,7 +153,23 @@ const VenueDetails = () => {
                 </button>
               ))
             }
+            { (isAdmin || isOrganizer) &&
+              <>
+                <input
+                  placeholder="Architectural Map URL"
+                  name={mapURL}
+                  id={mapURL}
+                  value={mapURL}
+                  onChange={(e) => setMapURL(e.target.value)}
+                />
+                <button className="updateBtn" onClick={handleMapURL}> 
+                  Update Image
+                </button>
+              </>
+                
+            }
             <h2 className='venueDetailsTitle'>{venueName}</h2>
+            <img src={mapURL} alt='map image' className="mapImg"></img>
             <div className='detail'>Sport: {venueSport}</div>
             <div className='detail'>Address: {venueAddress}</div>
             <div className='detail'>

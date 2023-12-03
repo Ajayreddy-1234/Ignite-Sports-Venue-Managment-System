@@ -6,7 +6,7 @@ const router = express.Router();
 const cors = require("cors");
 const axios = require("axios");
 require("dotenv").config();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 var app = express();
 app.use(cors());
 
@@ -305,6 +305,46 @@ app.post('/api/reservations', async (req, res)=>{
       [venue_id]);
 
    res.status(200).json(reservations);
+  }catch(error){
+    res.status(400).json({message:'internal server error'});
+  }
+});
+
+app.post('/api/img-url', async (req, res)=>{
+  try {
+   const venue_id = req.body.venue_id;
+   const [img_url] = await db.promise().query(
+      'SELECT * FROM ignite.venue_img_rel WHERE venue_id = ?',
+      [venue_id]);
+
+   res.status(200).json(img_url[0]);
+  }catch(error){
+    res.status(400).json({message:'internal server error'});
+  }
+});
+
+app.post('/api/update-img-url', async (req, res)=>{
+  try{
+   const venue_id = req.body.venue_id;
+   const img_url = req.body.img_url;
+   const [venue_image] = await db.promise().query(
+    'SELECT * FROM ignite.venue_img_rel WHERE venue_id = ?',
+    [venue_id]);
+    
+    if (venue_image && venue_image.length > 0) {
+      const [venue_img] = await db.promise().query(
+        'UPDATE ignite.venue_img_rel SET img_url = ? WHERE venue_id = ?',
+        [img_url, venue_id]);
+      res.status(200).json(venue_img);
+    }
+    else {
+      const [venue_img] = await db.promise().query(
+        'INSERT INTO ignite.venue_img_rel VALUES (?, ?)',
+        [venue_id, img_url]);
+      res.status(200).json(venue_img);
+    }
+   
+   
   }catch(error){
     res.status(400).json({message:'internal server error'});
   }
