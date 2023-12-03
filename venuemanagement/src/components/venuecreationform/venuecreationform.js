@@ -143,7 +143,8 @@ const VenueCreationForm = () => {
             datetimes.push(datetime);
         }
         formInputs.datetimes = datetimes;
-        setSubmitPressed(createVenueSendRequest(formInputs));
+        const val = createVenueSendRequest(formInputs)
+        setSubmitPressed(val);
     };
 
     const handleChange = (event) => {

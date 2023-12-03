@@ -1,8 +1,8 @@
 import React from "react";
 
-function createVenueSendRequest(formInputs) {
+async function createVenueSendRequest(formInputs) {
     try {
-        const response = fetch("/api/venues", {
+        const response = await fetch("/api/venues", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
