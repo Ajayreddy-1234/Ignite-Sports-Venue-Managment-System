@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "./Button";
+import API_BASE_URL from '../apiConfig';
 
 const InviteFriend = () => {
     const [info, setInfo] = useState({});
@@ -19,11 +20,11 @@ const InviteFriend = () => {
         try {
             const { email } = info;
 
-            const response = await fetch(`/api/inviteFriend`, {
+            const response = await fetch(`${API_BASE_URL}/inviteFriend`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": window.localStorage.getItem("token"),
+                    "Authorization": `Bearer ${window.localStorage.getItem("token")}`,
                 },
                 body: JSON.stringify({ friendEmail: email }),
             });
@@ -52,7 +53,7 @@ const InviteFriend = () => {
             setTimeout(() => {
                 setSuccessMessage("");
                 setShowSuccessMessage(false);
-            }, 3000); // 3000 milliseconds (3 seconds)
+            }, 10000); // 3000 milliseconds (3 seconds)
         }
     }, [showSuccessMessage]);
 

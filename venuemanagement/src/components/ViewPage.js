@@ -4,6 +4,7 @@ import Card from './Card';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from './Button';
+import API_BASE_URL from '../apiConfig';
 
 function VenuesTable() {
   const [venues, setVenues] = useState([]);
@@ -11,7 +12,7 @@ function VenuesTable() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.post('/api/venueList', {});
+      const response = await axios.post(`${API_BASE_URL}/venueList`, {});
       setVenues(response.data);
     } catch (error) {
       console.error('Error:', error.message);
