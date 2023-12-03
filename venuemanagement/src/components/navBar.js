@@ -62,6 +62,11 @@ function NavBar(){
                         </Link>
                     </li>
                     <li className="navItem">
+                        <Link to="/player-page" className="navLinks" onClick={closeMobileMenu}>
+                            Players
+                        </Link>
+                    </li>
+                    <li className="navItem">
                         {loggedIn ? <Link to="/user-page" className="navLinksMobile" onClick={closeMobileMenu}>
                             {username}
                         </Link>

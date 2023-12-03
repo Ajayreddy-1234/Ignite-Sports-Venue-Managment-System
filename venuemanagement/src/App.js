@@ -17,6 +17,7 @@ import ResetPassword from "./components/ResetPassword.js";
 import ReviewBooking from "./components/reviewBooking.js";
 import VenuesTable from "./components/ViewPage.js";
 import VenueDetails from "./components/venueDetails.js";
+import PlayersPage from "./components/PlayersPage.js";
 
 function App() {
   const [data, setData] = React.useState(null);
@@ -44,6 +45,7 @@ function App() {
           <Route path='/venues' element={<VenuesTable />}/>
           <Route path='/venue/venue-details?' element={<VenueDetails />}/>
           <Route path='/edit-profile-details' element={<EditProfileDetails />} />
+          <Route path='/player-page' element={<PlayersPage />} />
       </Routes>
     </BrowserRouter>
 /*

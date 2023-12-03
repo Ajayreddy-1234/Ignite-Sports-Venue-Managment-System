@@ -62,8 +62,4 @@ function VenuesTable() {
   );
 }
 
-function VenueDetails(){
-
-}
-
 export default VenuesTable;
