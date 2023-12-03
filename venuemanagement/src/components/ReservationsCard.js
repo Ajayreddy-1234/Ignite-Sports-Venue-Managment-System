@@ -14,7 +14,7 @@ export const ReservationsCard = (props) => {
       <div key={props.venue_id} className="VenueCard" onClick={handleCardClick}>
         <i className='bx bx-bookmark'/>
         <div className="CardContent">
-          <h3 className="VenueName">{props.username}</h3>
+          <h3 className="VenueName">{props.vname}</h3>
           <div className='displayStack__1'>
             <h3 className="VenueAddress">{props.start_datetime}</h3>
             <h3 className="VenueSport">{props.end_datetime}</h3>

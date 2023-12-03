@@ -74,7 +74,7 @@ const HomeBody = () =>{
                     <ReservationsCard
                       key={reservation.venue_id}
                       id={reservation.venue_id}
-                      username={reservation.username}
+                      vname={reservation.vname}
                       start_datetime={reservation.start_datetime}
                       end_datetime={reservation.end_datetime}
                       value_paid={reservation.value_paid === 1 ? 'Paid' : 'Not Paid'}
