@@ -23,7 +23,7 @@ const HomeBody = () =>{
             try {
               const response = await axios.get(profileApiUrl, {
                 headers: {
-                  Authorization: `Bearer ${window.localStorage.getItem("token")}`
+                  Authorization: `${window.localStorage.getItem("token")}`
                 },
               });
           

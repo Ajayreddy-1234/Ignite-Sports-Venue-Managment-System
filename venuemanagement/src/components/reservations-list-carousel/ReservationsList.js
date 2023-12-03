@@ -45,7 +45,7 @@ const ReservationsList = () => {
         const reservationsApiUrl = `${API_BASE_URL}/reservations`;
         const response = await axios.post(reservationsApiUrl, {}, {
           headers: {
-            Authorization: `Bearer ${window.localStorage.getItem("token")}`
+            Authorization: `${window.localStorage.getItem("token")}`
           },
         });
 
