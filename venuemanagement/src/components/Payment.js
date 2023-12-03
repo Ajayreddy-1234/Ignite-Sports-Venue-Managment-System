@@ -3,7 +3,7 @@ import logo from "../assets/logo.png"
 import { Button } from "./Button";
 import NavBar from "./navBar";
 import { useNavigate } from "react-router-dom";
-/* http://localhost:8080/payment?venueid=1&reservation=2023-12-01%2020:09:00&reservationid=2*/ 
+
 const Paymethod = () => {
     const paymentParams = new URLSearchParams(window.location.search);
     const reservationID = paymentParams.get('reservationid');
