@@ -6,8 +6,9 @@ function ChatComponent() {
 
   // wait for TalkJS to load
   const [talkLoaded, markTalkLoaded] = useState(false);
-
+  
   useEffect(() => {
+    if(window.localStorage.getItem("userId") != null){
     Talk.ready.then(() => markTalkLoaded(true));
 
     if (talkLoaded) {
@@ -59,7 +60,8 @@ function ChatComponent() {
       
       //return () => session.destroy();
     }
-  }, [talkLoaded]);
+  }
+}, [talkLoaded]);
 
   //return <div ref={chatboxEl} height='100%' />;
   return(

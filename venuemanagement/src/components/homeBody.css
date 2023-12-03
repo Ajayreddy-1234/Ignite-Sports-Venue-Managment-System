@@ -18,11 +18,15 @@ video{
     justify-content: center;
 }
 
-.profileContainer{
-  color: #333; /* Adjust color as needed */
-  margin-top: 50px;
+.profileContainer {
+  color: #333;
   margin-bottom: 10px;
+  margin-top: 50px;
   width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .profileHeading{
@@ -44,7 +48,7 @@ table, th, td, tr {
 
 .profileTable {
     border-collapse: collapse;
-    width: 55%;
+    width: max-content;
     margin: '50px auto';
     boxShadow: '0 0 20px rgba(0, 0, 0, 0.15)';
     margin-top: 20px;

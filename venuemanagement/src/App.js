@@ -18,6 +18,7 @@ import ReviewBooking from "./components/reviewBooking.js";
 import VenuesTable from "./components/ViewPage.js";
 import VenueDetails from "./components/venueDetails.js";
 import Paymethod from "./components/payment.js";
+import PlayersPage from "./components/PlayersPage.js";
 import OwnerView from "./components/OwnerView.js";
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
           <Route path='/venue/venue-details?' element={<VenueDetails />}/>
           <Route path='/edit-profile-details' element={<EditProfileDetails />} />
           <Route path='/payment' element={<Paymethod />}/>
+          <Route path='/player-page' element={<PlayersPage />} />
           <Route path='/OwnerView' element={<OwnerView />}/>
       </Routes>
     </BrowserRouter>

@@ -588,6 +588,15 @@ app.post('/api/venue-reservation-times', async (req, res) =>{
   }
 });
 
+app.post('/api/fetch-players', async (req, res) =>{
+  try{
+    const [results] = await db.promise().query('SELECT * FROM ignite.players');
+    res.status(200).json(results);
+   }catch(error){
+     res.status(500).json({message:'internal server error'});
+   }
+});
+
 /*app.post('/api/user-email', authenticate, async (req, res) =>{
   try{
     const [result] = await db.promise().query('SELECT * FROM ignite.User WHERE username = ? ',[req.user.username]);
