@@ -9,9 +9,9 @@ function convertToDatetimeObjects(datetimes) {
 }
 
 // Async function to insert venue data into the database
-function createVenue(venueData) {
+async function createVenue(venueData) {
   try{
-    const sql = 'INSERT INTO ignite.venue (user_id, reservation_type, vname, address, sport, total_capacity, total_cost) VALUES (?, ?, ?, ?, ?, ?, 0.0)';
+    const sql = 'INSERT INTO ignite.venue (user_id, reservation_type, vname, address, sport, total_capacity, total_cost, closed) VALUES (?, ?, ?, ?, ?, ?, 0.0, 0)';
     const values = [
       venueData.userid,
       venueData.reservationtype,
@@ -24,7 +24,7 @@ function createVenue(venueData) {
       //JSON.stringify(convertToDatetimeObjects(venueData.datetimes)),
     ];
     console.log(JSON.stringify(values));
-    db.promise().query(sql, values);
+    await db.promise().query(sql, values);
     createReservation(venueData);
     return values;
   }
@@ -42,14 +42,8 @@ function getStartEndDates(dateTimes) {
       var start = dateTimes[i][j][0];
       var end = dateTimes[i][j][1];
 
-      if (Date.parse(start) && Date.parse(end)) {
-        // Only add valid date-time pairs
-        startDateTime.push(JSON.stringify(start));
-        endDateTime.push(JSON.stringify(end));
-      }// else {
-        // Log invalid date-time pairs
-        //console.log(`Invalid date-time pair at datetimes[${i}][${j}]: [${start}, ${end}]`);
-      //}
+      startDateTime.push(JSON.stringify(start));
+      endDateTime.push(JSON.stringify(end));
     }
   }
 
@@ -67,8 +61,9 @@ async function createReservation(venueData) {
     var datePairs = getStartEndDates(venueData.datetimes);
     console.log(JSON.stringify(datePairs));
     for (var i = 0; i < datePairs.length; i++){
-      const theID = 'SELECT venue_id FROM ignite.venue WHERE vname = ? AND user_id = ?';
-      const [theIDRow] = await db.promise().query(theID, [JSON.stringify(venueData.name), JSON.parse(venueData.userid)]);
+      console.log(venueData.name, venueData.userid);
+      const [theIDRow] = await db.promise().query('SELECT venue_id FROM ignite.venue WHERE vname = ? AND user_id = ?', 
+                        [venueData.name, venueData.userid]);
       console.log(theIDRow);
       const venueId = theIDRow[0].venue_id;
       console.log(venueId);
@@ -78,15 +73,14 @@ async function createReservation(venueData) {
         venueData.name,
         venueData.capacity,
         venueData.capacity,
-        datePairs[i,0],
-        datePairs[i,1],
+        datePairs[i][0],
+        datePairs[i][1],
         venueData.userid,
-        JSON.parse(venueId)
+        venueId
       ];
       //console.log(JSON.stringify(datePairs));
       await db.promise().query(sql, values);
     }
-    return values;
   }
   catch(error){
     console.log(error);

@@ -34,9 +34,11 @@ const {generatePasswordResetToken, sendPasswordResetEmail, resetPassword} = requ
 const {mailToCustomer} = require('./functions/mailToCustomer');
 const {mailToOwner} = require('./functions/mailToOwner');
 const createVenue = require('./functions/createVenue');
+const createGroupChat = require('./functions/createGroupChat');
 const changeCapacity = require('./functions/openCloseVenue');
-const {twoFactoredMail, verifyTwoFactored} = require('./functions/twoFactoredAuth')
-const {inviteFriend} = require('./functions/inviteFriends')
+const {twoFactoredMail, verifyTwoFactored} = require('./functions/twoFactoredAuth');
+const {inviteFriend} = require('./functions/inviteFriends');
+const {cancelNotification, openedNotification} = require('./functions/cancelNotification');
 
 // change this according to the request you make for form parsing use: 
 // app.use(express.urlencoded({ extended: true }));
@@ -111,10 +113,10 @@ db.connect((err) => {
 
 const usersRoutes = require('./routes/userRoutes');
 
-
+/*
 app.get('/', (req,res) => {
     res.json({message:"You are at home page!"});
-});
+});*/
 
 app.use('/api/user', authenticate, usersRoutes);
 
@@ -209,7 +211,9 @@ app.post('/api/venues', async (req, res) => {
     await createVenue(venueData);
     // console.log('Venue added successfully.');
     // console.log(JSON.stringify(venueData));
+    await createGroupChat(venueData);
     return res.status(200).json({ message: 'Venue added successfully' });
+    // This API is to create a new conversation
   } catch (error) {
     console.error('Error adding venue:', error);
     return res.status(500).json({ error: 'Internal server error' });
@@ -269,6 +273,167 @@ app.post('/api/2fa/verify',async (req, res)=>{
 
 });
 
+app.post('/api/owner-venues', async (req, res)=>{
+  try{
+   const owner = req.body;
+   const [venue] = await db.promise().query(
+      'SELECT * FROM ignite.venue WHERE user_id = ? AND reservation_type = ?',
+      [owner.userid, 'Venue']);
+
+   res.status(200).json(venue);
+  }catch(error){
+    res.status(400).json({message:'internal server error'});
+  }
+});
+
+app.post('/api/owner-activities', async (req, res)=>{
+  try{
+   const owner = req.body;
+   const [venue] = await db.promise().query(
+      'SELECT * FROM ignite.venue WHERE user_id = ? AND reservation_type = ?',
+      [owner.userid, 'Activity']);
+
+   res.status(200).json(venue);
+  }catch(error){
+    res.status(400).json({message:'internal server error'});
+  }
+});
+
+app.post('/api/reservations', async (req, res)=>{
+  try {
+   const venue_id = req.body.venue_id;
+   const [reservations] = await db.promise().query(
+      'SELECT * FROM ignite.reservation r '
+      + 'JOIN reservation_user_rel ru ON r.reservation_id = ru.reservation_id '
+      + 'JOIN User u ON u.user_id = ru.user_id '
+      + 'WHERE r.venue_id = ?',
+      [venue_id]);
+
+   res.status(200).json(reservations);
+  }catch(error){
+    res.status(400).json({message:'internal server error'});
+  }
+});
+
+app.post('/api/user-reservations', async (req, res)=>{
+  try {
+   const user_id = req.body.user_id;
+   console.log(user_id);
+   const [reservations] = await db.promise().query(
+      'SELECT * FROM ignite.reservation r '
+      + 'JOIN reservation_user_rel ru ON r.reservation_id = ru.reservation_id '
+      + 'JOIN User u ON u.user_id = ru.user_id '
+      + 'WHERE u.user_id = ?',
+      [user_id]);
+  console.log(reservations);
+   res.status(200).json(reservations);
+  }catch(error){
+    res.status(400).json({message:'internal server error' + error});
+  }
+});
+
+app.post('/api/img-url', async (req, res)=>{
+  try {
+   const venue_id = req.body.venue_id;
+   const [img_url] = await db.promise().query(
+      'SELECT * FROM ignite.venue_img_rel WHERE venue_id = ?',
+      [venue_id]);
+
+   res.status(200).json(img_url[0]);
+  }catch(error){
+    res.status(400).json({message:'internal server error'});
+  }
+});
+
+app.post('/api/update-img-url', async (req, res)=>{
+  try{
+   const venue_id = req.body.venue_id;
+   const img_url = req.body.img_url;
+   const [venue_image] = await db.promise().query(
+    'SELECT * FROM ignite.venue_img_rel WHERE venue_id = ?',
+    [venue_id]);
+    
+    if (venue_image && venue_image.length > 0) {
+      const [venue_img] = await db.promise().query(
+        'UPDATE ignite.venue_img_rel SET img_url = ? WHERE venue_id = ?',
+        [img_url, venue_id]);
+      res.status(200).json(venue_img);
+    }
+    else {
+      const [venue_img] = await db.promise().query(
+        'INSERT INTO ignite.venue_img_rel VALUES (?, ?)',
+        [venue_id, img_url]);
+      res.status(200).json(venue_img);
+    }
+   
+   
+  }catch(error){
+    res.status(400).json({message:'internal server error'});
+  }
+});
+
+app.post('/api/close-event', async (req, res)=>{
+  try{
+   const eventid = req.body.venue_id;
+   const vname = req.body.vname;
+   const [venue] = await db.promise().query(
+      'UPDATE ignite.venue SET closed = 1 WHERE venue_id = ?',
+      [eventid]);
+
+    const [user_emails] = await db.promise().query(
+      'SELECT u.email FROM ignite.reservation r '
+      + 'JOIN reservation_user_rel ru ON r.reservation_id = ru.reservation_id '
+      + 'AND venue_id = ? ' 
+      + 'JOIN User u ON ru.user_id = u.user_id',
+      [eventid]);
+    for (var row in user_emails) {
+      cancelNotification(vname, user_emails[row].email);
+      console.log(user_emails[row].email);
+    }
+   res.status(200).json(venue);
+  }catch(error){
+    res.status(400).json({message:'internal server error'});
+  }
+});
+
+app.post('/api/open-event', async (req, res)=>{
+  try{
+   const eventid = req.body.venue_id;
+   const vname = req.body.vname;
+   const [venue] = await db.promise().query(
+      'UPDATE ignite.venue SET closed = 0 WHERE venue_id = ?',
+      [eventid]);
+
+      const [user_emails] = await db.promise().query(
+        'SELECT u.email FROM ignite.reservation r '
+        + 'JOIN reservation_user_rel ru ON r.reservation_id = ru.reservation_id '
+        + 'AND venue_id = ? ' 
+        + 'JOIN User u ON ru.user_id = u.user_id',
+        [eventid]);
+      for (var row in user_emails) {
+        openedNotification(vname, user_emails[row].email);
+        console.log(user_emails[row].email);
+      }
+
+   res.status(200).json(venue);
+  }catch(error){
+    res.status(400).json({message:'internal server error'});
+  }
+});
+
+app.post('/api/owner-activities', async (req, res)=>{
+  try{
+   const owner = req.body;
+   const [venue] = await db.promise().query(
+      'SELECT * FROM ignite.venue WHERE user_id = ?',
+      [owner.userid]);
+
+   res.status(200).json(venue);
+  }catch(error){
+    res.status(400).json({message:'internal server error'});
+  }
+});
+
 app.put('/api/venues', async (req, res)=>{
    try{
     const updatedVenue = req.body;
@@ -310,6 +475,8 @@ app.post('/api/reservations', async (req, res)=>{
 
     const queryParams = usedVenue === 'ALL' ? [dateTime] : [dateTime, venuePattern];
     const [reservations] = await db.promise().query(reservationsQuery, queryParams);
+    console.log(reservationsQuery);
+    console.log(queryParams);
 
     const venueIds = [];
     const sqlQueries = [];
@@ -319,6 +486,7 @@ app.post('/api/reservations', async (req, res)=>{
       sqlQueries.push(query);
       venueIds.push(venueId);
     }
+    console.log(sqlQueries);
     const venuesQuery = sqlQueries.join(' UNION ALL ');
     const [venuesList] = await db.promise().query(venuesQuery);
 
