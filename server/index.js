@@ -24,7 +24,7 @@ app.use(session({
 app.use(
     express.static(path.resolve(__dirname, '../venuemanagement/build')));
 
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
         res.sendFile(path.resolve(__dirname, '../venuemanagement/build', 'index.html'));
     });
 
@@ -32,6 +32,7 @@ const {registerUser, loginUser} = require('./functions/authFunctions')
 const authenticate = require('./middleware/authMiddleware');
 const {generatePasswordResetToken, sendPasswordResetEmail, resetPassword} = require('./functions/passwordReset');
 const createVenue = require('./functions/createVenue');
+const createGroupChat = require('./functions/createGroupChat');
 const changeCapacity = require('./functions/openCloseVenue');
 const {twoFactoredMail, verifyTwoFactored} = require('./functions/twoFactoredAuth')
 const {inviteFriend} = require('./functions/inviteFriends')
@@ -109,10 +110,10 @@ db.connect((err) => {
 
 const usersRoutes = require('./routes/userRoutes');
 
-
+/*
 app.get('/', (req,res) => {
     res.json({message:"You are at home page!"});
-});
+});*/
 
 app.use('/api/user', authenticate, usersRoutes);
 
@@ -207,7 +208,9 @@ app.post('/api/venues', async (req, res) => {
     await createVenue(venueData);
     // console.log('Venue added successfully.');
     // console.log(JSON.stringify(venueData));
+    await createGroupChat(venueData);
     return res.status(200).json({ message: 'Venue added successfully' });
+    // This API is to create a new conversation
   } catch (error) {
     console.error('Error adding venue:', error);
     return res.status(500).json({ error: 'Internal server error' });
