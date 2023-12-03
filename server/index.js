@@ -313,6 +313,23 @@ app.post('/api/reservations', async (req, res)=>{
   }
 });
 
+app.post('/api/user-reservations', async (req, res)=>{
+  try {
+   const user_id = req.body.user_id;
+   console.log(user_id);
+   const [reservations] = await db.promise().query(
+      'SELECT * FROM ignite.reservation r '
+      + 'JOIN reservation_user_rel ru ON r.reservation_id = ru.reservation_id '
+      + 'JOIN User u ON u.user_id = ru.user_id '
+      + 'WHERE u.user_id = ?',
+      [user_id]);
+  console.log(reservations);
+   res.status(200).json(reservations);
+  }catch(error){
+    res.status(400).json({message:'internal server error' + error});
+  }
+});
+
 app.post('/api/img-url', async (req, res)=>{
   try {
    const venue_id = req.body.venue_id;
