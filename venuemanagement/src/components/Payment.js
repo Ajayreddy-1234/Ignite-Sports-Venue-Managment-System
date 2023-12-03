@@ -28,7 +28,7 @@ const Paymethod = () => {
                 "Content-Type":"application/json",
                 "Authorization": window.localStorage.getItem("token")
             },
-            body: JSON.stringify({reservation_id: reservationID, paid: 0 }),
+            body: JSON.stringify({reservation_id: reservationID, paid: 1 }),
         });
         if(response.ok){
             const data = await response.json();
