@@ -44,7 +44,7 @@ function PlayersPage() {
             </select>
           </label>
         </div>
-        <div>
+        <div className='playerCheckbox'>
           <label>
             Available
             <input className="checkbox" type="checkbox" checked={isAvailableChecked} onChange={handleAvailableChange} />
@@ -63,7 +63,7 @@ function PlayersPage() {
                   (selectedAgeRange === '18-22' && item.age >= 18 && item.age <= 22) ||
                   (selectedAgeRange === '23-30' && item.age >= 23 && item.age <= 30) ||
                   (selectedAgeRange === '31-40' && item.age >= 31 && item.age <= 40) ||
-                  (selectedAgeRange === '40+' && item.age >= 41)) &&
+                  (selectedAgeRange === '41+' && item.age >= 41)) &&
                 (!isAvailableChecked || (isAvailableChecked && item.available === 1))
               );
             })

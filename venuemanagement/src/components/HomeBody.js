@@ -51,19 +51,23 @@ const HomeBody = () =>{
                     </Button>
                 </Link>
             </div>
-            <div class='profileContainer'><span class='profileHeading'>My Account</span>
-            <a className='editProfile' href='edit-profile-details' >(edit)</a>
-            {profileData && (
-
-                <table className='profileTable'>
-                  <tbody  className='profileTableData'>
+            <div className="profileContainer">
+              <div className="profileHeader">
+                <span className="profileHeading">My Account</span>
+                <a className="editProfile" href="edit-profile-details">
+                  (edit)
+                </a>
+              </div>
+              {profileData && (
+                <table className="profileTable">
+                  <tbody className="profileTableData">
                     <tr>
-                      <td>User ID</td> 
+                      <td>User ID</td>
                       <td>{profileData.user_id}</td>
                     </tr>
                     <tr>
                       <td>Username</td>
-                      <td>{profileData.username}</td> 
+                      <td>{profileData.username}</td>
                     </tr>
                     <tr>
                       <td>Email</td>
@@ -75,7 +79,7 @@ const HomeBody = () =>{
                     </tr>
                   </tbody>
                 </table>
-                )}
+              )}
             </div>
 
             <div className="ChildLeft">

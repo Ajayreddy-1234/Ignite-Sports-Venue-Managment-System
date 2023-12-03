@@ -12,9 +12,7 @@
   padding: 12px;
 }
 input {
-  height: 45px;
   padding: 10px 15px;
-  margin-bottom: 15px;
 }
 .signupBtn, .loginBtn, .chooseDateTimeBtn {
   width: 200px;
@@ -84,7 +82,7 @@ input {
   padding-left: 5rem;
   padding-right: 5rem;
   position: fixed;
-  width: 80%;
+  width: 100%;
   z-index: 1000;
   backdrop-filter: blur(1px);
 }
@@ -483,9 +481,8 @@ h2.venueDetailsTitle{
   flex-direction: column;
 }
 
-input .checkbox{
-  height: 10px;
-  padding: 10px 15px;
-  
+.playerCheckbox{
+  align-items: center;
+  display: flex;
 }
 
