@@ -28,7 +28,8 @@ input {
 .loginBody,
 .venueCreationBody,
 .reviewBookingBody,
-.inviteFriendBody {
+.inviteFriendBody,
+.accountBody {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -484,5 +485,17 @@ h2.venueDetailsTitle{
 .playerCheckbox{
   align-items: center;
   display: flex;
+}
+
+.accountContainer{
+  background: transparent;
+  border: 2px solid rgba(0,0,0, .3);
+  backdrop-filter: blur(20px);
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  padding: 30px 40px;
 }
 

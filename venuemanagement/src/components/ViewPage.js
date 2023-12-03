@@ -34,7 +34,7 @@ function VenuesTable() {
   return (
     <div className='venueViewHost'>
       <form className='searchForm'>
-        <input className="searchInput" placeholder="Search Venues" onChange={(e) => setSearch(e.target.value)}/>
+        <input className="searchInput" placeholder="Search Venues or Activities" onChange={(e) => setSearch(e.target.value)}/>
       </form>
       <div className='ViewPageBody'>
         <div>

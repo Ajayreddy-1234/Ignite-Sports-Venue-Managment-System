@@ -10,6 +10,7 @@ import ChatComponent from "./chat";
 import API_BASE_URL from '../apiConfig';
 import axios from 'axios';
 import ReservationsCard from "./ReservationsCard";
+import UserCard from "./UserCard";
 
 const HomeBody = () =>{
     const navigate = useNavigate();
@@ -52,34 +53,7 @@ const HomeBody = () =>{
                 </Link>
             </div>
             <div className="profileContainer">
-              <div className="profileHeader">
-                <span className="profileHeading">My Account</span>
-                <a className="editProfile" href="edit-profile-details">
-                  (edit)
-                </a>
-              </div>
-              {profileData && (
-                <table className="profileTable">
-                  <tbody className="profileTableData">
-                    <tr>
-                      <td>User ID</td>
-                      <td>{profileData.user_id}</td>
-                    </tr>
-                    <tr>
-                      <td>Username</td>
-                      <td>{profileData.username}</td>
-                    </tr>
-                    <tr>
-                      <td>Email</td>
-                      <td>{profileData.email}</td>
-                    </tr>
-                    <tr>
-                      <td>Role</td>
-                      <td>{profileData.role}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              )}
+              <UserCard/>
             </div>
 
             <div className="ChildLeft">
