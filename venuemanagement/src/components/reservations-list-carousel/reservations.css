@@ -1,0 +1,42 @@
+.reservation {
+    border-radius: 5px;
+    padding: 5px;  
+    color: #000000;
+}
+  
+.subheading {
+  font-size: 1.7em;
+  font-weight: bold;
+  color: #333; /* Adjust color as needed */
+  margin-top: 50px;
+  margin-bottom: 10px;
+  width: 80%;
+}
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  li {
+    background-color: rgba(245, 245, 245, 0.4); /* Light gray with 70% opacity */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 10px 20px;
+  }
+  
+  p {
+    font-size: 14px;
+    line-height: 1;
+    margin: 1px 0;
+  }
+  
+  p:first-of-type {
+    font-weight: bold;
+  }
+  
+  li:hover {
+    box-shadow: 0 0 5px #ccc;
+  }

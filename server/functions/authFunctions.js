@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../database');
+const { registerChatUser } = require('./registerChatUser');
 
 require('dotenv').config()
 
@@ -30,6 +31,7 @@ async function registerUser({ username, email, password, role }) {
 
     const [res] = await db.promise().query('INSERT INTO ignite.Tokens (userId, tokenId) VALUES ( ?, ?)',[newUser[0].user_id, token]);
 
+    await registerChatUser({ userid: newUser[0].id, username: newUser[0].username , email:email, role:role});
     return { token, registeredUser: newUser[0] };
     
   } catch (error) {
