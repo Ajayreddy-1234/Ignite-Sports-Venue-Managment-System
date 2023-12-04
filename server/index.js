@@ -528,7 +528,21 @@ app.post('/api/captcha',async (req, res)=>{
 
 app.post('/api/venueList', async (req, res)=>{
   try{
-   const [results] = await db.promise().query('SELECT * FROM ignite.venue');
+   const {userId} = req.body;
+   let [results] = await db.promise().query('SELECT * FROM ignite.venue');
+   if(userId != null){
+    const [bookmarks] = await db.promise().query('SELECT * FROM ignite.bookmarks where user_id = ?',[userId]);
+    const bookmarkedVenueIds = new Set(bookmarks.map(row => row.venue_id));
+    results = results.map(row => ({
+      ...row,
+      bookmark: bookmarkedVenueIds.has(row.venue_id) ? 1 : 0,
+    }));
+   }else{
+    results = results.map(row => ({
+     ...row,
+     bookmark: 0,
+    }));
+   }
    res.status(200).json(results);
   }catch(error){
     res.status(400).json({message:'internal server error'});
@@ -586,6 +600,21 @@ app.post('/api/venue-reservation-times', async (req, res) =>{
   catch(error){
     res.status(500).json({message:'internal server errror'});
   }
+});
+
+
+app.post('/api/bookmark', authenticate, async (req, res) => {
+   try{
+    const {venueId} = req.body;
+    const [results] = await db.promise().query('SELECT * FROM ignite.bookmarks where user_id = ? and venue_id = ?',[req.user.user_id, venueId]);
+    if(results.length == 0){
+      await db.promise().query('INSERT INTO ignite.bookmarks (user_id, venue_id) VALUES (?,?)',[req.user.user_id, venueId]);
+    }
+    res.status(200).json("Successfully bookmarked the venue!");
+   }catch(error){
+    console.log(error);
+    res.status(500).json({message:'internal server error'});
+   }
 });
 
 app.post('/api/fetch-players', async (req, res) =>{

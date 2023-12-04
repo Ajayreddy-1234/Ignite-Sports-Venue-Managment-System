@@ -109,9 +109,17 @@
    padding: 1rem;
 }
 
+
+.bookmarked-color {
+  color:red;
+}
+
+.unbookmarked-color {
+  color: white;
+}
+
 .UserCardTitle{
     display: flex;
     justify-content: center;
 }
-
 

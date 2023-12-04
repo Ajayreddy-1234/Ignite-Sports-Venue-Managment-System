@@ -12,7 +12,16 @@ function VenuesTable() {
 
   const fetchData = async () => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/venueList`, {});
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+      const dataToSend = {
+          userId: window.localStorage.getItem("userId"),
+      };
+      const response = await axios.post(`${API_BASE_URL}/venueList`, dataToSend, config);
       setVenues(response.data);
     } catch (error) {
       console.error('Error:', error.message);
@@ -54,6 +63,7 @@ function VenuesTable() {
               vname={venue.vname}
               address={venue.address}
               sport={venue.sport}
+              bookmark = {venue.bookmark}
               onClick={() => handleCardClick(venue.venue_id)}
             />
           ))}

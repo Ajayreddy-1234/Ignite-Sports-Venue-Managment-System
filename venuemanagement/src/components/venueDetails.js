@@ -131,6 +131,36 @@ const VenueDetails = () => {
       navigate(`/review-booking?venueid=${id}&reservation=${selectedReservation ? selectedReservation.start_datetime : ''}&reservationid=${selectedReservation.reservation_id}`)
     }
   }
+  const handleSignout = () => {
+    window.localStorage.clear();
+    navigate("/");
+    window.location.reload();
+  };
+  const handleBookmarkButtonClick = async () => {
+      if(window.localStorage.getItem("userId") == null){
+        alert("Please login to bookmark the venue!");
+      }else{
+        console.log(id);
+        const response = await fetch(`/api/bookmark`,{
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json",
+                      "Authorization": window.localStorage.getItem("token"),
+                  },
+                  body: JSON.stringify({ venueId: id}),
+        });
+        console.log(response);
+        if(response.ok){
+          alert("Successfully bookmarked your Venue");
+        }else if(response.statusText == "Unauthorized"){
+          alert("Session Time out. Please login to continue");
+          handleSignout();
+        }else{
+          alert("Unable to bookmark your Venue at this time. Please try later!")
+        }
+    }
+
+  }
 
   return (
     <div className='venueDetailsBody'>
@@ -190,7 +220,7 @@ const VenueDetails = () => {
               }
             </div>
             <div className='detail'>
-              <Button> Bookmark </Button>
+              <Button onClick={()=>handleBookmarkButtonClick()}> Bookmark </Button>
             </div>
             <div className='detail'>
                 <Button onClick={() => handleBookButtonClick()}> Book It! </Button>
