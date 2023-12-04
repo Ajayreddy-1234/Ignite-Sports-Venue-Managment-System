@@ -17,6 +17,7 @@ const HomeBody = () =>{
     const gotoLoginPage = () => navigate("/login");
     const [search, setSearch] = useState('');
     const [reservations, setReservations] = useState([]);
+    const userId = window.localStorage.getItem("userId");
 
     // state variable to store the profile data
     const [profileData, setProfileData] = useState(
@@ -52,11 +53,11 @@ const HomeBody = () =>{
                     </Button>
                 </Link>
             </div>
-            <div className="profileContainer">
+            {userId != null &&<div className="profileContainer">
               <UserCard/>
-            </div>
+            </div>}
 
-            <div className="ChildLeft">
+            {userId != null && <div className="ChildLeft">
                 <h3>Reservations:</h3>
                 <div className='Search'>
                   <input className="searchInput" placeholder="Search Reservations" onChange={(e) => setSearch(e.target.value)}/>
@@ -80,7 +81,7 @@ const HomeBody = () =>{
                       value_paid={reservation.value_paid === 1 ? 'Paid' : 'Not Paid'}
                     />
                 ))}
-              </div>
+              </div>}
         </div>
     )
     

@@ -11,6 +11,9 @@ const UserPage =()=>{
         navigate("/");
         window.location.reload();
     };
+    const handleInviteFriend = () => {
+        navigate("/invite-friend");
+    };
 
     return(
     <div className="accountBody">
@@ -18,6 +21,9 @@ const UserPage =()=>{
                 <div>
                     <UserCard/>
                 </div>
+                <Button className="inviteFriendBtn" buttonStyle='button' onClick={handleInviteFriend} >
+                    INVITE FRIEND
+                </Button>
                 <Button className="signoutBtn" buttonStyle='button' onClick={handleSignout}>
                     SIGN OUT 
                 </Button>
