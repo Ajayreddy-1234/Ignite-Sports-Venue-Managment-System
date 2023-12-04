@@ -51,7 +51,7 @@ function VenuesTable() {
         <input className="searchInput" placeholder="Search Venues or Activities" onChange={(e) => setSearch(e.target.value)}/>
         <div className='bookmarkCheckbox'>
           <label>
-            Available
+            Bookmarked
             <input className="checkbox" type="checkbox" checked={isBookmarkChecked} onChange={handleBookmarkChange} />
           </label>
         </div>
