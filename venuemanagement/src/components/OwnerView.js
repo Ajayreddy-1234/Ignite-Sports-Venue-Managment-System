@@ -42,16 +42,17 @@ const OwnerView = ()  => {
 
   return (
     <div className='venueViewHost'>
-        <h1>Venue Owner View</h1>
         <div className='Search'>
             <form className='searchForm'>
                 <input className="searchInput" placeholder="Search Venues" onChange={(e) => setSearch(e.target.value)}/>
-            </form>
             <div className="ChildRight2">
                 <Button className="changePasswordButton" buttonStyle='button' onClick={handleAddVenueButtonClick}> Add Venue/Activity </Button> 
             </div>
+            </form>
         </div>
-        
+        <div className='OwnerViewTitle'>
+          <h1>Venue Owner View</h1>
+        </div>
         <div className='ChildContainer'>
             <div className="ChildLeft">
                 <h3>Venues:</h3>

@@ -106,9 +106,9 @@ const Paymethod = () => {
                         onChange={handleChange}
                     />
                 </div>
-                    <button className ="signupBtn" onClick={handleSubmit}>
+                    <Button className ="signupBtn" onClick={handleSubmit}>
                         Submit
-                    </button>
+                    </Button>
             </form>
         </div>
         </div>
