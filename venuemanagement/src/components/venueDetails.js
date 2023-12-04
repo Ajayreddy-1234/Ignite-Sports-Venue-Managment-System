@@ -64,7 +64,11 @@ const VenueDetails = () => {
       navigate(`/review-booking?venueid=${id}&reservation=${selectedReservation ? selectedReservation.start_datetime : ''}`)
     }
   }
-
+  const handleSignout = () => {
+    window.localStorage.clear();
+    navigate("/");
+    window.location.reload();
+  };
   const handleBookmarkButtonClick = async () => {
       if(window.localStorage.getItem("userId") == null){
         alert("Please login to bookmark the venue!");
@@ -81,6 +85,9 @@ const VenueDetails = () => {
         console.log(response);
         if(response.ok){
           alert("Successfully bookmarked your Venue");
+        }else if(response.statusText == "Unauthorized"){
+          alert("Session Time out. Please login to continue");
+          handleSignout();
         }else{
           alert("Unable to bookmark your Venue at this time. Please try later!")
         }
