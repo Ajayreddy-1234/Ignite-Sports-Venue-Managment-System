@@ -8,6 +8,7 @@ import API_BASE_URL from '../apiConfig';
 
 function VenuesTable() {
   const [venues, setVenues] = useState([]);
+  const [isBookmarkChecked, setIsBookmarkChecked] = useState(false);
   const navigate = useNavigate();
 
   const fetchData = async () => {
@@ -33,6 +34,10 @@ function VenuesTable() {
     navigate(`/venue/venue-details?venueid=${venueId}`);
   };
 
+  const handleBookmarkChange = (e) => {
+    setIsBookmarkChecked(e.target.checked);
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -44,17 +49,28 @@ function VenuesTable() {
     <div className='venueViewHost'>
       <form className='searchForm'>
         <input className="searchInput" placeholder="Search Venues or Activities" onChange={(e) => setSearch(e.target.value)}/>
+        <div className='bookmarkCheckbox'>
+          <label>
+            Bookmarked
+            <input className="checkbox" type="checkbox" checked={isBookmarkChecked} onChange={handleBookmarkChange} />
+          </label>
+        </div>
       </form>
       <div className='ViewPageBody'>
         <div>
           {venues.filter((item) => {
-            return search.toLowerCase() === '' ? item 
-            : 
-            (item.vname.toLowerCase().includes(search)
-            ||
-            item.sport.toLowerCase().includes(search)
-            ||
-            item.address.toLowerCase().includes(search));
+            const matchesSearch = (
+              item.vname.toLowerCase().includes(search) ||
+              item.sport.toLowerCase().includes(search) ||
+              item.address.toLowerCase().includes(search)
+            );
+
+            const matchesBookmark = (
+              !isBookmarkChecked ||
+              (isBookmarkChecked && item.bookmark === 1)
+            );
+
+            return matchesSearch && matchesBookmark;
           })
           .map((venue) => (
             <Card
