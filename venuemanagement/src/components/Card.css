@@ -51,3 +51,10 @@
     margin: 2rem;
 }
 
+.bookmarked-color {
+  color:red;
+}
+
+.unbookmarked-color {
+  color: white;
+}

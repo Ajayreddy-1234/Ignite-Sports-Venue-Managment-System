@@ -12,7 +12,7 @@ function Card(props) {
   return (
     <div className="List">
       <div key={props.venue_id} className="VenueCard" onClick={handleCardClick}>
-        <i className='bx bx-bookmark'/>
+        <i className={`bx bx-bookmark ${props.bookmark?'bookmarked-color':'unbookmarked-color'}`}/>
         <div className="CardContent">
           <h3 className="VenueName">{props.vname}</h3>
           <div className='displayStack__1'>

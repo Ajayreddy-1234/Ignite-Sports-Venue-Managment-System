@@ -65,6 +65,29 @@ const VenueDetails = () => {
     }
   }
 
+  const handleBookmarkButtonClick = async () => {
+      if(window.localStorage.getItem("userId") == null){
+        alert("Please login to bookmark the venue!");
+      }else{
+        console.log(id);
+        const response = await fetch(`/api/bookmark`,{
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json",
+                      "Authorization": window.localStorage.getItem("token"),
+                  },
+                  body: JSON.stringify({ venueId: id}),
+        });
+        console.log(response);
+        if(response.ok){
+          alert("Successfully bookmarked your Venue");
+        }else{
+          alert("Unable to bookmark your Venue at this time. Please try later!")
+        }
+    }
+
+  }
+
   return (
     <div className='venueDetailsBody'>
       <SplitLayout>
@@ -91,7 +114,7 @@ const VenueDetails = () => {
               </div>
             </div>
             <div className='detail'>
-              <Button> Bookmark </Button>
+              <Button onClick={()=>handleBookmarkButtonClick()}> Bookmark </Button>
             </div>
             <div className='detail'>
                 <Button onClick={() => handleBookButtonClick()}> Book It! </Button>
