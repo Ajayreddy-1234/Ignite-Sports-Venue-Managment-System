@@ -12,9 +12,7 @@
   padding: 12px;
 }
 input {
-  height: 45px;
   padding: 10px 15px;
-  margin-bottom: 15px;
 }
 .signupBtn, .loginBtn, .chooseDateTimeBtn {
   width: 200px;
@@ -30,7 +28,8 @@ input {
 .loginBody,
 .venueCreationBody,
 .reviewBookingBody,
-.inviteFriendBody {
+.inviteFriendBody,
+.accountBody {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -45,8 +44,24 @@ input {
   padding: 0;
   font-family: "Monsterrat", sans-serif;
 }
-
+.Search {
+  display: block;
+  height: 100px;
+}
 .ViewPageBody {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  background-image: url("./assets/backgroundImage.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Monsterrat", sans-serif;
+}
+.PlayersBody{
   display: flex;
   justify-content: center;
   min-height: 100vh;
@@ -89,7 +104,63 @@ input {
   outline-color: #8C1C13;
   transition: 0.3s;
 }
-
+.ChildContainer {
+  display: flex;
+  width: 100%;
+  height: 90%;
+  margin-right: 10px;
+  text-align: center;
+  justify-content: center;
+  padding: 15px;
+}
+.OpenBtn {
+  text-align: center;
+  float: center;
+  background-color: green;
+  height: 40px;
+  width: 70px;
+  font-family: "Monsterrat", sans-serif;
+  font-size: medium;
+  color: white;
+}
+.mapImg {
+  height: 40%;
+}
+.updateBtn {
+  text-align: center;
+  float: center;
+  background-color: grey;
+  height: 40px;
+  width: 70px;
+  font-family: "Monsterrat", sans-serif;
+  font-size: medium;
+  color: white;
+}
+.CloseBtn {
+  text-align: center;
+  float: center;
+  background-color: red;
+  height: 40px;
+  width: 70px;
+  font-family: "Monsterrat", sans-serif;
+  font-size: medium;
+  color: white;
+}
+.ChildLeft {
+  text-align: center;
+  float: left;
+  width: 30%;
+  margin: 40px;
+}
+.ChildRight {
+  float: left;
+  width: 30%;
+  margin: 40px;
+}
+.ChildRight2 {
+  float: right;
+  width: 20%;
+}
 .verify,
 .dashboard {
   margin: 0;
@@ -413,3 +484,26 @@ h2.venueDetailsTitle{
   display: flex;
   flex-direction: column;
 }
+
+.playerCheckbox{
+  align-items: center;
+  display: flex;
+}
+
+.accountContainer{
+  background: transparent;
+  border: 2px solid rgba(0,0,0, .3);
+  backdrop-filter: blur(20px);
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  padding: 30px 40px;
+}
+
+.OwnerViewTitle h1{
+  justify-content: center;
+  display: flex;
+}
+

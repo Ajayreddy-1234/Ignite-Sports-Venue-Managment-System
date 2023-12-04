@@ -4,6 +4,7 @@ import Card from './Card';
 import { Link, Route, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from './Button';
+import API_BASE_URL from '../apiConfig';
 
 function VenuesTable() {
   const [venues, setVenues] = useState([]);
@@ -11,6 +12,7 @@ function VenuesTable() {
 
   const fetchData = async () => {
     try {
+
       const config = {
         headers: {
           'Content-Type': 'application/json',
@@ -19,7 +21,7 @@ function VenuesTable() {
       const dataToSend = {
           userId: window.localStorage.getItem("userId"),
       };
-      const response = await axios.post('/api/venueList', dataToSend, config);
+      const response = await axios.post(`${API_BASE_URL}/venueList`, dataToSend, config);
       setVenues(response.data);
     } catch (error) {
       console.error('Error:', error.message);
@@ -41,7 +43,7 @@ function VenuesTable() {
   return (
     <div className='venueViewHost'>
       <form className='searchForm'>
-        <input className="searchInput" placeholder="Search Venues" onChange={(e) => setSearch(e.target.value)}/>
+        <input className="searchInput" placeholder="Search Venues or Activities" onChange={(e) => setSearch(e.target.value)}/>
       </form>
       <div className='ViewPageBody'>
         <div>
@@ -69,10 +71,6 @@ function VenuesTable() {
       </div>
     </div>
   );
-}
-
-function VenueDetails(){
-
 }
 
 export default VenuesTable;

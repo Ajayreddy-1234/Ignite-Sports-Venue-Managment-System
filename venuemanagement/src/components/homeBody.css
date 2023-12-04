@@ -17,3 +17,45 @@ video{
     object-fit: contain;
     justify-content: center;
 }
+
+.profileContainer {
+  color: #333;
+  margin-bottom: 10px;
+  margin-top: 50px;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.profileHeading{
+  font-size: 1.7em;
+  font-weight: bold;
+}
+
+.editProfile{
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: text-bottom;
+}
+
+table, th, td, tr {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+  }
+
+.profileTable {
+    border-collapse: collapse;
+    width: max-content;
+    margin: '50px auto';
+    boxShadow: '0 0 20px rgba(0, 0, 0, 0.15)';
+    margin-top: 20px;
+  }
+
+  .profileTableData {
+    border: 1px solid #ddd;
+    padding: '10px 15px'
+}
+tr:hover {background-color: coral;}

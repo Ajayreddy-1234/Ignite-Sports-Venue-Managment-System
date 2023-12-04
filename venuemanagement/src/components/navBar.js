@@ -58,8 +58,21 @@ function NavBar(){
                     </li>
                     <li className="navItem">
                         <Link to="/venues" className="navLinks" onClick={closeMobileMenu}>
-                            Venues
+                            Venues/Activities
                         </Link>
+                    </li>
+                    <li className="navItem">
+                        <Link to="/player-page" className="navLinks" onClick={closeMobileMenu}>
+                            Players
+                        </Link>
+                    </li>
+                    <li className="navItem">
+                    {window.localStorage.getItem("role") === "Organizer" || "Admin" ? 
+                        <Link to="/OwnerView" className="navLinks" onClick={closeMobileMenu}>
+                            Owner
+                        </Link>
+                        :<div></div>
+                    }
                     </li>
                     <li className="navItem">
                         {loggedIn ? <Link to="/user-page" className="navLinksMobile" onClick={closeMobileMenu}>
