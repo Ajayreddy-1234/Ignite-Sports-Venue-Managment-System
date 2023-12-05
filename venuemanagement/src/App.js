@@ -17,7 +17,7 @@ import ResetPassword from "./components/ResetPassword.js";
 import ReviewBooking from "./components/reviewBooking.js";
 import VenuesTable from "./components/ViewPage.js";
 import VenueDetails from "./components/venueDetails.js";
-import Paymethod from "./components/payment.js";
+import Paymethod from "./components/Payment.js";
 import PlayersPage from "./components/PlayersPage.js";
 import OwnerView from "./components/OwnerView.js";
 
