@@ -4,6 +4,7 @@ import Card from './Card';
 import { Link, Route, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from './Button';
+import bgimg from "../assets/backgroundImage.jpg";
 
 const OwnerView = ()  => {
   const [venues, setVenues] = useState([]);
@@ -42,6 +43,7 @@ const OwnerView = ()  => {
 
   return (
     <div className='venueViewHost'>
+      <img className="bgImage" src={bgimg}/>
         <div className='Search'>
             <form className='searchForm'>
                 <input className="searchInput" placeholder="Search Venues" onChange={(e) => setSearch(e.target.value)}/>

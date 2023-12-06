@@ -1,6 +1,8 @@
 import React, { useState, useEffect  } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png"
+import img from "../assets/igniteHomeImg.jpeg";
+import bgimg from "../assets/backgroundImage.jpg";
 import video from "../assets/background2.mp4"
 import { Button } from "./Button";
 import './homeBody.css';
@@ -45,43 +47,46 @@ const HomeBody = () =>{
 
     return(
         <div className="homeContainer">
-            <video src={video} autoPlay loop muted/>
-            <div className="homeBodyButtons">
-                <Link to="/venues">
-                    <Button className='buttons' buttonStyle="buttonOutline" buttonSize="buttonLarge">
-                        RESERVE NOW
-                    </Button>
-                </Link>
-            </div>
-            {userId != null &&<div className="profileContainer">
-              <UserCard/>
-            </div>}
-
-            {userId != null && <div className="ChildLeft">
-                <h3>Reservations:</h3>
-                <div className='Search'>
-                  <input className="searchInput" placeholder="Search Reservations" onChange={(e) => setSearch(e.target.value)}/>
+          <img className="bgImage" src={bgimg}/>
+            <img className="homeImg" src={img} style={{maxwidth: 50% + "em" }}/>
+            <div className="theHome">
+                <div className="homeBodyButtons">
+                    <Link to="/venues">
+                        <Button className='buttons' buttonStyle="buttonOutline" buttonSize="buttonLarge">
+                            RESERVE NOW
+                        </Button>
+                    </Link>
                 </div>
-                {reservations.filter((item) => {
-                return search.toLowerCase() === '' ? item 
-                    : 
-                    (item.username.toLowerCase().includes(search)
-                    ||
-                    item.start_datetime.toLowerCase().includes(search)
-                    ||
-                    item.end_datetime.toLowerCase().includes(search));
-                })
-                .map((reservation) => (
-                    <ReservationsCard
-                      key={reservation.venue_id}
-                      id={reservation.venue_id}
-                      vname={reservation.vname}
-                      start_datetime={reservation.start_datetime}
-                      end_datetime={reservation.end_datetime}
-                      value_paid={reservation.value_paid === 1 ? 'Paid' : 'Not Paid'}
-                    />
-                ))}
-              </div>}
+                {userId != null &&<div className="profileContainer">
+                  <UserCard/>
+                </div>}
+
+                {userId != null && <div className="ChildLeft">
+                    <h3>Reservations:</h3>
+                    <div className='ReservationSearch'>
+                      <input className="searchInput" placeholder="Search Reservations" onChange={(e) => setSearch(e.target.value)}/>
+                    </div>
+                    {reservations.filter((item) => {
+                    return search.toLowerCase() === '' ? item 
+                        : 
+                        (item.username.toLowerCase().includes(search)
+                        ||
+                        item.start_datetime.toLowerCase().includes(search)
+                        ||
+                        item.end_datetime.toLowerCase().includes(search));
+                    })
+                    .map((reservation) => (
+                        <ReservationsCard
+                          key={reservation.venue_id}
+                          id={reservation.venue_id}
+                          vname={reservation.vname}
+                          start_datetime={reservation.start_datetime}
+                          end_datetime={reservation.end_datetime}
+                          value_paid={reservation.value_paid === 1 ? 'Paid' : 'Not Paid'}
+                        />
+                    ))}
+                  </div>}
+              </div>
         </div>
     )
     
