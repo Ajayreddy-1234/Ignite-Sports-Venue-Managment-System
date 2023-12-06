@@ -125,7 +125,12 @@ const VenueDetails = () => {
   };
 
   const handleBookButtonClick = () => {
-    if(selectedReservation === null || selectedReservation.start_datetime === null){
+    let userId = window.localStorage.getItem("userId");
+    if(userId == null){
+      alert("Please login to continue!");
+      navigate(`/login`);
+      window.location.reload();
+    }else if(selectedReservation === null || selectedReservation.start_datetime === null){
       alert("Please select a reservation time")
     }else{
       navigate(`/review-booking?venueid=${id}&reservation=${selectedReservation ? selectedReservation.start_datetime : ''}&reservationid=${selectedReservation.reservation_id}`)
