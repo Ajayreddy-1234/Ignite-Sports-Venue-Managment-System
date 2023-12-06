@@ -47,17 +47,17 @@ function VenuesTable() {
 
   return (
     <div className='venueViewHost'>
-      <form className='searchForm'>
-        <input className="searchInput" placeholder="Search Venues or Activities" onChange={(e) => setSearch(e.target.value)}/>
-        <div className='bookmarkCheckbox'>
-          <label>
-            Bookmarked
-            <input className="checkbox" type="checkbox" checked={isBookmarkChecked} onChange={handleBookmarkChange} />
-          </label>
-        </div>
-      </form>
       <div className='ViewPageBody'>
-        <div>
+        <form className='searchForm'>
+          <input className="searchInput" placeholder="Search Venues or Activities" onChange={(e) => setSearch(e.target.value)}/>
+          <div className='bookmarkCheckbox'>
+            <label>
+              Bookmarked: 
+              <input className="checkbox" type="checkbox" checked={isBookmarkChecked} onChange={handleBookmarkChange} />
+            </label>
+          </div>
+        </form>
+        <div className='theVenues'>
           {venues.filter((item) => {
             const matchesSearch = (
               item.vname.toLowerCase().includes(search) ||

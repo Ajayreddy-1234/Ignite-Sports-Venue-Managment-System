@@ -8,7 +8,13 @@
 .List{
     display: flex;
     justify-content: space-evenly;
-    margin-top: 5rem;
+    margin-bottom: 1rem;
+}
+
+.ReservationList{
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 1rem;
 }
 
 .VenueCard i{
@@ -17,7 +23,6 @@
     margin: 1rem;
     font-size: 2rem;
     transition: 0.2s;
-    cursor: pointer;
   }
   
 .VenueCard{
@@ -115,7 +120,7 @@
 }
 
 .unbookmarked-color {
-  color: white;
+  color: lightgray;
 }
 
 .UserCardTitle{
