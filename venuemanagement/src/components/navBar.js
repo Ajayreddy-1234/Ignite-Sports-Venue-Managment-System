@@ -71,7 +71,7 @@ function NavBar(){
                         <Link to="/OwnerView" className="navLinks" onClick={closeMobileMenu}>
                             Owner
                         </Link>
-                        :<div></div>
+                        : <div></div>
                     }
                     </li>
                     <li className="navItem">

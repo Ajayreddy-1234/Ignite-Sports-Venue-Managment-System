@@ -235,7 +235,7 @@ const VenueDetails = () => {
             !isUser &&
               <div className="ChildLeft">
                 <h3>Reservations:</h3>
-                <div className='Search'>
+                <div className='ReservationSearch'>
                   <input className="searchInput" placeholder="Search Reservations" onChange={(e) => setSearch(e.target.value)}/>
                 </div>
                 {reservations.filter((item) => {
@@ -251,7 +251,7 @@ const VenueDetails = () => {
                     <ReservationsCard
                       key={reservation.venue_id}
                       id={reservation.venue_id}
-                      username={reservation.username}
+                      vname={reservation.username}
                       start_datetime={reservation.start_datetime}
                       end_datetime={reservation.end_datetime}
                       value_paid={reservation.value_paid === 1 ? 'Paid' : 'Not Paid'}
