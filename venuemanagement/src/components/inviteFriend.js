@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "./Button";
 import API_BASE_URL from '../apiConfig';
 import {Link, useNavigate} from 'react-router-dom';
+import withAuth from './withAuth';
 
 const InviteFriend = () => {
     const [info, setInfo] = useState({});
@@ -95,4 +96,4 @@ const InviteFriend = () => {
     );
 };
 
-export default InviteFriend;
+export default withAuth(InviteFriend);

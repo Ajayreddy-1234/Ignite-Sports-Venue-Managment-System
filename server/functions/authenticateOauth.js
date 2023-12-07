@@ -62,7 +62,7 @@ async function oauthTokenize({email}){
       await db.promise().query('UPDATE ignite.Tokens SET tokenId = ? WHERE userId = ?',[token, existingUser[0].user_id]);
   }
   if(existingUser[0].two_factor_enabled==1&&existingUser[0].two_factor_secret !='1'){
-    await db.promise.query('UPDATE ignite.User SET two_factor_secret = ? WHERE user_id = ?',['1', existingUser[0].user_id])
+    await db.promise().query('UPDATE ignite.User SET two_factor_secret = ? WHERE user_id = ?',['1', existingUser[0].user_id])
   }
   return {token,user:existingUser[0]};
 }

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png"
 import captchaSendRequest from "./captchaSendRequest";
@@ -6,6 +6,8 @@ import ReCAPTCHA from "react-google-recaptcha";
 const Register = () => {
 
     const [info, setInfo] = useState({});
+    const [successMessage, setSuccessMessage] = useState("");
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
     const recaptchaRef = React.createRef();
 
@@ -35,6 +37,12 @@ const Register = () => {
           if (response.ok) {
             const data = await response.json();
             console.log("Registration successful:", data);
+            setSuccessMessage("Registration successful. Redirecting to the Login page...");
+                setShowSuccessMessage(true);
+
+                setTimeout(() => {
+                    window.location.href = "/login";
+                }, 3000);
           } else {
             const errorData = await response.json();
             console.error("Registration failed:", errorData);
@@ -93,7 +101,15 @@ const Register = () => {
     };
 
     const gotoLoginPage = () => navigate("/login");
-
+    useEffect(() => {
+        if (showSuccessMessage) {
+            // Clear the success message and hide it after 3 seconds
+            setTimeout(() => {
+                setSuccessMessage("");
+                setShowSuccessMessage(false);
+            }, 10000); 
+        }
+      }, [showSuccessMessage]);
     return (
         <div className='signupBody'>
         <div className='signupContainer'>
@@ -175,6 +191,11 @@ const Register = () => {
                     </span>
                 </p>
             </form>
+            {showSuccessMessage && (
+                    <div className="inviteFriendMessageContainer">
+                        <p className="inviteFriendMessage">{successMessage}</p>
+                    </div>
+                )}
         </div>
         </div>
     );

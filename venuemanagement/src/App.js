@@ -35,7 +35,7 @@ function App() {
       <NavBar />
       <Routes>
           <Route path='/homeB' element={<HomeBody />}/>
-          <Route path='/' Component={Home}/>
+          <Route path='/' element={<Home />}/>
           <Route path='/Login' element={<Login />}/>
           <Route path='/Register' element={<Register />} />
           <Route path='/forgot-password' element={<ForgotPassword />} />

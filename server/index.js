@@ -545,6 +545,7 @@ app.post('/api/venueList', async (req, res)=>{
    }
    res.status(200).json(results);
   }catch(error){
+    console.log(error);
     res.status(400).json({message:'internal server error'});
   }
 });
