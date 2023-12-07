@@ -25,6 +25,11 @@
     transition: all 0.3s ease-out;
 }
 
+.buttonSmall {
+    padding: 4px 12px;
+    font-size: 16px;
+}
+
 .buttonMedium {
     padding: 8px 20px;
     font-size: 20px;
@@ -35,7 +40,7 @@
     font-size: 20px;
 }
 
-.buttonMedium:hover, .buttonLarge:hover{
+.buttonMedium:hover, .buttonLarge:hover, .buttonSmall:hover {
     background: #E7D7C1;
     color: black;
     transition: all 0.3s ease-out;

@@ -8,7 +8,7 @@ import ReservationsCard from './ReservationsCard';
 import basketball from "../assets/basketball.png";
 import soccer from "../assets/soccer.png";
 import football from "../assets/football.png";
-
+import sports from "../assets/sports.png";
 
 const VenueDetails = () => {
   const venueParams = new URLSearchParams(window.location.search);
@@ -19,6 +19,7 @@ const VenueDetails = () => {
   const [venueName, setVenueName] = useState("");
   const [venueAddress, setVenueAddress] = useState("");
   const [venueSport, setVenueSport] = useState("");
+  const [venueUserId, setVenueUserId] = useState();
   const [venueReservationTimes, setVenueReservationTimes] = useState([]);
   const [venueReservationId, setVenueReservationId] = useState([]);
   const [reservations, setReservations] = useState([]);
@@ -27,10 +28,11 @@ const VenueDetails = () => {
   const [closed, setClosed] = useState(false);
   const isAdmin = window.localStorage.getItem('role') === 'Admin';
   const isOrganizer = window.localStorage.getItem('role') === 'Organizer';
-  const isUser = window.localStorage.getItem('role') === 'User';
+  const isUser = window.localStorage.getItem('role') === 'Attendee';
   const [disabled, setDisabled] = useState(false);
   const [image, setImage] = useState("");
   const [mapURL, setMapURL] = useState("");
+
   const fetchData = async () => {
     try {
       const response = await axios.post('/api/venue-details', { venue_id: id });
@@ -50,13 +52,17 @@ const VenueDetails = () => {
       setVenueSport(venueData[0].sport);
       setVenueAddress(venueData[0].address);
       setClosed(parseInt(venueData[0].closed) === 1)
+      setVenueUserId(venueData[0].user_id);
       const sportType = venueData[0].sport.toLowerCase();
       if (sportType === "basketball") {
         setImage(basketball);
       } else if (sportType === "soccer") {
         setImage(soccer);
-      } else {
+      } else if (sportType === "football") {
         setImage(football);
+      }
+      else {
+        setImage(sports);
       }
     }
   }, [venueData]);
@@ -81,7 +87,12 @@ const VenueDetails = () => {
   const fetchMapURL = async () => {
     try {
       const response = await axios.post('/api/img-url', { venue_id: id });
-      setMapURL(response.data.img_url);
+      if (response.data.img_url) {
+        setMapURL(response.data.img_url);
+      }
+      else {
+        setMapURL("https://montessoridigital.org/sites/default/files/images/cards/cc129-en-p.jpg");
+      }
     } catch (error) {
       console.error('Error fetching reservations:', error.message);
     }
@@ -171,44 +182,32 @@ const VenueDetails = () => {
     <div className='venueDetailsBody'>
       <SplitLayout>
         <div className='venueDetailsImage' id='theImage'>
-          { image && <img src={image} alt="image"></img> }
+          { image && <img src={image} alt="image" className="mapImg"></img> }
         </div>
-        
           <div className='venueDetails'>
-            { (isAdmin || isOrganizer) &&
-              ((!closed &&
-                <button className="CloseBtn" onClick={handleVenueStatusChange}> 
-                  Close Event
-                </button>
-              )
-              ||
-              (closed &&
-                <button className="OpenBtn" onClick={handleVenueStatusChange}> 
-                  Open Event
-                </button>
-              ))
-            }
-            { (isAdmin || isOrganizer) &&
-              <>
-                <input
-                  placeholder="Architectural Map URL"
-                  name={mapURL}
-                  id={mapURL}
-                  value={mapURL}
-                  onChange={(e) => setMapURL(e.target.value)}
-                />
-                <button className="updateBtn" onClick={handleMapURL}> 
-                  Update Image
-                </button>
-              </>
-                
-            }
-            <h2 className='venueDetailsTitle'>{venueName}</h2>
-            <img src={mapURL} alt='map image' className="mapImg"></img>
-            <div className='detail'>Sport: {venueSport}</div>
-            <div className='detail'>Address: {venueAddress}</div>
-            <div className='detail'>
-              Time Slots - 
+            <div className='imageURL'>
+              <div className="bookmark">
+                <Button onClick={()=>handleBookmarkButtonClick()}> Bookmark </Button>
+              </div>
+              
+              <h2 className='venueDetailsTitle'>{venueName}</h2>
+            </div>
+            <div className="openCloseDetail">
+              {closed &&
+                <p className="closeDetails">Closed</p>
+              }
+              {!closed &&
+                <p className="openDetails">Open</p>
+              }
+            </div>
+            <div className='small-details'>
+              
+              <div className='detail'>Sport: {venueSport}</div>
+              <div className='detail'>Address: {venueAddress}</div>
+            </div>
+            
+            <div className='timeslots'>
+              <h4>Time Slots</h4>
               { !closed && 
               <div>
                 {venueReservationTimes.map((reservation) => (
@@ -218,21 +217,53 @@ const VenueDetails = () => {
                     onClick={() => handleReservationButtonClick(reservation)}
                     disabled={disabled}
                   >
-                    {reservation.start_datetime} - {reservation.end_datetime}
+                    {reservation.start_datetime.slice(1, -1).split("T")[0]
+                    + " " + reservation.start_datetime.slice(1, -1).split("T")[1]} - {reservation.end_datetime.slice(1, -1).split('T')[1]}
                   </Button>
                 ))}
               </div>
               }
             </div>
-            <div className='detail'>
-              <Button onClick={()=>handleBookmarkButtonClick()}> Bookmark </Button>
-            </div>
+            
             <div className='detail'>
                 <Button onClick={() => handleBookButtonClick()}> Book It! </Button>
             </div>
+            <img src={mapURL} className="mapImg"></img>
+            { ((isOrganizer && parseInt(window.localStorage.getItem('userId')) === parseInt(venueUserId)) || isAdmin)  &&
+              <>
+                <div className="imageURL">
+                    <input
+                      placeholder="Architectural Map URL"
+                      name={mapURL}
+                      id={mapURL}
+                      value={mapURL}
+                      onChange={(e) => setMapURL(e.target.value)}
+                      className="pictureURL"
+                    />
+                    <Button onClick={handleMapURL} disabled={disabled} buttonStyle='buttonPrimary' buttonSize={'buttonSmall'}>  
+                      Update Image
+                    </Button>
+                </div>
+                <div className="detail">
+                  { ((isOrganizer && parseInt(window.localStorage.getItem('userId')) === parseInt(venueUserId)) || isAdmin) &&
+                    ((!closed &&
+                      <Button disabled={disabled} buttonStyle='buttonPrimary' buttonSize={'buttonSmall'} onClick={handleVenueStatusChange}> 
+                        Close Event
+                      </Button>
+                    )
+                    ||
+                    (closed &&
+                      <Button disabled={disabled} buttonStyle='buttonPrimary' buttonSize={'buttonSmall'} onClick={handleVenueStatusChange}> 
+                        Open Event
+                      </Button>
+                    ))
+                  }
+                </div>
+              </>
+            }
           </div>
           {
-            !isUser &&
+            ((isOrganizer && parseInt(window.localStorage.getItem('userId')) === parseInt(venueUserId)) || isAdmin)  &&
               <div className="ChildLeft">
                 <h3>Reservations:</h3>
                 <div className='ReservationSearch'>
@@ -252,8 +283,8 @@ const VenueDetails = () => {
                       key={reservation.venue_id}
                       id={reservation.venue_id}
                       vname={reservation.username}
-                      start_datetime={reservation.start_datetime}
-                      end_datetime={reservation.end_datetime}
+                      start_datetime={reservation.start_datetime.slice(1, -1).split("T")[0] + " " + reservation.start_datetime.slice(1, -1).split("T")[1]}
+                      end_datetime={reservation.end_datetime.slice(1, -1).split("T")[0] + " " + reservation.end_datetime.slice(1, -1).split("T")[1]}
                       value_paid={reservation.value_paid === 1 ? 'Paid' : 'Not Paid'}
                     />
                 ))}

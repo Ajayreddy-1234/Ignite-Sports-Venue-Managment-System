@@ -124,17 +124,46 @@ input {
   color: white;
 }
 .mapImg {
-  height: 40%;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 .updateBtn {
   text-align: center;
   float: center;
-  background-color: grey;
+  background-color:#8C1C13;
   height: 40px;
   width: 70px;
   font-family: "Monsterrat", sans-serif;
   font-size: medium;
   color: white;
+}
+.bookmark {
+  float: right;
+  padding: 5px;
+}
+.pictureURL {
+  font-size: 16px;
+  padding: 4px 12px;
+}
+.openDetails {
+  color: green;
+  padding: 15px;
+  width: 100%;
+}
+.closeDetails {
+  color: red;
+  padding: 15px;
+  width: 100%;
+}
+.small-details {
+  align-items: center;
+  text-align: left;
+}
+.openCloseDetail {
+  width: 100%;
+  padding: 10px;
 }
 .CloseBtn {
   text-align: center;
@@ -145,6 +174,16 @@ input {
   font-family: "Monsterrat", sans-serif;
   font-size: medium;
   color: white;
+}
+.ChildLeft50{
+  text-align: center;
+  float: left;
+  width: 50%;
+}
+.ChildRight25{
+  text-align: center;
+  float: left;
+  width: 25%;
 }
 .ChildLeft {
   text-align: center;
@@ -450,19 +489,17 @@ input {
 
 h2.venueDetailsTitle{
   padding: 20px;
-  display: flex;
   align-items: center;
   justify-content: center;
+  float: left;
 }
 
 .venueDetailsImage{
-  display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .venueDetails{
-  display: inline-flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -476,13 +513,35 @@ h2.venueDetailsTitle{
 .venueDetailsContainer{
   padding: 10vh;
 }
-
+.timeslots {
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  display: block;
+}
 .detail{
   padding: 10px;
   justify-content: center;
   align-items: center;
   display: flex;
   flex-direction: column;
+}
+.openCloseDetail {
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.imageURL {
+  padding: 10px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  display:block;
 }
 
 .playerCheckbox{
