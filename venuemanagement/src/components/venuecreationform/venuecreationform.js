@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import DatePicker from "react-multi-date-picker";
 import createVenueSendRequest from "./createVenueSendRequest";
+import withAuth from '../withAuth';
 
 import "react-datetime/css/react-datetime.css";
 import "./styles.css";
@@ -402,4 +403,4 @@ const VenueCreationForm = () => {
     );
 };
 
-export default VenueCreationForm;
+export default withAuth(VenueCreationForm);

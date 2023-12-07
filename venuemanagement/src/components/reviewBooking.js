@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link, Form } from "react-router-dom";
 import { Button } from "./Button";
+import withAuth from './withAuth';
 
 function ReviewBooking(){
 
@@ -61,4 +62,4 @@ function ReviewBooking(){
     ) 
 };
 
-export default ReviewBooking;
+export default withAuth(ReviewBooking);

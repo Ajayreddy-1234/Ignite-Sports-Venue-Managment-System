@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button } from "./Button";
 import {Link, useNavigate} from 'react-router-dom';
 import UserCard from "./UserCard";
+import withAuth from './withAuth';
 
 const UserPage =()=>{
     const navigate = useNavigate();
@@ -31,4 +32,4 @@ const UserPage =()=>{
     </div>
     )
 };
-export default UserPage;
+export default withAuth(UserPage);

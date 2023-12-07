@@ -4,6 +4,7 @@ import Card from './Card';
 import { Link, Route, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from './Button';
+import withAuth from './withAuth';
 
 const OwnerView = ()  => {
   const [venues, setVenues] = useState([]);
@@ -103,4 +104,4 @@ const OwnerView = ()  => {
   );
 }
 
-export default OwnerView;
+export default withAuth(OwnerView);

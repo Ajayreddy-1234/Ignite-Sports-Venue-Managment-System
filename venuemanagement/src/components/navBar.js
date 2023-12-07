@@ -67,7 +67,7 @@ function NavBar(){
                         </Link>
                     </li>
                     <li className="navItem">
-                    {window.localStorage.getItem("role") === "Organizer" || "Admin" ? 
+                    {window.localStorage.getItem("role") === "Organizer" || window.localStorage.getItem("role") === "Admin" ? 
                         <Link to="/OwnerView" className="navLinks" onClick={closeMobileMenu}>
                             Owner
                         </Link>

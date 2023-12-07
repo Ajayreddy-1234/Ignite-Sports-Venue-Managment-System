@@ -3,6 +3,7 @@ import logo from "../assets/logo.png"
 import { Button } from "./Button";
 import NavBar from "./navBar";
 import { useNavigate } from "react-router-dom";
+import withAuth from './withAuth';
 
 const Paymethod = () => {
     const paymentParams = new URLSearchParams(window.location.search);
@@ -114,4 +115,4 @@ const Paymethod = () => {
         </div>
     );
 };
-export default Paymethod;
+export default withAuth(Paymethod);

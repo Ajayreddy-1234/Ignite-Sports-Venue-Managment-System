@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import withAuth from '../withAuth';
 
 
 const EditProfileDetails = () => {
@@ -136,4 +137,4 @@ const EditProfileDetails = () => {
 
 };
 
-export default EditProfileDetails;
+export default withAuth(EditProfileDetails);
