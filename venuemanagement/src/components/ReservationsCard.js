@@ -12,7 +12,6 @@ export const ReservationsCard = (props) => {
   return (
     <div className="ReservationList">
       <div key={props.venue_id} className="VenueCard" onClick={handleCardClick}>
-        <i className='bx bx-bookmark'/>
         <div className="CardContent">
           <h3 className="VenueName">{props.vname}</h3>
           <div className='displayStack__1'>

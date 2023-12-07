@@ -10,6 +10,8 @@ const OwnerView = ()  => {
   const [venues, setVenues] = useState([]);
   const [activities, setActivities] = useState([]);
   const navigate = useNavigate();
+  const isAdmin = window.localStorage.getItem('role') === 'Admin';
+  const isOrganizer = window.localStorage.getItem('role') === 'Organizer';
 
   const fetchData = async () => {
     try {
@@ -41,6 +43,9 @@ const OwnerView = ()  => {
   const [search, setSearch] = useState('');
   console.log(search);
 
+  if (!isAdmin && !isOrganizer) {
+    return (<p>NOT ALLOWED</p>);
+  }
   return (
     <div className='venueViewHost'>
       <img className="bgImage" src={bgimg}/>

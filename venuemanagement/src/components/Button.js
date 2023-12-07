@@ -3,7 +3,7 @@ import './Button.css'
 import {Link} from 'react-router-dom';
 
 const STYLES = ['buttonPrimary','buttonOutline'];
-const SIZES = ['buttonMedium', 'buttonLarge'];
+const SIZES = ['buttonMedium', 'buttonSmall', 'buttonLarge'];
 
 export const Button = ({
     children, type, onClick, buttonStyle, buttonSize}) => {

@@ -35,7 +35,7 @@ function PlayersPage() {
         <form className='searchForm'>
           <input className="searchInput" placeholder="Search Players" onChange={(e) => setSearch(e.target.value)} />
           <div>
-            <label htmlFor="ageRange">Filter by Age Range:
+            <label htmlFor="ageRange">Filter by Age Range:{" "}
               <select id="ageRange" onChange={handleAgeRangeChange} value={selectedAgeRange}>
                   <option value="">All</option>
                   <option value="18-22">18-22</option>
@@ -46,8 +46,9 @@ function PlayersPage() {
             </label>
           </div>
           <div className='playerCheckbox'>
+          {" "} 
             <label>
-              Available
+              Available {" "}
               <input className="checkbox" type="checkbox" checked={isAvailableChecked} onChange={handleAvailableChange} />
             </label>
           </div>
