@@ -1,14 +1,9 @@
 import React, { useState, useEffect  } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png"
 import img from "../assets/igniteHomeImg.jpeg";
 import bgimg from "../assets/backgroundImage.jpg";
-import video from "../assets/background2.mp4"
 import { Button } from "./Button";
 import './homeBody.css';
-import HomeCarousel from "./home-carousel/HomeCarousel";
-import ReservationsList from "./reservations-list-carousel/ReservationsList";
-import ChatComponent from "./chat";
 import API_BASE_URL from '../apiConfig';
 import axios from 'axios';
 import ReservationsCard from "./ReservationsCard";
