@@ -22,7 +22,6 @@ import PlayersPage from "./components/PlayersPage.js";
 import OwnerView from "./components/OwnerView.js";
 
 function App() {
-  const [data, setData] = React.useState(null);
 
   // React.useEffect(() => {
   //   fetch("/api")

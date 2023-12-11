@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import logo from "../assets/logo.png"
-import { Button } from "./Button";
-import ForgotPassword from "./ForgotPassword";
-import NavBar from "./navBar";
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
 
-var isLoggedIn = false;
 
 const Login = () => {
     //const [email, setEmail] = useState("");
@@ -204,5 +200,4 @@ const Login = () => {
         </div>
     );
 };
-export var isLoggedIn;
 export default Login;

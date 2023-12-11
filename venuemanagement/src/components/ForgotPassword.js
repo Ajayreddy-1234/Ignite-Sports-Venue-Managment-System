@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { Button } from "./Button";
-import {Link, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 const ForgotPassword = () => {
 
@@ -18,11 +18,7 @@ const ForgotPassword = () => {
     setInfo(values => ({...values, [name]: value}))
     console.log(value);
     }
-    const handleSignout = () => {
-      window.localStorage.clear();
-      navigate("/");
-      window.location.reload();
-    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
     

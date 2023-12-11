@@ -11,7 +11,6 @@ import UserCard from "./UserCard";
 
 const HomeBody = () =>{
     const navigate = useNavigate();
-    const gotoLoginPage = () => navigate("/login");
     const [search, setSearch] = useState('');
     const [reservations, setReservations] = useState([]);
     const userId = window.localStorage.getItem("userId");
